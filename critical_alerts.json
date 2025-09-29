@@ -1,0 +1,1217 @@
+[
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T00:47:36.078050",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T00:52:54.464291",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T00:53:00.490631",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T00:53:12.516752",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T00:53:16.657113",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T00:58:36.804670",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T00:58:42.078994",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T00:58:52.865308",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T00:58:58.296261",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:04:17.343282",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:04:23.786380",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:04:35.682732",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:04:39.895137",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:10:07.494730",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:10:13.667435",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:10:23.756311",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:10:31.735234",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:19:07.145156",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:19:11.535765",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:19:24.017649",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:19:30.451471",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "eol_orchid_explorer",
+    "widget_name": "EOL Orchid Explorer",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is critically slow",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:19:52.103121",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:25:25.726285",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:25:31.567706",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:25:41.968798",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:25:49.723914",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:31:15.868715",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:31:20.608524",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:31:32.789683",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:31:38.620452",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:37:57.013912",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:38:01.584196",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:38:13.460855",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:38:19.327648",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:43:44.676403",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:43:52.548427",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:44:04.487097",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:44:10.400983",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:49:28.259178",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:49:35.906001",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:49:48.464424",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:49:53.299975",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:55:12.823836",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:55:21.217070",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:55:32.421791",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is critically slow",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:55:45.911946",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:56:39.034882",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:56:45.206829",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:56:57.134570",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T01:57:02.912500",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:01:11.735404",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:01:20.122900",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:01:43.154780",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is critically slow",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:02:01.376715",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "master_grower_dashboard",
+    "widget_name": "Master Grower Dashboard",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is critically slow",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:02:18.798692",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "eol_orchid_explorer",
+    "widget_name": "EOL Orchid Explorer",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is critically slow",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:02:35.789567",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is critically slow",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:11:37.269168",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is critically slow",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:11:53.545417",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:12:07.121891",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is slower than optimal",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:12:14.870643",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "master_grower_dashboard",
+    "widget_name": "Master Grower Dashboard",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is critically slow",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:12:29.451408",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:19:00.476247",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:19:07.202324",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is critically slow",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:19:35.132579",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:19:41.964507",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "master_grower_dashboard",
+    "widget_name": "Master Grower Dashboard",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is critically slow",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:19:57.573784",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:25:04.807594",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:27:28.537812",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is slower than optimal",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:27:36.647546",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:27:52.065580",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:27:58.958404",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:31:29.012818",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:31:36.086785",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:31:50.332406",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is critically slow",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:32:04.738412",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "eol_orchid_explorer",
+    "widget_name": "EOL Orchid Explorer",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is critically slow",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:32:38.979005",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Response time is critically slow",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:34:46.147212",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:34:52.019857",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:35:04.980459",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T02:35:13.167735",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:12:57.469717",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:13:03.697852",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:13:17.639225",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:13:24.628251",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:25:40.942939",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:25:51.575961",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:26:05.889398",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:26:11.691912",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:31:31.154229",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:31:37.812026",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:31:54.026131",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:31:59.318434",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:37:23.091477",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:37:29.934646",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:37:38.860433",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:37:43.964043",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "ai_orchid_health_diagnostic",
+    "widget_name": "AI Orchid Health Diagnostic",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:43:06.015304",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "growing_condition_matcher",
+    "widget_name": "Growing Condition Matcher",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:43:14.807916",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "adaptive_care_calendar",
+    "widget_name": "Adaptive Care Calendar",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:43:29.237758",
+    "alert_level": "CRITICAL"
+  },
+  {
+    "widget_id": "orchid_authentication",
+    "widget_name": "Orchid Authentication Detector",
+    "status": "offline",
+    "health_score": 0.0,
+    "issues": [
+      "Widget is not responding to requests",
+      "Overall health score is poor"
+    ],
+    "timestamp": "2025-09-29T03:43:35.778624",
+    "alert_level": "CRITICAL"
+  }
+]
