@@ -45,6 +45,13 @@ try:
 except ImportError:
     vigilant_monitor = None
 from gbif_routes import gbif_bp
+from gbif_routes import gbif_bp
+try:
+    from ai_orchid_routes import ai_orchid_bp
+except ImportError as e:
+    print(f"Warning: Could not import ai_orchid_routes: {e}")
+    ai_orchid_bp = None
+from enhanced_mapping_routes import enhanced_mapping_bp
 from enhanced_mapping_routes import enhanced_mapping_bp
 from admin_orchid_approval import orchid_approval_bp
 from pattern_analysis_routes import pattern_analysis_bp
