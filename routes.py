@@ -28,11 +28,6 @@ except ImportError as e:
     export_orchid_data = None
     get_export_filename = None
 from certificate_generator import generate_award_certificate, get_certificate_pdf
-except ImportError as e:
-    print(f"Warning: Could not import export_utils: {e}")
-    export_orchid_data = None
-    get_export_filename = None
-from certificate_generator import generate_award_certificate, get_certificate_pdf
 from filename_parser import parse_orchid_filename
 from processing_routes import processing_bp
 from photo_editor_routes import photo_editor_bp
