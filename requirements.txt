@@ -222,3 +222,4 @@ trafilatura
 uvicorn
 werkzeug
 wtforms
+flask-cors
