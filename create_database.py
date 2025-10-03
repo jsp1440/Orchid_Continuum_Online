@@ -44,6 +44,8 @@ def create_database_if_not_exists():
                 conn_string = f"postgresql://{user}:{password}@{host}:{port}/{default_db}"
                 logger.info(f"Trying to connect to {default_db}...")
                 conn = psycopg2.connect(conn_string)
+                                conn = psycopg2.connect(conn_string)
+                logger.info(f"✅ Connected to {default_db}")
                 logger.info(f"✅ Connected to {default_db}")
                 break
             except Exception as e:
