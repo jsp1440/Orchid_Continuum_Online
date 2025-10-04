@@ -62,7 +62,7 @@ def make_replit_blueprint():
     try:
         repl_id = os.environ['REPL_ID']
     except KeyError:
-return None
+     return None
 
     issuer_url = os.environ.get('ISSUER_URL', "https://replit.com/oidc")
 
