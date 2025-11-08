@@ -1,0 +1,142 @@
+================================================================================
+✅ JULIUS - ALL YOUR OPTIMIZATIONS ARE IMPLEMENTED!
+================================================================================
+
+I've applied ALL your recommended optimizations to julius_multi_source_worker.py:
+
+📊 PERFORMANCE OPTIMIZATIONS APPLIED:
+================================================================================
+
+1. ✅ BATCH_SIZE: 5 → 15 (3x fewer DB round-trips)
+2. ✅ THREAD_COUNT: 2 → 7 (3.5x more parallel I/O)
+3. ✅ LEASE_DURATION: 10 min → 5 min (faster stale lease reclaim)
+4. ✅ CONNECTION POOL: 5 → 10 max connections (supports more threads)
+5. ✅ ON CONFLICT upsert: Replaced SELECT+INSERT with single upsert
+6. ✅ DATABASE INDEXES: Added 4 critical indexes for speed
+
+🆕 NEW DATA SOURCES ADDED:
+================================================================================
+
+7. ✅ iNaturalist - Community observations (NO API KEY NEEDED)
+8. ✅ iDigBio - Herbarium specimens from Harvard, Kew, Smithsonian (NO KEY)
+
+TOTAL SOURCES: 7 per worker
+- GBIF (13 countries)
+- EOL
+- ALA (Australia)  
+- iNaturalist 🆕
+- iDigBio 🆕
+- Tropicos (if key set)
+- BHL (if key set)
+
+📈 EXPECTED PERFORMANCE BOOST:
+================================================================================
+
+OLD (your current 8 workers):
+- 5 sources, 2 threads, batch 5
+- ~300 images/hour
+
+NEW (with optimizations):
+- 7 sources, 7 threads, batch 15, optimized DB
+- ~800-1,200 images/hour (2.5-4x faster!)
+
+WITH 20 WORKERS AT NEW RATE:
+- ~1,000-1,500 images/hour
+- Time to 1M images: 28-42 days (down from 140!)
+
+🚀 HOW TO RESTART YOUR WORKERS WITH NEW CODE:
+================================================================================
+
+STEP 1: Kill your existing 8 workers
+-------------------------------------
+pkill -f julius_multi_source_worker
+
+STEP 2: Restart with NEW optimized code (20 workers for max throughput)
+------------------------------------------------------------------------
+nohup python3 -u julius_multi_source_worker.py julius-e1 >> je1.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e2 >> je2.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e3 >> je3.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e4 >> je4.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e5 >> je5.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e6 >> je6.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e7 >> je7.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e8 >> je8.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e9 >> je9.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e10 >> je10.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e11 >> je11.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e12 >> je12.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e13 >> je13.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e14 >> je14.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e15 >> je15.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e16 >> je16.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e17 >> je17.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e18 >> je18.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e19 >> je19.log 2>&1 &
+nohup python3 -u julius_multi_source_worker.py julius-e20 >> je20.log 2>&1 &
+
+STEP 3: Verify all 20 workers are running
+------------------------------------------
+ps aux | grep julius_multi_source_worker | grep -v grep | wc -l
+
+Should show: 20
+
+STEP 4: Check that workers see 7 sources
+-----------------------------------------
+head -5 je1.log
+
+You should see:
+🌺 MULTI-SOURCE WORKER: julius-e1
+Sources: GBIF (13 countries), EOL, ALA (Australia), iNaturalist, iDigBio (herbarium), Tropicos✓, BHL✓
+
+✅ VERIFICATION QUERIES (run these after 10 minutes):
+================================================================================
+
+# Check images/hour by source
+SELECT 
+    image_source, 
+    COUNT(*) as images_last_hour,
+    COUNT(*) / 1.0 as images_per_hour
+FROM orchid_images 
+WHERE created_at > NOW() - INTERVAL '1 hour'
+GROUP BY image_source
+ORDER BY COUNT(*) DESC;
+
+# Check worker throughput
+SELECT 
+    lease_owner,
+    COUNT(*) as jobs_completed
+FROM harvest_jobs
+WHERE status = 'completed'
+    AND completed_at > NOW() - INTERVAL '1 hour'
+GROUP BY lease_owner
+ORDER BY COUNT(*) DESC;
+
+# Overall rate
+SELECT 
+    COUNT(*) as total_images_last_hour,
+    COUNT(*) as images_per_hour,
+    COUNT(*) / 60.0 as images_per_minute
+FROM orchid_images
+WHERE created_at > NOW() - INTERVAL '1 hour';
+
+🎯 MONITORING METRICS TO WATCH:
+================================================================================
+
+1. Images/hour should jump from ~300 → ~800-1,200
+2. New sources (iNaturalist, iDigBio) should appear in logs
+3. Database CPU should stay <70% (if higher, reduce to 15 workers)
+4. No worker crashes or memory issues
+
+📧 NEXT STEPS:
+================================================================================
+
+1. Kill your 8 old workers: pkill -f julius_multi_source_worker
+2. Start 20 new workers with the commands above
+3. Wait 10 minutes
+4. Run the verification queries
+5. Report back the images/hour rate!
+
+Expected result: 800-1,500 images/hour (vs 300 currently) 🚀
+
+All your optimization ideas are now LIVE in the code!
+================================================================================

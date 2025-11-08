@@ -1,0 +1,30 @@
+{
+  "plant_taxon": {
+    "id": 12345,
+    "name": "Phragmipedium kovachii",
+    "rank": "species"
+  },
+  "pollinators": [
+    {
+      "taxon": {
+        "id": 8001,
+        "name": "Aglaiocercus kingii",
+        "rank": "species"
+      },
+      "interaction": {
+        "predicate": "visits/pollinates",
+        "confidence": 0.82,
+        "source": "GBIF"
+      },
+      "media": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Aglaiocercus_kingii.jpg",
+        "license": "CC-BY-SA 3.0",
+        "attribution": "Photo \u00a9 CC contributors / Wikimedia Commons",
+        "width": 1024,
+        "height": 683,
+        "source": "Wikimedia",
+        "source_id": "Aglaiocercus_kingii.jpg"
+      }
+    }
+  ]
+}

@@ -1,0 +1,496 @@
+[
+  {
+    "orchid_id": 6266,
+    "genus": "Matsuri",
+    "species": "Zygopetalum",
+    "image_url": "https://lh3.googleusercontent.com/d/1RYmYYlxeFokrzoCysWYo0ndsZozZYQwx",
+    "gpt4o_mini": null,
+    "gpt35_turbo": {
+      "growth_habit": "Epiphytic or lithophytic, with pseudobulbs and long, arching leaves",
+      "temperature": "Intermediate to warm temperatures, around 65-80\u00b0F (18-27\u00b0C)",
+      "light": "Bright, indirect light; avoid direct sunlight which can scorch the leaves",
+      "humidity": "Prefers high humidity levels, around 60-80%",
+      "bloom_season": "Typically blooms in spring to early summer",
+      "difficulty": "Moderate; requires attention to watering, humidity, and light levels",
+      "source": "Botanical knowledge of genus Matsuri",
+      "cost": 0.0001,
+      "model": "GPT-3.5-turbo (text)"
+    },
+    "comparison": {},
+    "cost_difference": 0
+  },
+  {
+    "orchid_id": 6267,
+    "genus": "Brassavola",
+    "species": "\"Little Stars\"",
+    "image_url": "https://lh3.googleusercontent.com/d/1cTq62JnK2LNjqxsh3BkeOYAoUZCSeQ13",
+    "gpt4o_mini": null,
+    "gpt35_turbo": {
+      "growth_habit": "Epiphytic orchid with long, thin pseudobulbs and leathery leaves",
+      "temperature": "Prefers warm temperatures between 65-85\u00b0F (18-29\u00b0C)",
+      "light": "Requires bright, indirect light; can tolerate some direct sunlight in the morning or late afternoon",
+      "humidity": "Needs high humidity levels of around 60-80%",
+      "bloom_season": "Typically blooms in spring to early summer",
+      "difficulty": "Considered moderately easy to grow for experienced orchid enthusiasts",
+      "source": "Botanical knowledge of genus Brassavola",
+      "cost": 0.0001,
+      "model": "GPT-3.5-turbo (text)"
+    },
+    "comparison": {},
+    "cost_difference": 0
+  },
+  {
+    "orchid_id": 4912,
+    "genus": "Angraecum",
+    "species": "Viguieri",
+    "image_url": "https://www.flowershots.net/web-content/Photogallery/Angraecum/Angraecum-viguieri.jpg",
+    "gpt4o_mini": {
+      "growth_habit": "epiphytic",
+      "temperature": "warm to intermediate",
+      "light": "bright, indirect light",
+      "humidity": "50-70%",
+      "bloom_season": "spring to summer",
+      "difficulty": "moderate",
+      "source": "Visual analysis of photo",
+      "cost": 0.003,
+      "model": "GPT-4o-mini (vision)"
+    },
+    "gpt35_turbo": {
+      "growth_habit": "Epiphytic or lithophytic, typically growing on trees or rocks",
+      "temperature": "Prefers warm to intermediate temperatures, around 18-25\u00b0C (64-77\u00b0F)",
+      "light": "Requires bright, indirect light; avoid direct sunlight which can scorch the leaves",
+      "humidity": "Needs high humidity levels, around 60-80%",
+      "bloom_season": "Typically blooms in the spring or summer months",
+      "difficulty": "Moderate difficulty to grow, requires specific care and attention to humidity and light levels",
+      "source": "Botanical knowledge of genus Angraecum",
+      "cost": 0.0001,
+      "model": "GPT-3.5-turbo (text)"
+    },
+    "comparison": {
+      "growth_habit": {
+        "gpt4o_mini": "epiphytic",
+        "gpt35_turbo": "Epiphytic or lithophytic, typically growing on trees or rocks",
+        "match": false
+      },
+      "temperature": {
+        "gpt4o_mini": "warm to intermediate",
+        "gpt35_turbo": "Prefers warm to intermediate temperatures, around 18-25\u00b0C (64-77\u00b0F)",
+        "match": false
+      },
+      "light": {
+        "gpt4o_mini": "bright, indirect light",
+        "gpt35_turbo": "Requires bright, indirect light; avoid direct sunlight which can scorch the leaves",
+        "match": false
+      },
+      "humidity": {
+        "gpt4o_mini": "50-70%",
+        "gpt35_turbo": "Needs high humidity levels, around 60-80%",
+        "match": false
+      },
+      "bloom_season": {
+        "gpt4o_mini": "spring to summer",
+        "gpt35_turbo": "Typically blooms in the spring or summer months",
+        "match": false
+      },
+      "difficulty": {
+        "gpt4o_mini": "moderate",
+        "gpt35_turbo": "Moderate difficulty to grow, requires specific care and attention to humidity and light levels",
+        "match": false
+      }
+    },
+    "cost_difference": 0.0029000000000000002,
+    "agreement_score": 0.0
+  },
+  {
+    "orchid_id": 6268,
+    "genus": "Vanda",
+    "species": "hybrid",
+    "image_url": "https://lh3.googleusercontent.com/d/1UdDh3j-IWAMHkmLMYECMKUCwt2hVf6Ax",
+    "gpt4o_mini": null,
+    "gpt35_turbo": {
+      "growth_habit": "Epiphytic or lithophytic, with aerial roots",
+      "temperature": "Warm to intermediate temperatures, around 18-30\u00b0C (65-85\u00b0F)",
+      "light": "Bright, indirect light with some direct sunlight, around 50-70% shade",
+      "humidity": "High humidity, around 60-80%",
+      "bloom_season": "Varies depending on the hybrid, but typically blooms in spring or summer",
+      "difficulty": "Moderate to difficult, requires specific care and attention",
+      "source": "Botanical knowledge of genus Vanda",
+      "cost": 0.0001,
+      "model": "GPT-3.5-turbo (text)"
+    },
+    "comparison": {},
+    "cost_difference": 0
+  },
+  {
+    "orchid_id": 6286,
+    "genus": "Epidendrum",
+    "species": "unnamed",
+    "image_url": "https://lh3.googleusercontent.com/d/1sR0jQ79HoeSNBsqXGxHYnHyeKBhk4nWV",
+    "gpt4o_mini": {
+      "growth_habit": "epiphytic",
+      "temperature": "warm to intermediate",
+      "light": "bright, indirect light",
+      "humidity": "high",
+      "bloom_season": "spring to summer",
+      "difficulty": "moderate",
+      "source": "Visual analysis of photo",
+      "cost": 0.003,
+      "model": "GPT-4o-mini (vision)"
+    },
+    "gpt35_turbo": {
+      "growth_habit": "Epiphytic or lithophytic, growing on trees or rocks",
+      "temperature": "Prefers intermediate temperatures, around 65-80\u00b0F (18-27\u00b0C)",
+      "light": "Requires bright, indirect light; avoid direct sunlight",
+      "humidity": "Prefers high humidity levels, around 60-80%",
+      "bloom_season": "Blooms typically in spring to summer",
+      "difficulty": "Moderate difficulty; requires attention to watering and humidity levels",
+      "source": "Botanical knowledge of genus Epidendrum",
+      "cost": 0.0001,
+      "model": "GPT-3.5-turbo (text)"
+    },
+    "comparison": {
+      "growth_habit": {
+        "gpt4o_mini": "epiphytic",
+        "gpt35_turbo": "Epiphytic or lithophytic, growing on trees or rocks",
+        "match": false
+      },
+      "temperature": {
+        "gpt4o_mini": "warm to intermediate",
+        "gpt35_turbo": "Prefers intermediate temperatures, around 65-80\u00b0F (18-27\u00b0C)",
+        "match": false
+      },
+      "light": {
+        "gpt4o_mini": "bright, indirect light",
+        "gpt35_turbo": "Requires bright, indirect light; avoid direct sunlight",
+        "match": false
+      },
+      "humidity": {
+        "gpt4o_mini": "high",
+        "gpt35_turbo": "Prefers high humidity levels, around 60-80%",
+        "match": false
+      },
+      "bloom_season": {
+        "gpt4o_mini": "spring to summer",
+        "gpt35_turbo": "Blooms typically in spring to summer",
+        "match": false
+      },
+      "difficulty": {
+        "gpt4o_mini": "moderate",
+        "gpt35_turbo": "Moderate difficulty; requires attention to watering and humidity levels",
+        "match": false
+      }
+    },
+    "cost_difference": 0.0029000000000000002,
+    "agreement_score": 0.0
+  },
+  {
+    "orchid_id": 6283,
+    "genus": "Intergeneric",
+    "species": "hybrid",
+    "image_url": "https://lh3.googleusercontent.com/d/1A6rRril5Jd8ZX0BAhtHciymgKSz8pxLB",
+    "gpt4o_mini": {
+      "growth_habit": "epiphytic",
+      "temperature": "warm to hot",
+      "light": "bright, indirect light",
+      "humidity": "50-70%",
+      "bloom_season": "spring to summer",
+      "difficulty": "moderate",
+      "source": "Visual analysis of photo",
+      "cost": 0.003,
+      "model": "GPT-4o-mini (vision)"
+    },
+    "gpt35_turbo": {
+      "growth_habit": "Epiphytic",
+      "temperature": "Intermediate to warm temperatures, around 65-80\u00b0F (18-27\u00b0C)",
+      "light": "Bright, indirect light",
+      "humidity": "High humidity levels, around 60-80%",
+      "bloom_season": "Varies depending on parent species, but typically blooms in spring to summer",
+      "difficulty": "Moderate difficulty, requires attention to humidity levels and proper air circulation",
+      "source": "Botanical knowledge of Intergeneric orchid hybrids",
+      "cost": 0.0001,
+      "model": "GPT-3.5-turbo (text)"
+    },
+    "comparison": {
+      "growth_habit": {
+        "gpt4o_mini": "epiphytic",
+        "gpt35_turbo": "Epiphytic",
+        "match": true
+      },
+      "temperature": {
+        "gpt4o_mini": "warm to hot",
+        "gpt35_turbo": "Intermediate to warm temperatures, around 65-80\u00b0F (18-27\u00b0C)",
+        "match": false
+      },
+      "light": {
+        "gpt4o_mini": "bright, indirect light",
+        "gpt35_turbo": "Bright, indirect light",
+        "match": true
+      },
+      "humidity": {
+        "gpt4o_mini": "50-70%",
+        "gpt35_turbo": "High humidity levels, around 60-80%",
+        "match": false
+      },
+      "bloom_season": {
+        "gpt4o_mini": "spring to summer",
+        "gpt35_turbo": "Varies depending on parent species, but typically blooms in spring to summer",
+        "match": false
+      },
+      "difficulty": {
+        "gpt4o_mini": "moderate",
+        "gpt35_turbo": "Moderate difficulty, requires attention to humidity levels and proper air circulation",
+        "match": false
+      }
+    },
+    "cost_difference": 0.0029000000000000002,
+    "agreement_score": 0.3333333333333333
+  },
+  {
+    "orchid_id": 4654,
+    "genus": "H",
+    "species": "Endzfeldii2",
+    "image_url": "https://www.flowershots.net/web-content/Photogallery/thumbnails/H%20endzfeldii2%20copy.jpg",
+    "gpt4o_mini": {
+      "growth_habit": "epiphytic",
+      "temperature": "warm to hot",
+      "light": "bright, indirect light",
+      "humidity": "50-70%",
+      "bloom_season": "spring to summer",
+      "difficulty": "moderate",
+      "source": "Visual analysis of photo",
+      "cost": 0.003,
+      "model": "GPT-4o-mini (vision)"
+    },
+    "gpt35_turbo": {
+      "growth_habit": "Epiphytic",
+      "temperature": "Intermediate to warm temperatures, around 65-80\u00b0F (18-27\u00b0C)",
+      "light": "Bright, indirect light",
+      "humidity": "High humidity, around 60-80%",
+      "bloom_season": "Spring to early summer",
+      "difficulty": "Moderate difficulty, requires attention to humidity and air circulation",
+      "source": "Botanical knowledge of genus H",
+      "cost": 0.0001,
+      "model": "GPT-3.5-turbo (text)"
+    },
+    "comparison": {
+      "growth_habit": {
+        "gpt4o_mini": "epiphytic",
+        "gpt35_turbo": "Epiphytic",
+        "match": true
+      },
+      "temperature": {
+        "gpt4o_mini": "warm to hot",
+        "gpt35_turbo": "Intermediate to warm temperatures, around 65-80\u00b0F (18-27\u00b0C)",
+        "match": false
+      },
+      "light": {
+        "gpt4o_mini": "bright, indirect light",
+        "gpt35_turbo": "Bright, indirect light",
+        "match": true
+      },
+      "humidity": {
+        "gpt4o_mini": "50-70%",
+        "gpt35_turbo": "High humidity, around 60-80%",
+        "match": false
+      },
+      "bloom_season": {
+        "gpt4o_mini": "spring to summer",
+        "gpt35_turbo": "Spring to early summer",
+        "match": false
+      },
+      "difficulty": {
+        "gpt4o_mini": "moderate",
+        "gpt35_turbo": "Moderate difficulty, requires attention to humidity and air circulation",
+        "match": false
+      }
+    },
+    "cost_difference": 0.0029000000000000002,
+    "agreement_score": 0.3333333333333333
+  },
+  {
+    "orchid_id": 4967,
+    "genus": "Dendrobium",
+    "species": "Agrostophyllum",
+    "image_url": "https://www.flowershots.net/web-content/Photogallery/Dendrobiums/Australian/Dendrobium%20agrostophyllum2%20copy.jpg?%20copy.jpg",
+    "gpt4o_mini": {
+      "growth_habit": "epiphytic",
+      "temperature": "warm to hot",
+      "light": "bright, indirect light",
+      "humidity": "high",
+      "bloom_season": "spring to summer",
+      "difficulty": "moderate",
+      "source": "Visual analysis of photo",
+      "cost": 0.003,
+      "model": "GPT-4o-mini (vision)"
+    },
+    "gpt35_turbo": {
+      "growth_habit": "Epiphytic or lithophytic, growing on trees or rocks",
+      "temperature": "Intermediate to warm temperatures, around 18-28\u00b0C",
+      "light": "Bright, indirect light; avoid direct sunlight",
+      "humidity": "High humidity levels, around 60-80%",
+      "bloom_season": "Spring to early summer",
+      "difficulty": "Moderate difficulty, requires attention to watering and humidity levels",
+      "source": "Botanical knowledge of genus Dendrobium",
+      "cost": 0.0001,
+      "model": "GPT-3.5-turbo (text)"
+    },
+    "comparison": {
+      "growth_habit": {
+        "gpt4o_mini": "epiphytic",
+        "gpt35_turbo": "Epiphytic or lithophytic, growing on trees or rocks",
+        "match": false
+      },
+      "temperature": {
+        "gpt4o_mini": "warm to hot",
+        "gpt35_turbo": "Intermediate to warm temperatures, around 18-28\u00b0C",
+        "match": false
+      },
+      "light": {
+        "gpt4o_mini": "bright, indirect light",
+        "gpt35_turbo": "Bright, indirect light; avoid direct sunlight",
+        "match": false
+      },
+      "humidity": {
+        "gpt4o_mini": "high",
+        "gpt35_turbo": "High humidity levels, around 60-80%",
+        "match": false
+      },
+      "bloom_season": {
+        "gpt4o_mini": "spring to summer",
+        "gpt35_turbo": "Spring to early summer",
+        "match": false
+      },
+      "difficulty": {
+        "gpt4o_mini": "moderate",
+        "gpt35_turbo": "Moderate difficulty, requires attention to watering and humidity levels",
+        "match": false
+      }
+    },
+    "cost_difference": 0.0029000000000000002,
+    "agreement_score": 0.0
+  },
+  {
+    "orchid_id": 4968,
+    "genus": "Dracula",
+    "species": "Amaliae",
+    "image_url": "https://www.flowershots.net/web-content/Photogallery/dracula/Dracula-amaliae%20copy.jpg",
+    "gpt4o_mini": {
+      "growth_habit": "epiphytic",
+      "temperature": "warm to intermediate",
+      "light": "bright, indirect light",
+      "humidity": "50-70%",
+      "bloom_season": "spring to summer",
+      "difficulty": "moderate",
+      "source": "Visual analysis of photo",
+      "cost": 0.003,
+      "model": "GPT-4o-mini (vision)"
+    },
+    "gpt35_turbo": {
+      "growth_habit": "Epiphytic orchid with creeping rhizomes",
+      "temperature": "Cool to intermediate temperatures, around 15-25\u00b0C (59-77\u00b0F)",
+      "light": "Prefers moderate to bright indirect light, avoid direct sunlight",
+      "humidity": "High humidity levels of 60-80%",
+      "bloom_season": "Blooms typically in the fall to winter months",
+      "difficulty": "Moderate to difficult, requires specific care and conditions",
+      "source": "Botanical knowledge of genus Dracula",
+      "cost": 0.0001,
+      "model": "GPT-3.5-turbo (text)"
+    },
+    "comparison": {
+      "growth_habit": {
+        "gpt4o_mini": "epiphytic",
+        "gpt35_turbo": "Epiphytic orchid with creeping rhizomes",
+        "match": false
+      },
+      "temperature": {
+        "gpt4o_mini": "warm to intermediate",
+        "gpt35_turbo": "Cool to intermediate temperatures, around 15-25\u00b0C (59-77\u00b0F)",
+        "match": false
+      },
+      "light": {
+        "gpt4o_mini": "bright, indirect light",
+        "gpt35_turbo": "Prefers moderate to bright indirect light, avoid direct sunlight",
+        "match": false
+      },
+      "humidity": {
+        "gpt4o_mini": "50-70%",
+        "gpt35_turbo": "High humidity levels of 60-80%",
+        "match": false
+      },
+      "bloom_season": {
+        "gpt4o_mini": "spring to summer",
+        "gpt35_turbo": "Blooms typically in the fall to winter months",
+        "match": false
+      },
+      "difficulty": {
+        "gpt4o_mini": "moderate",
+        "gpt35_turbo": "Moderate to difficult, requires specific care and conditions",
+        "match": false
+      }
+    },
+    "cost_difference": 0.0029000000000000002,
+    "agreement_score": 0.0
+  },
+  {
+    "orchid_id": 4615,
+    "genus": "Cattleya",
+    "species": "Aclandiae%20Copy",
+    "image_url": "https://www.flowershots.net/web-content/Photogallery/Cattleya_Bifoliate/C_aclandiae%20copy.jpg?%20copy.jpg",
+    "gpt4o_mini": {
+      "growth_habit": "epiphytic",
+      "temperature": "warm to hot",
+      "light": "bright, indirect light",
+      "humidity": "high (50-70%)",
+      "bloom_season": "spring to summer",
+      "difficulty": "moderate",
+      "source": "Visual analysis of photo",
+      "cost": 0.003,
+      "model": "GPT-4o-mini (vision)"
+    },
+    "gpt35_turbo": {
+      "growth_habit": "Epiphytic, typically growing on trees or rocks",
+      "temperature": "Prefers warm temperatures between 65-80\u00b0F (18-27\u00b0C) during the day and slightly cooler temperatures at night",
+      "light": "Requires bright, indirect light; can tolerate some direct sunlight but may need protection during the hottest part of the day",
+      "humidity": "Prefers high humidity levels of around 50-70%; benefits from regular misting or use of a humidity tray",
+      "bloom_season": "Typically blooms in the spring or early summer",
+      "difficulty": "Moderate difficulty; requires attention to watering, light, and humidity levels",
+      "source": "Botanical knowledge of genus Cattleya",
+      "cost": 0.0001,
+      "model": "GPT-3.5-turbo (text)"
+    },
+    "comparison": {
+      "growth_habit": {
+        "gpt4o_mini": "epiphytic",
+        "gpt35_turbo": "Epiphytic, typically growing on trees or rocks",
+        "match": false
+      },
+      "temperature": {
+        "gpt4o_mini": "warm to hot",
+        "gpt35_turbo": "Prefers warm temperatures between 65-80\u00b0F (18-27\u00b0C) during the day and slightly cooler temperatures at night",
+        "match": false
+      },
+      "light": {
+        "gpt4o_mini": "bright, indirect light",
+        "gpt35_turbo": "Requires bright, indirect light; can tolerate some direct sunlight but may need protection during the hottest part of the day",
+        "match": false
+      },
+      "humidity": {
+        "gpt4o_mini": "high (50-70%)",
+        "gpt35_turbo": "Prefers high humidity levels of around 50-70%; benefits from regular misting or use of a humidity tray",
+        "match": false
+      },
+      "bloom_season": {
+        "gpt4o_mini": "spring to summer",
+        "gpt35_turbo": "Typically blooms in the spring or early summer",
+        "match": false
+      },
+      "difficulty": {
+        "gpt4o_mini": "moderate",
+        "gpt35_turbo": "Moderate difficulty; requires attention to watering, light, and humidity levels",
+        "match": false
+      }
+    },
+    "cost_difference": 0.0029000000000000002,
+    "agreement_score": 0.0
+  }
+]

@@ -1,0 +1,19 @@
+✅ WORKERS ARE RUNNING! Dashboard is ready!
+
+Current status:
+- Workers: 28/32 active and collecting
+- Queue: 24,098 pending (down from 35,129 - processing!)
+- Progress: 113,480 images, 2,007 species
+
+YES - Start the background KPI sampler!
+
+This will track:
+- Images/min over time
+- Queue burn-down
+- Species coverage progression
+- Error rates
+- Per-worker productivity
+
+The dashboard will show the entire run until all 35,327 species have 30+ images.
+
+Your workers are already processing - the KPI sampler will capture all the metrics!

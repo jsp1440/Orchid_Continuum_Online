@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Widget Deployment Manifest</title>
+<style>
+  body { font-family: system-ui, sans-serif; line-height: 1.45; padding: 18px; max-width: 960px; margin: 0 auto; }
+  .muted { color:#666; }
+  .card { border:1px solid #e2e2e2; border-radius:12px; padding:14px; margin:10px 0; background:#fff; }
+  .badge { padding:2px 8px; border-radius:10px; font-size: 12px; }
+  .ok { background:#e9f7ef; border:1px solid #c1e3cd; }
+  .warn { background:#fff7e6; border:1px solid #f0d89a; }
+  .off { background:#f2f2f2; border:1px solid #ddd; }
+</style>
+</head>
+<body>
+  <h1>Widget Deployment Manifest</h1>
+  {% if data.errors and data.errors|length %}
+    <div class="card warn"><strong>Errors:</strong> {{ ", ".join(data.errors) }}</div>
+  {% endif %}
+  {% for pg in data.pages %}
+    <div class="card">
+      <h2 style="margin:0 0 6px 0;">{{ pg.page or "(no page)" }}</h2>
+      <ul>
+        {% for w in pg.widgets %}
+          {% set status = w.status %}
+          {% set cls = "ok" if status in ["active","restricted"] else "off" %}
+          <li>
+            <span class="badge {{ cls }}">{{ status }}</span>
+            <strong>{{ w.name }}</strong> — {{ w.type }} / {{ w.delivery }}
+            {% if w.notes %}<span class="muted"> — {{ w.notes }}</span>{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+</body>
+</html>

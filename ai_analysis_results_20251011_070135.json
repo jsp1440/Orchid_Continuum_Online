@@ -1,0 +1,84 @@
+[
+  {
+    "orchid_id": 4912,
+    "current_name": "Angraecum Viguieri",
+    "image_url": "https://www.flowershots.net/web-content/Photogallery/Angraecum/Angraecum-viguieri.jpg",
+    "ai_analysis": {
+      "identified_as": "Brassavola nodosa",
+      "confidence": 90,
+      "genus": "Brassavola",
+      "species": "nodosa",
+      "growth_habit": "Epiphytic",
+      "temperature": "Warm",
+      "light": "Bright, indirect light",
+      "humidity": "Moderate to high",
+      "bloom_season": "Year-round, with peaks in summer",
+      "difficulty": "Moderate",
+      "native_habitat": "Central America, northern South America",
+      "key_characteristics": [
+        "Fragrant flowers",
+        "Long, narrow sepals",
+        "White lip"
+      ]
+    },
+    "metadata_extracted": {
+      "cultural_info": "Bark or mounted on cork",
+      "watering": "Allow to dry slightly between waterings",
+      "fertilizer": "Balanced fertilizer, diluted, during growth",
+      "special_notes": "Ensure good air circulation"
+    },
+    "confidence_factors": "Distinctive flower shape and fragrance",
+    "database_matches": [
+      {
+        "id": 6267,
+        "scientific_name": null,
+        "genus": "Brassavola",
+        "species": "\"Little Stars\"",
+        "region": null,
+        "native_habitat": null,
+        "match_type": "genus_match",
+        "ingestion_source": "Five Cities Orchid Society Member Portal"
+      },
+      {
+        "id": 5202,
+        "scientific_name": "Brassavola odorata",
+        "genus": "Brassavola",
+        "species": "odorata",
+        "region": null,
+        "native_habitat": null,
+        "match_type": "genus_match",
+        "ingestion_source": "aggressive_collection_1756084766"
+      },
+      {
+        "id": 5204,
+        "scientific_name": "Brassavola suaveolens",
+        "genus": "Brassavola",
+        "species": "suaveolens",
+        "region": null,
+        "native_habitat": null,
+        "match_type": "genus_match",
+        "ingestion_source": "aggressive_collection_1756084766"
+      },
+      {
+        "id": 275,
+        "scientific_name": "Brassavola cucullata",
+        "genus": "Brassavola",
+        "species": "cucullata",
+        "region": null,
+        "native_habitat": null,
+        "match_type": "genus_match",
+        "ingestion_source": "chris_howard_google_drive"
+      },
+      {
+        "id": 231,
+        "scientific_name": "B nodosa",
+        "genus": "Brassavola",
+        "species": "nodosa",
+        "region": null,
+        "native_habitat": null,
+        "match_type": "genus_match",
+        "ingestion_source": "folder_import"
+      }
+    ]
+  }
+]

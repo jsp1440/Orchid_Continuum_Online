@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}Live Orchid Scraper{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1 class="text-success">
+                <i data-feather="download" class="me-2"></i>
+                LIVE ORCHID SCRAPER - Watch Images Download
+            </h1>
+            <p class="lead">Real-time feed showing genus, species, and images as they come in</p>
+        </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="row mb-3">
+        <div class="col-md-3">
+            <div class="card bg-dark border-success">
+                <div class="card-body text-center p-2">
+                    <h3 id="total-count" class="text-success mb-0">{{ total_orchids }}</h3>
+                    <small class="text-muted">Total Orchids</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-dark border-info">
+                <div class="card-body text-center p-2">
+                    <h3 id="new-count" class="text-info mb-0">0</h3>
+                    <small class="text-muted">New This Session</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-dark border-warning">
+                <div class="card-body text-center p-2">
+                    <h3 id="speed" class="text-warning mb-0">0/min</h3>
+                    <small class="text-muted">Download Speed</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-dark border-danger">
+                <div class="card-body text-center p-2">
+                    <button id="start-btn" onclick="startScraping()" class="btn btn-success btn-sm w-100">
+                        <i data-feather="play" class="me-1"></i> START
+                    </button>
+                    <button id="stop-btn" onclick="stopScraping()" class="btn btn-danger btn-sm w-100" style="display:none;">
+                        <i data-feather="square" class="me-1"></i> STOP
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Feed -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">
+                        <i data-feather="activity" class="me-2"></i>
+                        LIVE FEED - Orchids Coming Through
+                    </h5>
+                </div>
+                <div class="card-body" style="max-height: 600px; overflow-y: auto;" id="live-feed">
+                    <p class="text-muted text-center">Click START to begin downloading...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.orchid-item {
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #1a1a1a;
+    display: flex;
+    gap: 15px;
+    animation: slideIn 0.3s ease-out;
+}
+
+.orchid-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 2px solid #28a745;
+}
+
+.orchid-item-info {
+    flex: 1;
+}
+
+.orchid-item-info h6 {
+    color: #28a745;
+    margin: 0;
+    font-weight: bold;
+}
+
+.orchid-item-info .genus {
+    color: #17a2b8;
+    font-style: italic;
+}
+
+.orchid-item-info .meta {
+    color: #6c757d;
+    font-size: 0.85em;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#live-feed::-webkit-scrollbar {
+    width: 8px;
+}
+
+#live-feed::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+#live-feed::-webkit-scrollbar-thumb {
+    background: #28a745;
+    border-radius: 4px;
+}
+</style>
+
+<script>
+let eventSource = null;
+let newCount = 0;
+let startTime = null;
+
+function startScraping() {
+    // Clear feed
+    document.getElementById('live-feed').innerHTML = '<p class="text-info text-center">🚀 Connecting to GBIF...</p>';
+    
+    // Update buttons
+    document.getElementById('start-btn').style.display = 'none';
+    document.getElementById('stop-btn').style.display = 'block';
+    
+    // Reset counters
+    newCount = 0;
+    startTime = Date.now();
+    
+    // Start SSE stream
+    eventSource = new EventSource('/admin/stream-orchids');
+    
+    eventSource.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        
+        if (data.error) {
+            console.error('Error:', data.error);
+            return;
+        }
+        
+        if (data.complete) {
+            document.getElementById('live-feed').insertAdjacentHTML('afterbegin', 
+                `<div class="alert alert-success">
+                    ✅ COMPLETE! Downloaded ${data.total} orchids total.
+                </div>`
+            );
+            stopScraping();
+            return;
+        }
+        
+        // Add to feed with image
+        const orchidHtml = `
+            <div class="orchid-item">
+                <img src="${data.image_url || '/static/images/orchid_placeholder.png'}" 
+                     onerror="this.src='/static/images/orchid_placeholder.png'"
+                     alt="${data.scientific_name}">
+                <div class="orchid-item-info">
+                    <h6>${data.scientific_name}</h6>
+                    <div class="genus">
+                        Genus: <strong>${data.genus}</strong> | 
+                        Species: <strong>${data.species || 'sp.'}</strong>
+                    </div>
+                    <div class="meta mt-1">
+                        📍 ${data.country || 'Unknown'} ${data.lat && data.lon ? `(${data.lat.toFixed(2)}, ${data.lon.toFixed(2)})` : ''}
+                    </div>
+                    <div class="meta">
+                        ⏰ ${new Date(data.timestamp).toLocaleTimeString()}
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('live-feed').insertAdjacentHTML('afterbegin', orchidHtml);
+        
+        // Update counters
+        newCount++;
+        document.getElementById('new-count').textContent = newCount;
+        document.getElementById('total-count').textContent = data.total_processed || newCount;
+        
+        // Calculate speed
+        const elapsed = (Date.now() - startTime) / 1000 / 60; // minutes
+        const speed = Math.round(newCount / elapsed);
+        document.getElementById('speed').textContent = speed + '/min';
+        
+        // Auto-scroll to top
+        document.getElementById('live-feed').scrollTop = 0;
+        
+        // Limit to 50 items in feed
+        const items = document.querySelectorAll('.orchid-item');
+        if (items.length > 50) {
+            items[items.length - 1].remove();
+        }
+    };
+    
+    eventSource.onerror = function(err) {
+        console.error('EventSource error:', err);
+        stopScraping();
+    };
+}
+
+function stopScraping() {
+    if (eventSource) {
+        eventSource.close();
+        eventSource = null;
+    }
+    
+    document.getElementById('start-btn').style.display = 'block';
+    document.getElementById('stop-btn').style.display = 'none';
+}
+
+// Initialize Feather icons
+feather.replace();
+</script>
+{% endblock %}

@@ -1,0 +1,6955 @@
+[
+  {
+    "path": "DOWNLOAD_THIS_DATABASE.db",
+    "size_mb": 0.012,
+    "modified": "2025-08-27T05:51:55.178227",
+    "sha256": "c65e5ba9907bb23f82fb419d6ac2949a2803e7c248106c7b2cb49c6f6adbe77a",
+    "tables": [
+      {
+        "name": "orchid_record",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "scientific_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "genus",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "species",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "display_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "common_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "google_drive_id",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "image_url",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "validation_status",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_featured",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "photographer",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_description",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 4,
+        "sample_rows": [
+          {
+            "id": "4",
+            "scientific_name": "Vanda coerulea",
+            "genus": "Vanda",
+            "species": "coerulea",
+            "display_name": "Vanda coerulea",
+            "common_name": "Blue Vanda",
+            "google_drive_id": "1DYa0J0p1tS5lB0SgJ0P1tS5lB0SgJ0P1",
+            "image_url": null,
+            "validation_status": "approved",
+            "is_featured": "0",
+            "photographer": "FCOS Collection",
+            "ai_description": "Stunning blue vanda orchid",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          },
+          {
+            "id": "3",
+            "scientific_name": "Dendrobium nobile",
+            "genus": "Dendrobium",
+            "species": "nobile",
+            "display_name": "Dendrobium nobile",
+            "common_name": "Noble Dendrobium",
+            "google_drive_id": "1CXz9I9o0sR4kA9RfI9O0sR4kA9RfI9O0",
+            "image_url": null,
+            "validation_status": "approved",
+            "is_featured": "0",
+            "photographer": "FCOS Collection",
+            "ai_description": "Classic dendrobium with purple flowers",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          },
+          {
+            "id": "2",
+            "scientific_name": "Phalaenopsis amabilis",
+            "genus": "Phalaenopsis",
+            "species": "amabilis",
+            "display_name": "Phalaenopsis amabilis",
+            "common_name": "Moon Orchid",
+            "google_drive_id": "1BKz8H8n9pQ3jZ8QeH8N9pQ3jZ8QeH8N9",
+            "image_url": null,
+            "validation_status": "approved",
+            "is_featured": "1",
+            "photographer": "FCOS Collection",
+            "ai_description": "Elegant white moon orchid",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          },
+          {
+            "id": "1",
+            "scientific_name": "Cattleya trianae",
+            "genus": "Cattleya",
+            "species": "trianae",
+            "display_name": "Cattleya trianae",
+            "common_name": "Christmas Orchid",
+            "google_drive_id": "185MlwyxBU8Dy6bqGdwXXPeBXTlhg5M0I",
+            "image_url": null,
+            "validation_status": "approved",
+            "is_featured": "1",
+            "photographer": "FCOS Collection",
+            "ai_description": "Beautiful Christmas orchid in full bloom",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          }
+        ]
+      },
+      {
+        "name": "sqlite_sequence",
+        "columns": [
+          {
+            "name": "name",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "seq",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 1,
+        "sample_rows": [
+          {
+            "name": "orchid_record",
+            "seq": "4"
+          }
+        ]
+      }
+    ],
+    "total_rows": 5,
+    "error": null
+  },
+  {
+    "path": "ai_widget_manager.db",
+    "size_mb": 1.148,
+    "modified": "2025-10-14T23:57:20.524817",
+    "sha256": "90eae060cf721fe1f62ba360e9bf324e2c03c902c05b047eaf5f30e5f659f7e2",
+    "tables": [
+      {
+        "name": "daily_reports",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "report_date",
+            "type": "DATE",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "report_data",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 3,
+        "sample_rows": [
+          {
+            "id": "3",
+            "report_date": "2025-10-14",
+            "report_data": "{\"report_date\": \"2025-10-14\", \"generated_at\": \"2025-10-14T06:00:18.894113\", \"sys...",
+            "created_at": "2025-10-14 06:00:18"
+          },
+          {
+            "id": "2",
+            "report_date": "2025-10-12",
+            "report_data": "{\"report_date\": \"2025-10-12\", \"generated_at\": \"2025-10-12T06:00:23.156519\", \"sys...",
+            "created_at": "2025-10-12 06:00:23"
+          },
+          {
+            "id": "1",
+            "report_date": "2025-10-03",
+            "report_data": "{\"report_date\": \"2025-10-03\", \"generated_at\": \"2025-10-03T06:00:44.494791\", \"sys...",
+            "created_at": "2025-10-03 06:00:44"
+          }
+        ]
+      },
+      {
+        "name": "sqlite_sequence",
+        "columns": [
+          {
+            "name": "name",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "seq",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 2,
+        "sample_rows": [
+          {
+            "name": "daily_reports",
+            "seq": "3"
+          },
+          {
+            "name": "widget_metrics",
+            "seq": "5409"
+          }
+        ]
+      },
+      {
+        "name": "system_improvements",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "improvement_id",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "widget_id",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "title",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "description",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "priority",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "estimated_impact",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "implementation_complexity",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_confidence",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "suggested_code_changes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "user_feedback",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "feedback_id",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "widget_id",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "user_id",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "feedback_type",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "content",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "sentiment",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "priority",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "timestamp",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "processed",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_analysis",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "suggested_actions",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "widget_metrics",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "widget_id",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "timestamp",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "uptime_percentage",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "avg_response_time",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "error_rate",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "user_satisfaction",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "usage_count",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "health_score",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "issues",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "recommendations",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 5409,
+        "sample_rows": [
+          {
+            "id": "5409",
+            "widget_id": "eol_orchid_explorer",
+            "timestamp": "2025-10-14 23:57:20",
+            "status": "excellent",
+            "uptime_percentage": "95.0",
+            "avg_response_time": "0.1263890266418457",
+            "error_rate": "0.0",
+            "user_satisfaction": "3.5",
+            "usage_count": "42",
+            "health_score": "94.0",
+            "issues": "[]",
+            "recommendations": "[]"
+          },
+          {
+            "id": "5408",
+            "widget_id": "master_grower_dashboard",
+            "timestamp": "2025-10-14 23:57:18",
+            "status": "excellent",
+            "uptime_percentage": "95.0",
+            "avg_response_time": "0.004159450531005859",
+            "error_rate": "0.0",
+            "user_satisfaction": "3.5",
+            "usage_count": "42",
+            "health_score": "94.0",
+            "issues": "[]",
+            "recommendations": "[]"
+          },
+          {
+            "id": "5407",
+            "widget_id": "orchid_authentication",
+            "timestamp": "2025-10-14 23:57:15",
+            "status": "offline",
+            "uptime_percentage": "0.0",
+            "avg_response_time": "0.006057024002075195",
+            "error_rate": "100.0",
+            "user_satisfaction": "3.5",
+            "usage_count": "42",
+            "health_score": "0.0",
+            "issues": "[\"Widget is not responding to requests\", \"Overall health score is poor\"]",
+            "recommendations": "[\"Investigate and fix critical performance issues\", \"Check service availability ..."
+          },
+          {
+            "id": "5406",
+            "widget_id": "adaptive_care_calendar",
+            "timestamp": "2025-10-14 23:57:13",
+            "status": "offline",
+            "uptime_percentage": "0.0",
+            "avg_response_time": "0.010147571563720703",
+            "error_rate": "100.0",
+            "user_satisfaction": "3.5",
+            "usage_count": "42",
+            "health_score": "0.0",
+            "issues": "[\"Widget is not responding to requests\", \"Overall health score is poor\"]",
+            "recommendations": "[\"Investigate and fix critical performance issues\", \"Check service availability ..."
+          },
+          {
+            "id": "5405",
+            "widget_id": "ai_breeder_pro",
+            "timestamp": "2025-10-14 23:57:11",
+            "status": "excellent",
+            "uptime_percentage": "95.0",
+            "avg_response_time": "0.07571816444396973",
+            "error_rate": "0.0",
+            "user_satisfaction": "3.5",
+            "usage_count": "42",
+            "health_score": "94.0",
+            "issues": "[]",
+            "recommendations": "[]"
+          }
+        ]
+      }
+    ],
+    "total_rows": 5414,
+    "error": null
+  },
+  {
+    "path": "attached_assets/DOWNLOAD_THIS_DATABASE_1758603539993.db",
+    "size_mb": 0.012,
+    "modified": "2025-09-23T04:59:00.111510",
+    "sha256": "c65e5ba9907bb23f82fb419d6ac2949a2803e7c248106c7b2cb49c6f6adbe77a",
+    "tables": [
+      {
+        "name": "orchid_record",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "scientific_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "genus",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "species",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "display_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "common_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "google_drive_id",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "image_url",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "validation_status",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_featured",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "photographer",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_description",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 4,
+        "sample_rows": [
+          {
+            "id": "4",
+            "scientific_name": "Vanda coerulea",
+            "genus": "Vanda",
+            "species": "coerulea",
+            "display_name": "Vanda coerulea",
+            "common_name": "Blue Vanda",
+            "google_drive_id": "1DYa0J0p1tS5lB0SgJ0P1tS5lB0SgJ0P1",
+            "image_url": null,
+            "validation_status": "approved",
+            "is_featured": "0",
+            "photographer": "FCOS Collection",
+            "ai_description": "Stunning blue vanda orchid",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          },
+          {
+            "id": "3",
+            "scientific_name": "Dendrobium nobile",
+            "genus": "Dendrobium",
+            "species": "nobile",
+            "display_name": "Dendrobium nobile",
+            "common_name": "Noble Dendrobium",
+            "google_drive_id": "1CXz9I9o0sR4kA9RfI9O0sR4kA9RfI9O0",
+            "image_url": null,
+            "validation_status": "approved",
+            "is_featured": "0",
+            "photographer": "FCOS Collection",
+            "ai_description": "Classic dendrobium with purple flowers",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          },
+          {
+            "id": "2",
+            "scientific_name": "Phalaenopsis amabilis",
+            "genus": "Phalaenopsis",
+            "species": "amabilis",
+            "display_name": "Phalaenopsis amabilis",
+            "common_name": "Moon Orchid",
+            "google_drive_id": "1BKz8H8n9pQ3jZ8QeH8N9pQ3jZ8QeH8N9",
+            "image_url": null,
+            "validation_status": "approved",
+            "is_featured": "1",
+            "photographer": "FCOS Collection",
+            "ai_description": "Elegant white moon orchid",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          },
+          {
+            "id": "1",
+            "scientific_name": "Cattleya trianae",
+            "genus": "Cattleya",
+            "species": "trianae",
+            "display_name": "Cattleya trianae",
+            "common_name": "Christmas Orchid",
+            "google_drive_id": "185MlwyxBU8Dy6bqGdwXXPeBXTlhg5M0I",
+            "image_url": null,
+            "validation_status": "approved",
+            "is_featured": "1",
+            "photographer": "FCOS Collection",
+            "ai_description": "Beautiful Christmas orchid in full bloom",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          }
+        ]
+      },
+      {
+        "name": "sqlite_sequence",
+        "columns": [
+          {
+            "name": "name",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "seq",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 1,
+        "sample_rows": [
+          {
+            "name": "orchid_record",
+            "seq": "4"
+          }
+        ]
+      }
+    ],
+    "total_rows": 5,
+    "error": null
+  },
+  {
+    "path": "instance/orchid_continuum.db",
+    "size_mb": 1.316,
+    "modified": "2025-09-06T01:07:19.715727",
+    "sha256": "0acfc3d3506445d823a50dc3ff1c77860d17155ace9dc1bab956cfca97c7a7e5",
+    "tables": [
+      {
+        "name": "badges",
+        "columns": [
+          {
+            "name": "id",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "name",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "description",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "icon",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "tier",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "points_required",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "category",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "rarity",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "batch_upload",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "batch_id",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "session_id",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "total_files",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "processed_files",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "successful_files",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "failed_files",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "status",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "processing_log",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "completed_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "breeding_prediction",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "parent1_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "parent2_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "prediction_date",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "cross_name",
+            "type": "VARCHAR(300)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "cross_type",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "compatibility_score",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "success_probability",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "predicted_traits",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "trait_variation_range",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "expected_vigor",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "fertility_expectation",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "breeding_value",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "breeding_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "recommended_applications",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "genetic_diversity_score",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "inbreeding_coefficient",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "heterosis_prediction",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "bug_reports",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "item_type",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "item_id",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "item_name",
+            "type": "VARCHAR(200)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "issue_type",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "description",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "user_email",
+            "type": "VARCHAR(120)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "status",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "fixed_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "certificate",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "certificate_number",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "judging_analysis_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "award_level",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "award_title",
+            "type": "VARCHAR(200)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "total_score",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "judging_organization",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "citation_text",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "technical_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "judge_comments",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "pdf_filename",
+            "type": "VARCHAR(300)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_generated",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "issued_date",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "discovery_alerts",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "alert_type",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "title",
+            "type": "VARCHAR(200)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "message",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "importance",
+            "type": "FLOAT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "action_url",
+            "type": "VARCHAR(500)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "action_text",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "icon",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "category",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_active",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_featured",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "dismissed_by_admin",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "discovery_data",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "expert_verifications",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "expert_user_id",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "verification_status",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "expertise_areas",
+            "type": "JSON",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "confidence_score",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "scientific_name_verified",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "common_name_verified",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "habitat_verified",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "geographic_range_verified",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "morphology_verified",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "expert_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "suggested_corrections",
+            "type": "JSON",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "references_cited",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "verified_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "gallery_configurations",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "gallery_name",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "gallery_type",
+            "type": "VARCHAR(17)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "display_title",
+            "type": "VARCHAR(200)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "description",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "max_items",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "auto_refresh_hours",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "show_metadata_fields",
+            "type": "JSON",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "require_admin_approval",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "require_taxonomy_verification",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "require_image_quality_check",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_active",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "game_chat_messages",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "game_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "message",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "message_type",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "timestamp",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "game_scores",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "game_type",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "difficulty",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "score",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "time_taken",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "moves_made",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "game_metadata",
+            "type": "JSON",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "genetic_analysis",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "analysis_type",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "analysis_date",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "confidence_score",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "genetic_composition",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "trait_analysis",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "phenotype_data",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "breeding_potential",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "rhs_verification",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "parentage_confirmed",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_analysis_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "expert_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "recommendations",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "analysis_status",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "genetic_trait",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "trait_category",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "trait_name",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "trait_value",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "measurement_unit",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "inheritance_type",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "penetrance",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "expressivity",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "genetic_analysis_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "measurement_confidence",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "measurement_method",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "breeding_significance",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "trait_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "measured_date",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_date",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "judging_analysis",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "judging_standard_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "score",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "percentage",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_comments",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "detailed_analysis",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_award_worthy",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "suggested_award_level",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "award_justification",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "analysis_date",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_model_used",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "confidence_level",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "judging_standard",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "organization",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "standard_name",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "category",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "criteria_name",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "description",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "max_points",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "weight_factor",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "scoring_guide",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "examples",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_active",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 60,
+        "sample_rows": [
+          {
+            "id": "60",
+            "organization": "TH",
+            "standard_name": "Orchid Society of Thailand",
+            "category": "plant",
+            "criteria_name": "Specimen Merit",
+            "description": "Overall specimen quality",
+            "max_points": "10",
+            "weight_factor": "1.0",
+            "scoring_guide": null,
+            "examples": null,
+            "is_active": "1",
+            "created_at": "2025-08-29 06:06:48.271783",
+            "updated_at": "2025-08-29 06:06:48.271785"
+          },
+          {
+            "id": "59",
+            "organization": "TH",
+            "standard_name": "Orchid Society of Thailand",
+            "category": "plant",
+            "criteria_name": "Natural Habit",
+            "description": "Natural growth form",
+            "max_points": "15",
+            "weight_factor": "1.0",
+            "scoring_guide": null,
+            "examples": null,
+            "is_active": "1",
+            "created_at": "2025-08-29 06:06:48.271110",
+            "updated_at": "2025-08-29 06:06:48.271111"
+          },
+          {
+            "id": "58",
+            "organization": "TH",
+            "standard_name": "Orchid Society of Thailand",
+            "category": "plant",
+            "criteria_name": "Cultural Success",
+            "description": "Growing achievement",
+            "max_points": "25",
+            "weight_factor": "1.0",
+            "scoring_guide": null,
+            "examples": null,
+            "is_active": "1",
+            "created_at": "2025-08-29 06:06:48.270285",
+            "updated_at": "2025-08-29 06:06:48.270286"
+          },
+          {
+            "id": "57",
+            "organization": "TH",
+            "standard_name": "Orchid Society of Thailand",
+            "category": "plant",
+            "criteria_name": "Plant Vigor",
+            "description": "Growth strength",
+            "max_points": "25",
+            "weight_factor": "1.0",
+            "scoring_guide": null,
+            "examples": null,
+            "is_active": "1",
+            "created_at": "2025-08-29 06:06:48.269391",
+            "updated_at": "2025-08-29 06:06:48.269392"
+          },
+          {
+            "id": "56",
+            "organization": "TH",
+            "standard_name": "Orchid Society of Thailand",
+            "category": "plant",
+            "criteria_name": "Tropical Adaptation",
+            "description": "Adaptation to climate",
+            "max_points": "25",
+            "weight_factor": "1.0",
+            "scoring_guide": null,
+            "examples": null,
+            "is_active": "1",
+            "created_at": "2025-08-29 06:06:48.268441",
+            "updated_at": "2025-08-29 06:06:48.268443"
+          }
+        ]
+      },
+      {
+        "name": "mahjong_games",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "room_code",
+            "type": "VARCHAR(6)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "host_user_id",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "max_players",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "current_players",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "game_state",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "winner_user_id",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "game_duration",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "finished_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "tile_set",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "mahjong_players",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "game_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "player_position",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "score",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "tiles_matched",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "joined_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_active",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "member_feedback",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "member_user_id",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "feedback_type",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "severity",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "description",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "suggested_correction",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "page_url",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "widget_type",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "browser_info",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "screenshot_url",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "status",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "assigned_to",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "resolution_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_attempted_fix",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_fix_details",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "resolved_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "movie_reviews",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "movie_key",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "reviewer_name",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "reviewer_email",
+            "type": "VARCHAR(255)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "rating",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "orchid_symbolism_rating",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "review_text",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "favorite_orchid_scene",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "would_recommend",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_approved",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "movie_votes",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "movie_key",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "phalaenopsis_rating",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "voter_ip",
+            "type": "VARCHAR(45)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "voted_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "o_auth",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "browser_session_key",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "provider",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "token",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "orchid_approvals",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "special_display_id",
+            "type": "VARCHAR(20)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "gallery_type",
+            "type": "VARCHAR(17)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "status",
+            "type": "VARCHAR(8)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "scheduled_date",
+            "type": "DATE",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "priority_order",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "approved_genus",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "approved_species",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "approved_common_name",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "approved_country",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "approved_description",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "taxonomy_verified",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "image_quality_approved",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "metadata_complete",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "approved_by",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "approved_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "rejection_reason",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "custom_title",
+            "type": "VARCHAR(300)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "custom_description",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "featured_highlights",
+            "type": "JSON",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "orchid_record",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "taxonomy_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "rhs_registration_id",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_hybrid",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_species",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "grex_name",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "clone_name",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "pod_parent",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "pollen_parent",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "parentage_formula",
+            "type": "VARCHAR(500)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "generation",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "registration_date",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "registrant",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "rhs_verification_status",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "display_name",
+            "type": "VARCHAR(200)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "scientific_name",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "genus",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "species",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "author",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "region",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "native_habitat",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "decimal_latitude",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "decimal_longitude",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "country",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "state_province",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "locality",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "collector",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "collection_number",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "event_date",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "data_source",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "bloom_time",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "growth_habit",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "climate_preference",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "leaf_form",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "pseudobulb_presence",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "light_requirements",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "temperature_range",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "water_requirements",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "fertilizer_needs",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "cultural_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "image_filename",
+            "type": "VARCHAR(300)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "image_url",
+            "type": "VARCHAR(500)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "google_drive_id",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "photographer",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "image_source",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ocr_text",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_description",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_confidence",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_extracted_metadata",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_flowering",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "flowering_stage",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "flower_count",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "inflorescence_count",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "flower_size_mm",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "flower_measurements",
+            "type": "JSON",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "bloom_season_indicator",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "flowering_photo_date",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "flowering_photo_datetime",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "photo_gps_coordinates",
+            "type": "JSON",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "camera_info",
+            "type": "JSON",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "exif_data",
+            "type": "JSON",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "growing_environment",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "substrate_type",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "mounting_evidence",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "natural_vs_cultivated",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "light_conditions",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "humidity_indicators",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "temperature_indicators",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "root_visibility",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "plant_maturity",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "setting_type",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "companion_plants",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "elevation_indicators",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "conservation_status_clues",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ingestion_source",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "validation_status",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_featured",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "view_count",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 1,
+        "sample_rows": [
+          {
+            "id": "1",
+            "user_id": null,
+            "taxonomy_id": null,
+            "rhs_registration_id": null,
+            "is_hybrid": "0",
+            "is_species": "0",
+            "grex_name": null,
+            "clone_name": null,
+            "pod_parent": null,
+            "pollen_parent": null,
+            "parentage_formula": null,
+            "generation": null,
+            "registration_date": null,
+            "registrant": null,
+            "rhs_verification_status": "pending",
+            "display_name": "Unknown Orchid",
+            "scientific_name": null,
+            "genus": null,
+            "species": null,
+            "author": null,
+            "region": null,
+            "native_habitat": null,
+            "decimal_latitude": null,
+            "decimal_longitude": null,
+            "country": null,
+            "state_province": null,
+            "locality": null,
+            "collector": null,
+            "collection_number": null,
+            "event_date": null,
+            "data_source": null,
+            "bloom_time": null,
+            "growth_habit": null,
+            "climate_preference": null,
+            "leaf_form": null,
+            "pseudobulb_presence": null,
+            "light_requirements": null,
+            "temperature_range": null,
+            "water_requirements": null,
+            "fertilizer_needs": null,
+            "cultural_notes": " Anguloa uniflora ",
+            "image_filename": "orchid_20250831_185927_1fa94740.jpeg",
+            "image_url": null,
+            "google_drive_id": null,
+            "photographer": null,
+            "image_source": null,
+            "ocr_text": null,
+            "ai_description": "Error during AI analysis: Error code: 401 - {'error': {'message': 'Incorrect API...",
+            "ai_confidence": "0.0",
+            "ai_extracted_metadata": "{}",
+            "is_flowering": "0",
+            "flowering_stage": null,
+            "flower_count": "0",
+            "inflorescence_count": "0",
+            "flower_size_mm": null,
+            "flower_measurements": null,
+            "bloom_season_indicator": null,
+            "flowering_photo_date": null,
+            "flowering_photo_datetime": null,
+            "photo_gps_coordinates": null,
+            "camera_info": null,
+            "exif_data": null,
+            "growing_environment": null,
+            "substrate_type": null,
+            "mounting_evidence": null,
+            "natural_vs_cultivated": null,
+            "light_conditions": null,
+            "humidity_indicators": null,
+            "temperature_indicators": null,
+            "root_visibility": null,
+            "plant_maturity": null,
+            "setting_type": null,
+            "companion_plants": null,
+            "elevation_indicators": null,
+            "conservation_status_clues": null,
+            "ingestion_source": "upload",
+            "validation_status": "pending",
+            "is_featured": "0",
+            "view_count": "2",
+            "created_at": "2025-08-31 18:59:28.741483",
+            "updated_at": "2025-09-05 22:41:50.173265"
+          }
+        ]
+      },
+      {
+        "name": "orchid_taxonomy",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "scientific_name",
+            "type": "VARCHAR(200)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "genus",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "species",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "author",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "synonyms",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "common_names",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "orchid_taxonomy_validation",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "genus",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "species",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "family",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "subfamily",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "tribe",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_accepted",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "authority",
+            "type": "VARCHAR(300)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "synonyms",
+            "type": "JSON",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "common_names",
+            "type": "JSON",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "native_regions",
+            "type": "JSON",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "cultivation_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "parentage_analysis",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "genetic_analysis_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "pod_parent_name",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "pollen_parent_name",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "pod_parent_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "pollen_parent_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "trait_inheritance",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "dominant_traits",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "recessive_traits",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "intermediate_traits",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "transgressive_traits",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "pod_parent_similarity",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "pollen_parent_similarity",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "genetic_distance",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "breeding_compatibility",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "fertility_prediction",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "hybrid_vigor",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "vigor_assessment",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "generation",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "cross_type",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "analysis_date",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "confidence_level",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "parentage_verification",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "claimed_pod_parent",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "claimed_pollen_parent",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "verification_status",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "verification_method",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "verification_date",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "rhs_confirmed",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "rhs_registration_found",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "rhs_parentage_matches",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "genetic_analysis_score",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "parentage_likelihood",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "expert_reviewer",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "expert_confidence",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "expert_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "suggested_pod_parent",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "suggested_pollen_parent",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "alternative_confidence",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "verification_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "discrepancy_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "password_reset_token",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "token",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "expires_at",
+            "type": "DATETIME",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "used",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "photo_flags",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "flagger_user_id",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "flag_reason",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "confidence_level",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "expert_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_reviewed",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_confidence",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_suggested_species",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_analysis_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "status",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "verified_by",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "verification_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "resolved_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "rhs_integration_log",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "query_type",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "orchid_name",
+            "type": "VARCHAR(200)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "query_date",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "search_status",
+            "type": "VARCHAR(20)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "results_found",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "rhs_data",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "error_message",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "retry_count",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "cached_result",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "cache_expiry",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "scraping_log",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "source",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "url",
+            "type": "VARCHAR(500)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "status",
+            "type": "VARCHAR(20)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "error_message",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "items_found",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "items_processed",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "user_activities",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "activity_type",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "points_earned",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "details",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "timestamp",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 4328,
+        "sample_rows": [
+          {
+            "id": "4328",
+            "user_id": null,
+            "activity_type": "widget_view",
+            "points_earned": "2",
+            "details": "{\"widget_name\": \"climate data\", \"action\": \"view\", \"timestamp\": \"2025-09-06T01:07...",
+            "timestamp": "2025-09-06 01:07:19.707490"
+          },
+          {
+            "id": "4327",
+            "user_id": null,
+            "activity_type": "widget_view",
+            "points_earned": "2",
+            "details": "{\"widget_name\": \"climate data\", \"action\": \"view\", \"timestamp\": \"2025-09-06T01:07...",
+            "timestamp": "2025-09-06 01:07:18.777169"
+          },
+          {
+            "id": "4326",
+            "user_id": null,
+            "activity_type": "widget_view",
+            "points_earned": "2",
+            "details": "{\"widget_name\": \"climate\", \"action\": \"view\", \"timestamp\": \"2025-09-06T01:07:18.6...",
+            "timestamp": "2025-09-06 01:07:18.678503"
+          },
+          {
+            "id": "4325",
+            "user_id": null,
+            "activity_type": "widget_view",
+            "points_earned": "2",
+            "details": "{\"widget_name\": \"orchid interaction.orchid explorer\", \"action\": \"view\", \"timesta...",
+            "timestamp": "2025-09-06 01:07:18.648027"
+          },
+          {
+            "id": "4324",
+            "user_id": null,
+            "activity_type": "widget_view",
+            "points_earned": "2",
+            "details": "{\"widget_name\": \"climate\", \"action\": \"view\", \"timestamp\": \"2025-09-06T01:07:18.6...",
+            "timestamp": "2025-09-06 01:07:18.606133"
+          }
+        ]
+      },
+      {
+        "name": "user_badges",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "badge_type",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "badge_key",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "badge_data",
+            "type": "JSON",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "earned_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "user_feedback",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "name",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "email",
+            "type": "VARCHAR(120)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "feedback_type",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "subject",
+            "type": "VARCHAR(200)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "message",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "page_url",
+            "type": "VARCHAR(500)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "browser_info",
+            "type": "VARCHAR(500)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "status",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "admin_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "user_locations",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "name",
+            "type": "VARCHAR(200)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "latitude",
+            "type": "FLOAT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "longitude",
+            "type": "FLOAT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "city",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "state_province",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "country",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "zip_code",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "timezone",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "growing_type",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "microclimate_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_primary",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "track_weather",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "alert_preferences",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "user_orchid_collections",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "collection_name",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "acquisition_date",
+            "type": "DATE",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "source",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_active",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_primary",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "flowering_history",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "show_in_widget",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "widget_priority",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "user_upload",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "plant_id",
+            "type": "VARCHAR(20)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "batch_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "original_filename",
+            "type": "VARCHAR(300)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "uploaded_filename",
+            "type": "VARCHAR(300)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "file_size",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "mime_type",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "parsed_genus",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "parsed_species",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "parsed_variety",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "filename_confidence",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "user_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "location",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "growing_conditions",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "processing_status",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "error_message",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "processed_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 1,
+        "sample_rows": [
+          {
+            "id": "1",
+            "plant_id": "PB25F0995",
+            "orchid_id": null,
+            "user_id": null,
+            "batch_id": null,
+            "original_filename": "IMG_0111.jpeg",
+            "uploaded_filename": "orchid_20250831_185927_1fa94740.jpeg",
+            "file_size": "3955221",
+            "mime_type": "image/jpeg",
+            "parsed_genus": null,
+            "parsed_species": null,
+            "parsed_variety": null,
+            "filename_confidence": "0.0",
+            "user_notes": " Anguloa uniflora ",
+            "location": null,
+            "growing_conditions": null,
+            "processing_status": "completed",
+            "error_message": null,
+            "created_at": "2025-08-31 18:59:27.108625",
+            "processed_at": null
+          }
+        ]
+      },
+      {
+        "name": "users",
+        "columns": [
+          {
+            "name": "id",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "email",
+            "type": "VARCHAR(120)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "password_hash",
+            "type": "VARCHAR(256)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_admin",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "first_name",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "last_name",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "profile_image_url",
+            "type": "VARCHAR(500)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "organization",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "country",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "orchid_interests",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "experience_level",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "bio",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "upload_count",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "last_login",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "account_active",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "email_verified",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "total_points",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "website_visits",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "last_visit",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "current_badge_tier",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "badges_earned",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "mahjong_games_played",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "mahjong_games_won",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "mahjong_best_time",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "mahjong_total_score",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "weather_alerts",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "user_id",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "location_id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "alert_type",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "severity",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "title",
+            "type": "VARCHAR(200)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "message",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "trigger_conditions",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "orchid_care_advice",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_active",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_acknowledged",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "acknowledged_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "triggered_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "expires_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "weather_data",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "location_name",
+            "type": "VARCHAR(200)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "latitude",
+            "type": "FLOAT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "longitude",
+            "type": "FLOAT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "temperature",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "temperature_min",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "temperature_max",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "humidity",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "precipitation",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "wind_speed",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "wind_direction",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "pressure",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "cloud_cover",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "uv_index",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "vpd",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "heat_index",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "growing_degree_days",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "weather_code",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "description",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "recorded_at",
+            "type": "DATETIME",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "data_source",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_forecast",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 63,
+        "sample_rows": [
+          {
+            "id": "63",
+            "location_name": null,
+            "latitude": "35.0",
+            "longitude": "-120.0",
+            "temperature": "23.1",
+            "temperature_min": "17.1",
+            "temperature_max": "27.0",
+            "humidity": "34.0",
+            "precipitation": "0.0",
+            "wind_speed": "9.2",
+            "wind_direction": "239.0",
+            "pressure": "1008.8",
+            "cloud_cover": "0.0",
+            "uv_index": "0.0",
+            "vpd": "1.8654717103529392",
+            "heat_index": null,
+            "growing_degree_days": null,
+            "weather_code": "0",
+            "description": "Clear sky",
+            "recorded_at": "2025-09-06 01:07:19.557762",
+            "data_source": "open-meteo",
+            "is_forecast": "0",
+            "created_at": "2025-09-06 01:07:19.558508"
+          },
+          {
+            "id": "62",
+            "location_name": null,
+            "latitude": "35.0",
+            "longitude": "-120.0",
+            "temperature": "23.1",
+            "temperature_min": "17.1",
+            "temperature_max": "27.0",
+            "humidity": "34.0",
+            "precipitation": "0.0",
+            "wind_speed": "9.2",
+            "wind_direction": "239.0",
+            "pressure": "1008.8",
+            "cloud_cover": "0.0",
+            "uv_index": "0.0",
+            "vpd": "1.8654717103529392",
+            "heat_index": null,
+            "growing_degree_days": null,
+            "weather_code": "0",
+            "description": "Clear sky",
+            "recorded_at": "2025-09-06 01:07:06.506799",
+            "data_source": "open-meteo",
+            "is_forecast": "0",
+            "created_at": "2025-09-06 01:07:06.509695"
+          },
+          {
+            "id": "61",
+            "location_name": null,
+            "latitude": "35.0",
+            "longitude": "-120.0",
+            "temperature": "23.1",
+            "temperature_min": "17.1",
+            "temperature_max": "27.0",
+            "humidity": "34.0",
+            "precipitation": "0.0",
+            "wind_speed": "9.2",
+            "wind_direction": "239.0",
+            "pressure": "1008.8",
+            "cloud_cover": "0.0",
+            "uv_index": "0.0",
+            "vpd": "1.8654717103529392",
+            "heat_index": null,
+            "growing_degree_days": null,
+            "weather_code": "0",
+            "description": "Clear sky",
+            "recorded_at": "2025-09-06 01:07:06.452268",
+            "data_source": "open-meteo",
+            "is_forecast": "0",
+            "created_at": "2025-09-06 01:07:06.455936"
+          },
+          {
+            "id": "60",
+            "location_name": null,
+            "latitude": "35.0",
+            "longitude": "-120.0",
+            "temperature": "23.1",
+            "temperature_min": "17.1",
+            "temperature_max": "27.0",
+            "humidity": "34.0",
+            "precipitation": "0.0",
+            "wind_speed": "9.2",
+            "wind_direction": "239.0",
+            "pressure": "1008.8",
+            "cloud_cover": "0.0",
+            "uv_index": "0.0",
+            "vpd": "1.8654717103529392",
+            "heat_index": null,
+            "growing_degree_days": null,
+            "weather_code": "0",
+            "description": "Clear sky",
+            "recorded_at": "2025-09-06 01:07:05.752956",
+            "data_source": "open-meteo",
+            "is_forecast": "0",
+            "created_at": "2025-09-06 01:07:05.756010"
+          },
+          {
+            "id": "59",
+            "location_name": null,
+            "latitude": "35.0",
+            "longitude": "-120.0",
+            "temperature": "23.1",
+            "temperature_min": "17.1",
+            "temperature_max": "27.0",
+            "humidity": "34.0",
+            "precipitation": "0.0",
+            "wind_speed": "9.2",
+            "wind_direction": "239.0",
+            "pressure": "1008.8",
+            "cloud_cover": "0.0",
+            "uv_index": "0.0",
+            "vpd": "1.8654717103529392",
+            "heat_index": null,
+            "growing_degree_days": null,
+            "weather_code": "0",
+            "description": "Clear sky",
+            "recorded_at": "2025-09-06 01:04:57.788254",
+            "data_source": "open-meteo",
+            "is_forecast": "0",
+            "created_at": "2025-09-06 01:04:57.790537"
+          }
+        ]
+      },
+      {
+        "name": "widget_config",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "widget_name",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "config_data",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_active",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "widget_status",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "widget_name",
+            "type": "VARCHAR",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "status",
+            "type": "VARCHAR",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "response_time_ms",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "success_rate",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "error_count",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "last_error",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "images_loaded",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "images_failed",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "data_freshness",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "server_load",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "memory_usage",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "last_checked",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "workshop_registrations",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": true,
+            "pk": true
+          },
+          {
+            "name": "first_name",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "last_name",
+            "type": "VARCHAR(100)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "email",
+            "type": "VARCHAR(255)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "phone",
+            "type": "VARCHAR(20)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "experience_level",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "member_status",
+            "type": "VARCHAR(50)",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "bringing_orchid",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "orchid_type",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "primary_interest",
+            "type": "VARCHAR(100)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "special_needs",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "workshop_date",
+            "type": "DATE",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "amount_paid",
+            "type": "FLOAT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "payment_status",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "payment_method",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "registration_status",
+            "type": "VARCHAR(50)",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      }
+    ],
+    "total_rows": 4453,
+    "error": null
+  },
+  {
+    "path": "monitoring_data.db",
+    "size_mb": 3.621,
+    "modified": "2025-10-11T23:16:21.807425",
+    "sha256": "bb04a069549f4eebd7b1e8147cb9044392983f68606ba52e99ff05137963d4d9",
+    "tables": [
+      {
+        "name": "component_status",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "component_name",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "component_type",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "response_time_ms",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "error_message",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "timestamp",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 57386,
+        "sample_rows": [
+          {
+            "id": "57386",
+            "component_name": "system_overall",
+            "component_type": "system",
+            "status": "healthy",
+            "response_time_ms": null,
+            "error_message": null,
+            "timestamp": "2025-10-11 23:16:21"
+          },
+          {
+            "id": "57385",
+            "component_name": "climate_comparator",
+            "component_type": "widget",
+            "status": "healthy",
+            "response_time_ms": "156",
+            "error_message": "",
+            "timestamp": "2025-10-11 23:16:21"
+          },
+          {
+            "id": "57384",
+            "component_name": "database_stats",
+            "component_type": "widget",
+            "status": "healthy",
+            "response_time_ms": "78",
+            "error_message": "",
+            "timestamp": "2025-10-11 23:16:21"
+          },
+          {
+            "id": "57383",
+            "component_name": "featured_gallery",
+            "component_type": "widget",
+            "status": "healthy",
+            "response_time_ms": "64",
+            "error_message": "",
+            "timestamp": "2025-10-11 23:16:21"
+          },
+          {
+            "id": "57382",
+            "component_name": "orchid_of_day",
+            "component_type": "widget",
+            "status": "healthy",
+            "response_time_ms": "96",
+            "error_message": "",
+            "timestamp": "2025-10-11 23:16:21"
+          }
+        ]
+      },
+      {
+        "name": "error_events",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "correlation_id",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "stage",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "error_type",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "message",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "stack",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "severity",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "suggestion",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "resolved",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "orchid_collection_log",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "source",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "records_collected",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "success_rate",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "timestamp",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "processing_events",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "orchid_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "correlation_id",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "stage",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "details",
+            "type": "JSON",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "latency_ms",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "processing_metrics_minute",
+        "columns": [
+          {
+            "name": "ts",
+            "type": "TIMESTAMP",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "processed",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "success",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "errors",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "avg_latency_ms",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "queue_depth",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "sqlite_sequence",
+        "columns": [
+          {
+            "name": "name",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "seq",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 1,
+        "sample_rows": [
+          {
+            "name": "component_status",
+            "seq": "57386"
+          }
+        ]
+      },
+      {
+        "name": "system_repairs",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "component_name",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "repair_action",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "success",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "timestamp",
+            "type": "DATETIME",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      }
+    ],
+    "total_rows": 57387,
+    "error": null
+  },
+  {
+    "path": "orchid-continuum-scaffold/partner-connect/services/api/partner_connect.db",
+    "size_mb": 0.0,
+    "modified": "2025-09-06T06:41:21.346879",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tables": [],
+    "total_rows": 0,
+    "error": "Empty file (0 bytes)"
+  },
+  {
+    "path": "orchid.db",
+    "size_mb": 0.047,
+    "modified": "2025-09-09T23:23:13.665196",
+    "sha256": "8c6a512639c902fbc59cb538710df3d0aa4ccfaec9a216a51a0506e07b08dd1e",
+    "tables": [
+      {
+        "name": "cam_cycles",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "species_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "titratable_acidity_day",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "titratable_acidity_night",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "delta_hplus",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "noct_temp_c",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "noct_rh",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "cam_phase_notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "provenance",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "license",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "uncertainty",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "last_updated",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "light_env_profiles",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "species_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "location",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ppfd_mean",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ppfd_max",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "spectrum",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "canopy_openness",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "photoperiod_hours",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "provenance",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "license",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "uncertainty",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "last_updated",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "media_ai_annotations",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "media_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "model_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "version",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "annotations",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "visibility",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "media_assets",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "species_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "storage_url",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "filename",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "exif",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "uploaded_at",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "mycorrhiza_links",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "species_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "fungus_taxon",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "substrate",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ph",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ec",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "success_probability",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "provenance",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "license",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "uncertainty",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "last_updated",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "physiology_measurements",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "species_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "method",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "date_range",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "fv_fm",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "phi_psii",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "etr_max",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "a_max",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "gs",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "sla",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "chlorophyll_a_b",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "stomatal_density",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "provenance",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "license",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "uncertainty",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "last_updated",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "pollination_traits",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "species_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "spur_len_mm",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "color_lab",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "volatile_ids",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "known_pollinators",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "provenance",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "license",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "uncertainty",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "last_updated",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "quantum_params",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "species_id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "k_coh",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "tau_tun_ps",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "evidence_level",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "source_ref",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "provenance",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "license",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "uncertainty",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "last_updated",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 3,
+        "sample_rows": [
+          {
+            "id": "3",
+            "species_id": "3",
+            "k_coh": "0.08",
+            "tau_tun_ps": "2.0",
+            "evidence_level": "low",
+            "source_ref": null,
+            "provenance": "seed",
+            "license": "unknown",
+            "uncertainty": "wide",
+            "last_updated": "2025-09-09 23:23:13"
+          },
+          {
+            "id": "2",
+            "species_id": "2",
+            "k_coh": "0.12",
+            "tau_tun_ps": "2.0",
+            "evidence_level": "low",
+            "source_ref": null,
+            "provenance": "seed",
+            "license": "unknown",
+            "uncertainty": "wide",
+            "last_updated": "2025-09-09 23:23:13"
+          },
+          {
+            "id": "1",
+            "species_id": "1",
+            "k_coh": "0.12",
+            "tau_tun_ps": "2.0",
+            "evidence_level": "low",
+            "source_ref": null,
+            "provenance": "seed",
+            "license": "unknown",
+            "uncertainty": "wide",
+            "last_updated": "2025-09-09 23:23:13"
+          }
+        ]
+      },
+      {
+        "name": "species",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "scientific_name",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "rhs_accepted_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "genus",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "epithet",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "functional_group",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 3,
+        "sample_rows": [
+          {
+            "id": "3",
+            "scientific_name": "Angraecum sesquipedale",
+            "rhs_accepted_name": "Angraecum sesquipedale",
+            "genus": "Angraecum",
+            "epithet": "sesquipedale",
+            "functional_group": "C3_epiphyte",
+            "created_at": "2025-09-09 23:23:13",
+            "updated_at": "2025-09-09 23:23:13"
+          },
+          {
+            "id": "2",
+            "scientific_name": "Cattleya labiata",
+            "rhs_accepted_name": "Cattleya labiata",
+            "genus": "Cattleya",
+            "epithet": "labiata",
+            "functional_group": "CAM_epiphyte",
+            "created_at": "2025-09-09 23:23:13",
+            "updated_at": "2025-09-09 23:23:13"
+          },
+          {
+            "id": "1",
+            "scientific_name": "Phalaenopsis equestris",
+            "rhs_accepted_name": "Phalaenopsis equestris",
+            "genus": "Phalaenopsis",
+            "epithet": "equestris",
+            "functional_group": "CAM_epiphyte",
+            "created_at": "2025-09-09 23:23:13",
+            "updated_at": "2025-09-09 23:23:13"
+          }
+        ]
+      },
+      {
+        "name": "sqlite_sequence",
+        "columns": [
+          {
+            "name": "name",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "seq",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 2,
+        "sample_rows": [
+          {
+            "name": "quantum_params",
+            "seq": "3"
+          },
+          {
+            "name": "species",
+            "seq": "3"
+          }
+        ]
+      }
+    ],
+    "total_rows": 8,
+    "error": null
+  },
+  {
+    "path": "orchid_continuum.db",
+    "size_mb": 0.012,
+    "modified": "2025-08-27T06:04:19.607190",
+    "sha256": "6ddc0274a886cc6e587be120a768b66b2d34cc5ffda68acad953a8e215e8b8bb",
+    "tables": [
+      {
+        "name": "orchid_record",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "scientific_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "genus",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "species",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "display_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "common_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "google_drive_id",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "image_url",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "validation_status",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_featured",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "photographer",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_description",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 4,
+        "sample_rows": [
+          {
+            "id": "4",
+            "scientific_name": "Vanda coerulea",
+            "genus": "Vanda",
+            "species": "coerulea",
+            "display_name": "Vanda coerulea",
+            "common_name": "Blue Vanda",
+            "google_drive_id": "1DYa0J0p1tS5lB0SgJ0P1tS5lB0SgJ0P1",
+            "image_url": "/static/orchid_photos/Vanda coerulea.jpg",
+            "validation_status": "approved",
+            "is_featured": "0",
+            "photographer": "FCOS Collection",
+            "ai_description": "Stunning blue vanda orchid",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          },
+          {
+            "id": "3",
+            "scientific_name": "Dendrobium nobile",
+            "genus": "Dendrobium",
+            "species": "nobile",
+            "display_name": "Dendrobium nobile",
+            "common_name": "Noble Dendrobium",
+            "google_drive_id": "1CXz9I9o0sR4kA9RfI9O0sR4kA9RfI9O0",
+            "image_url": "/static/orchid_photos/Dendrobium nobile.jpg",
+            "validation_status": "approved",
+            "is_featured": "0",
+            "photographer": "FCOS Collection",
+            "ai_description": "Classic dendrobium with purple flowers",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          },
+          {
+            "id": "2",
+            "scientific_name": "Phalaenopsis amabilis",
+            "genus": "Phalaenopsis",
+            "species": "amabilis",
+            "display_name": "Phalaenopsis amabilis",
+            "common_name": "Moon Orchid",
+            "google_drive_id": "1BKz8H8n9pQ3jZ8QeH8N9pQ3jZ8QeH8N9",
+            "image_url": "/static/orchid_photos/Phalaenopsis amabilis.jpg",
+            "validation_status": "approved",
+            "is_featured": "1",
+            "photographer": "FCOS Collection",
+            "ai_description": "Elegant white moon orchid",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          },
+          {
+            "id": "1",
+            "scientific_name": "Cattleya trianae",
+            "genus": "Cattleya",
+            "species": "trianae",
+            "display_name": "Cattleya trianae",
+            "common_name": "Christmas Orchid",
+            "google_drive_id": "185MlwyxBU8Dy6bqGdwXXPeBXTlhg5M0I",
+            "image_url": "/static/orchid_photos/Cattleya trianae.jpg",
+            "validation_status": "approved",
+            "is_featured": "1",
+            "photographer": "FCOS Collection",
+            "ai_description": "Beautiful Christmas orchid in full bloom",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          }
+        ]
+      },
+      {
+        "name": "sqlite_sequence",
+        "columns": [
+          {
+            "name": "name",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "seq",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 1,
+        "sample_rows": [
+          {
+            "name": "orchid_record",
+            "seq": "4"
+          }
+        ]
+      }
+    ],
+    "total_rows": 5,
+    "error": null
+  },
+  {
+    "path": "orchid_database_export.db",
+    "size_mb": 0.0,
+    "modified": "2025-08-27T05:45:41.040246",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tables": [],
+    "total_rows": 0,
+    "error": "Empty file (0 bytes)"
+  },
+  {
+    "path": "orchids.db",
+    "size_mb": 0.0,
+    "modified": "2025-09-08T20:03:54.926258",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tables": [],
+    "total_rows": 0,
+    "error": "Empty file (0 bytes)"
+  },
+  {
+    "path": "research_data.db",
+    "size_mb": 0.027,
+    "modified": "2025-09-08T15:12:17.831807",
+    "sha256": "1bf3c7d94b69aa8fa4f979905b735a78d7ee8b983ef52030a1ccf06cf9ec4534",
+    "tables": [
+      {
+        "name": "data_points",
+        "columns": [
+          {
+            "name": "data_id",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "experiment_id",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "timestamp",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "variables",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "metadata",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "quality_score",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "verified",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "experiments",
+        "columns": [
+          {
+            "name": "experiment_id",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "title",
+            "type": "TEXT",
+            "notnull": true,
+            "pk": false
+          },
+          {
+            "name": "researcher",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "experiment_type",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "start_date",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "end_date",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "status",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "hypothesis",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "methodology",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "variables_measured",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "sample_size",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "location",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "environmental_conditions",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "notes",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      },
+      {
+        "name": "statistical_results",
+        "columns": [
+          {
+            "name": "analysis_id",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "analysis_type",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "variables",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "result_data",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "p_value",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "confidence_interval",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "effect_size",
+            "type": "REAL",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "interpretation",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "timestamp",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 0,
+        "sample_rows": []
+      }
+    ],
+    "total_rows": 0,
+    "error": null
+  },
+  {
+    "path": "your_orchid_database.db",
+    "size_mb": 0.012,
+    "modified": "2025-08-27T05:45:48.026245",
+    "sha256": "c65e5ba9907bb23f82fb419d6ac2949a2803e7c248106c7b2cb49c6f6adbe77a",
+    "tables": [
+      {
+        "name": "orchid_record",
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER",
+            "notnull": false,
+            "pk": true
+          },
+          {
+            "name": "scientific_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "genus",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "species",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "display_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "common_name",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "google_drive_id",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "image_url",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "validation_status",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "is_featured",
+            "type": "BOOLEAN",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "photographer",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "ai_description",
+            "type": "TEXT",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "created_at",
+            "type": "TIMESTAMP",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "updated_at",
+            "type": "TIMESTAMP",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 4,
+        "sample_rows": [
+          {
+            "id": "4",
+            "scientific_name": "Vanda coerulea",
+            "genus": "Vanda",
+            "species": "coerulea",
+            "display_name": "Vanda coerulea",
+            "common_name": "Blue Vanda",
+            "google_drive_id": "1DYa0J0p1tS5lB0SgJ0P1tS5lB0SgJ0P1",
+            "image_url": null,
+            "validation_status": "approved",
+            "is_featured": "0",
+            "photographer": "FCOS Collection",
+            "ai_description": "Stunning blue vanda orchid",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          },
+          {
+            "id": "3",
+            "scientific_name": "Dendrobium nobile",
+            "genus": "Dendrobium",
+            "species": "nobile",
+            "display_name": "Dendrobium nobile",
+            "common_name": "Noble Dendrobium",
+            "google_drive_id": "1CXz9I9o0sR4kA9RfI9O0sR4kA9RfI9O0",
+            "image_url": null,
+            "validation_status": "approved",
+            "is_featured": "0",
+            "photographer": "FCOS Collection",
+            "ai_description": "Classic dendrobium with purple flowers",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          },
+          {
+            "id": "2",
+            "scientific_name": "Phalaenopsis amabilis",
+            "genus": "Phalaenopsis",
+            "species": "amabilis",
+            "display_name": "Phalaenopsis amabilis",
+            "common_name": "Moon Orchid",
+            "google_drive_id": "1BKz8H8n9pQ3jZ8QeH8N9pQ3jZ8QeH8N9",
+            "image_url": null,
+            "validation_status": "approved",
+            "is_featured": "1",
+            "photographer": "FCOS Collection",
+            "ai_description": "Elegant white moon orchid",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          },
+          {
+            "id": "1",
+            "scientific_name": "Cattleya trianae",
+            "genus": "Cattleya",
+            "species": "trianae",
+            "display_name": "Cattleya trianae",
+            "common_name": "Christmas Orchid",
+            "google_drive_id": "185MlwyxBU8Dy6bqGdwXXPeBXTlhg5M0I",
+            "image_url": null,
+            "validation_status": "approved",
+            "is_featured": "1",
+            "photographer": "FCOS Collection",
+            "ai_description": "Beautiful Christmas orchid in full bloom",
+            "created_at": "2025-08-27 03:47:16",
+            "updated_at": "2025-08-27 03:47:16"
+          }
+        ]
+      },
+      {
+        "name": "sqlite_sequence",
+        "columns": [
+          {
+            "name": "name",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          },
+          {
+            "name": "seq",
+            "type": "",
+            "notnull": false,
+            "pk": false
+          }
+        ],
+        "row_count": 1,
+        "sample_rows": [
+          {
+            "name": "orchid_record",
+            "seq": "4"
+          }
+        ]
+      }
+    ],
+    "total_rows": 5,
+    "error": null
+  }
+]

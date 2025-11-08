@@ -1,0 +1,408 @@
+[
+  {
+    "orchid_id": 4912,
+    "current_name": "Angraecum Viguieri",
+    "image_url": "https://www.flowershots.net/web-content/Photogallery/Angraecum/Angraecum-viguieri.jpg",
+    "ai_analysis": {
+      "growth_habit": {
+        "value": "epiphytic",
+        "source": "Visual analysis of roots/mounting visible in photo"
+      },
+      "temperature": {
+        "value": "intermediate",
+        "source": "Leaf thickness and pseudobulb type indicate moderate temperature preferences"
+      },
+      "light": {
+        "value": "medium",
+        "source": "Visual analysis of leaf color and texture suggests moderate light requirements"
+      },
+      "humidity": {
+        "value": "high",
+        "source": "Root velamen thickness visible suggests a preference for high humidity"
+      },
+      "bloom_season": {
+        "value": "spring to summer",
+        "source": "Flower maturity stage indicates typical blooming period"
+      },
+      "difficulty": {
+        "value": "intermediate",
+        "source": "Combined assessment of care requirements suggests moderate growing difficulty"
+      }
+    },
+    "cultural_requirements": {
+      "watering": {
+        "value": "weekly to bi-weekly",
+        "source": "Pseudobulb type indicates a need for regular watering"
+      },
+      "fertilizer": {
+        "value": "balanced orchid fertilizer every 2-4 weeks",
+        "source": "Typical care for epiphytic orchids suggests regular feeding during growing season"
+      },
+      "potting_medium": {
+        "value": "bark or moss",
+        "source": "Visual analysis of visible medium suggests suitable potting materials for epiphytes"
+      }
+    },
+    "habitat_indicators": {
+      "native_climate": {
+        "value": "tropical",
+        "source": "Botanical morphology indicates adaptation to tropical environments"
+      },
+      "elevation": {
+        "value": "mid-elevation",
+        "source": "Leaf adaptations suggest preference for mid-elevation habitats"
+      }
+    },
+    "confidence_score": 85,
+    "analysis_limitations": "Cannot determine root structure in detail without clearer visibility",
+    "photo_quality": "Clear view of flowers, roots partially visible, but overall good quality"
+  },
+  {
+    "orchid_id": 6286,
+    "current_name": "Epidendrum unnamed",
+    "image_url": "https://lh3.googleusercontent.com/d/1sR0jQ79HoeSNBsqXGxHYnHyeKBhk4nWV",
+    "ai_analysis": {
+      "growth_habit": {
+        "value": "epiphytic",
+        "source": "Visual analysis of roots and mounting visible in photo"
+      },
+      "temperature": {
+        "value": "intermediate",
+        "source": "Leaf thickness indicates a preference for moderate temperatures"
+      },
+      "light": {
+        "value": "medium",
+        "source": "Visual analysis of leaf color and texture suggests moderate light requirements"
+      },
+      "humidity": {
+        "value": "high",
+        "source": "Root velamen thickness visible suggests a preference for high humidity"
+      },
+      "bloom_season": {
+        "value": "spring",
+        "source": "Flower maturity stage indicates blooming in the spring season"
+      },
+      "difficulty": {
+        "value": "intermediate",
+        "source": "Combined assessment of care requirements suggests moderate difficulty"
+      }
+    },
+    "cultural_requirements": {
+      "watering": {
+        "value": "weekly",
+        "source": "Pseudobulb type indicates a need for regular watering"
+      },
+      "fertilizer": {
+        "value": "balanced orchid fertilizer every 2 weeks",
+        "source": "Typical care for epiphytic orchids suggests regular feeding"
+      },
+      "potting_medium": {
+        "value": "bark or sphagnum moss",
+        "source": "Visual analysis of visible medium suggests suitable potting materials"
+      }
+    },
+    "habitat_indicators": {
+      "native_climate": {
+        "value": "tropical",
+        "source": "Botanical morphology indicates adaptation to tropical climates"
+      },
+      "elevation": {
+        "value": "mid-elevation",
+        "source": "Leaf adaptations suggest a preference for mid-elevation habitats"
+      }
+    },
+    "confidence_score": 85,
+    "analysis_limitations": "Cannot determine root type without a clearer view of the roots",
+    "photo_quality": "Clear view of flowers, roots partially visible, but overall good quality"
+  },
+  {
+    "orchid_id": 6283,
+    "current_name": "Intergeneric hybrid",
+    "image_url": "https://lh3.googleusercontent.com/d/1A6rRril5Jd8ZX0BAhtHciymgKSz8pxLB",
+    "ai_analysis": {
+      "growth_habit": {
+        "value": "epiphytic",
+        "source": "Visual analysis of roots and mounting visible in photo"
+      },
+      "temperature": {
+        "value": "warm",
+        "source": "Leaf thickness indicates preference for warmer temperatures"
+      },
+      "light": {
+        "value": "bright",
+        "source": "Visual analysis of leaf color and texture suggests bright light requirements"
+      },
+      "humidity": {
+        "value": "moderate to high",
+        "source": "Root structure suggests a preference for moderate to high humidity"
+      },
+      "bloom_season": {
+        "value": "spring to summer",
+        "source": "Flower maturity stage indicates blooming during spring to summer"
+      },
+      "difficulty": {
+        "value": "intermediate",
+        "source": "Combined assessment of care requirements suggests intermediate difficulty"
+      }
+    },
+    "cultural_requirements": {
+      "watering": {
+        "value": "weekly to bi-weekly",
+        "source": "Pseudobulb type indicates a need for regular watering"
+      },
+      "fertilizer": {
+        "value": "balanced orchid fertilizer every 2-4 weeks",
+        "source": "Typical care for epiphytic orchids suggests regular fertilization"
+      },
+      "potting_medium": {
+        "value": "bark or sphagnum moss",
+        "source": "Visual analysis of visible medium suggests use of bark or moss"
+      }
+    },
+    "habitat_indicators": {
+      "native_climate": {
+        "value": "tropical",
+        "source": "Botanical morphology indicates a preference for tropical climates"
+      },
+      "elevation": {
+        "value": "lowland",
+        "source": "Leaf adaptations suggest a preference for lowland habitats"
+      }
+    },
+    "confidence_score": 85,
+    "analysis_limitations": "Cannot determine root structure details without clearer visibility",
+    "photo_quality": "Clear view of flowers, but roots and leaves are partially obscured"
+  },
+  {
+    "orchid_id": 4654,
+    "current_name": "H Endzfeldii2",
+    "image_url": "https://www.flowershots.net/web-content/Photogallery/thumbnails/H%20endzfeldii2%20copy.jpg",
+    "ai_analysis": {
+      "growth_habit": {
+        "value": "epiphytic",
+        "source": "Visual analysis of roots/mounting visible in photo"
+      },
+      "temperature": {
+        "value": "warm",
+        "source": "Leaf thickness and pseudobulb type indicate warm temperature preference"
+      },
+      "light": {
+        "value": "bright",
+        "source": "Visual analysis of leaf color and texture suggests bright light requirements"
+      },
+      "humidity": {
+        "value": "high",
+        "source": "Root velamen thickness visible suggests high humidity preference"
+      },
+      "bloom_season": {
+        "value": "spring to summer",
+        "source": "Flower maturity stage indicates blooming during spring to summer"
+      },
+      "difficulty": {
+        "value": "intermediate",
+        "source": "Combined assessment of care requirements suggests intermediate difficulty"
+      }
+    },
+    "cultural_requirements": {
+      "watering": {
+        "value": "weekly",
+        "source": "Pseudobulb type indicates weekly watering needs"
+      },
+      "fertilizer": {
+        "value": "balanced orchid fertilizer every 2-4 weeks",
+        "source": "Typical care for epiphytic orchids suggests regular fertilization"
+      },
+      "potting_medium": {
+        "value": "bark or moss",
+        "source": "Visual analysis of visible medium suggests bark or moss as suitable potting medium"
+      }
+    },
+    "habitat_indicators": {
+      "native_climate": {
+        "value": "tropical",
+        "source": "Botanical morphology indicates a tropical native climate"
+      },
+      "elevation": {
+        "value": "lowland",
+        "source": "Leaf adaptations suggest preference for lowland habitats"
+      }
+    },
+    "confidence_score": 85,
+    "analysis_limitations": "Cannot determine specific root structure without clearer visibility",
+    "photo_quality": "Clear view of flowers, roots partially visible, good lighting"
+  },
+  {
+    "orchid_id": 4967,
+    "current_name": "Dendrobium Agrostophyllum",
+    "image_url": "https://www.flowershots.net/web-content/Photogallery/Dendrobiums/Australian/Dendrobium%20agrostophyllum2%20copy.jpg?%20copy.jpg",
+    "ai_analysis": {
+      "growth_habit": {
+        "value": "epiphytic",
+        "source": "Visual analysis of roots/mounting visible in photo"
+      },
+      "temperature": {
+        "value": "intermediate",
+        "source": "Leaf thickness and pseudobulb type indicate moderate temperature preferences"
+      },
+      "light": {
+        "value": "medium",
+        "source": "Visual analysis of leaf color and texture suggests moderate light requirements"
+      },
+      "humidity": {
+        "value": "high",
+        "source": "Root velamen thickness visible suggests a preference for high humidity"
+      },
+      "bloom_season": {
+        "value": "spring",
+        "source": "Flower maturity stage indicates blooming in the spring season"
+      },
+      "difficulty": {
+        "value": "intermediate",
+        "source": "Combined assessment of care requirements suggests moderate growing difficulty"
+      }
+    },
+    "cultural_requirements": {
+      "watering": {
+        "value": "weekly",
+        "source": "Pseudobulb type indicates a need for regular watering"
+      },
+      "fertilizer": {
+        "value": "balanced orchid fertilizer every 2 weeks",
+        "source": "Typical care for epiphytic orchids suggests regular feeding during growth"
+      },
+      "potting_medium": {
+        "value": "bark-based medium",
+        "source": "Visual analysis of visible medium suggests a bark-based potting mix"
+      }
+    },
+    "habitat_indicators": {
+      "native_climate": {
+        "value": "tropical",
+        "source": "Botanical morphology indicates adaptation to tropical climates"
+      },
+      "elevation": {
+        "value": "mid-elevation",
+        "source": "Leaf adaptations suggest a preference for mid-elevation habitats"
+      }
+    },
+    "confidence_score": 85,
+    "analysis_limitations": "Cannot determine root type without clearer visibility in photo",
+    "photo_quality": "Clear view of flowers, roots partially visible, good lighting"
+  },
+  {
+    "orchid_id": 4968,
+    "current_name": "Dracula Amaliae",
+    "image_url": "https://www.flowershots.net/web-content/Photogallery/dracula/Dracula-amaliae%20copy.jpg",
+    "ai_analysis": {
+      "growth_habit": {
+        "value": "epiphytic",
+        "source": "Visual analysis of roots/mounting visible in photo"
+      },
+      "temperature": {
+        "value": "intermediate",
+        "source": "Leaf thickness and pseudobulb type indicate moderate temperature preferences"
+      },
+      "light": {
+        "value": "medium",
+        "source": "Visual analysis of leaf color and texture suggests moderate light requirements"
+      },
+      "humidity": {
+        "value": "high",
+        "source": "Root velamen thickness visible suggests a preference for high humidity"
+      },
+      "bloom_season": {
+        "value": "spring",
+        "source": "Flower maturity stage indicates typical blooming period for this type"
+      },
+      "difficulty": {
+        "value": "intermediate",
+        "source": "Combined assessment of care requirements suggests moderate growing difficulty"
+      }
+    },
+    "cultural_requirements": {
+      "watering": {
+        "value": "weekly",
+        "source": "Pseudobulb type indicates regular watering needs"
+      },
+      "fertilizer": {
+        "value": "balanced orchid fertilizer every 2-4 weeks",
+        "source": "Typical care for epiphytic orchids suggests regular feeding"
+      },
+      "potting_medium": {
+        "value": "bark or moss",
+        "source": "Visual analysis of visible medium suggests suitable potting mix"
+      }
+    },
+    "habitat_indicators": {
+      "native_climate": {
+        "value": "tropical",
+        "source": "Botanical morphology indicates adaptation to tropical environments"
+      },
+      "elevation": {
+        "value": "mid-elevation",
+        "source": "Leaf adaptations suggest preference for mid-elevation habitats"
+      }
+    },
+    "confidence_score": 85,
+    "analysis_limitations": "Cannot determine root structure without seeing the entire plant",
+    "photo_quality": "Clear view of flowers, roots partially visible, but overall quality is good"
+  },
+  {
+    "orchid_id": 4615,
+    "current_name": "Cattleya Aclandiae%20Copy",
+    "image_url": "https://www.flowershots.net/web-content/Photogallery/Cattleya_Bifoliate/C_aclandiae%20copy.jpg?%20copy.jpg",
+    "ai_analysis": {
+      "growth_habit": {
+        "value": "epiphytic",
+        "source": "Visual analysis of roots and mounting visible in photo"
+      },
+      "temperature": {
+        "value": "warm",
+        "source": "Leaf thickness and structure indicate a preference for warmer temperatures"
+      },
+      "light": {
+        "value": "medium to bright",
+        "source": "Visual analysis of leaf color and texture suggests moderate to bright light conditions"
+      },
+      "humidity": {
+        "value": "high",
+        "source": "Root velamen thickness visible suggests a preference for high humidity"
+      },
+      "bloom_season": {
+        "value": "spring to summer",
+        "source": "Flower maturity stage indicates blooming during warmer months"
+      },
+      "difficulty": {
+        "value": "intermediate",
+        "source": "Combined assessment of care requirements suggests moderate growing difficulty"
+      }
+    },
+    "cultural_requirements": {
+      "watering": {
+        "value": "weekly to bi-weekly",
+        "source": "Pseudobulb type indicates a need for regular watering but not over-saturation"
+      },
+      "fertilizer": {
+        "value": "balanced orchid fertilizer every 2-4 weeks",
+        "source": "Typical care for epiphytic orchids suggests regular feeding during growth periods"
+      },
+      "potting_medium": {
+        "value": "bark or moss-based medium",
+        "source": "Visual analysis of visible medium suggests a loose, well-draining substrate"
+      }
+    },
+    "habitat_indicators": {
+      "native_climate": {
+        "value": "tropical",
+        "source": "Botanical morphology indicates adaptation to tropical environments"
+      },
+      "elevation": {
+        "value": "lowland to mid-elevation",
+        "source": "Leaf adaptations suggest a preference for lower elevations with higher humidity"
+      }
+    },
+    "confidence_score": 85,
+    "analysis_limitations": "Cannot determine specific root characteristics without clearer visibility",
+    "photo_quality": "Clear view of flowers and leaves, roots partially visible but not detailed"
+  }
+]

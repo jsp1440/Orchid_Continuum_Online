@@ -1,0 +1,206 @@
+<!-- 
+  ORCHID Continuum — Licensed to FCOS (501(c)(3)) for nonprofit use.
+  FCOS branding (colors) applied via design tokens.
+-->
+<!DOCTYPE html>
+<!-- 
+  🌍 GBIF Data Explorer Widget
+  Self-contained embed for Neon One CMS
+  Display GBIF occurrence and distribution data
+-->
+<div id="gbif-explorer-widget" role="region" aria-label="GBIF Data Explorer">
+  <style>
+    #gbif-explorer-widget {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f0f9ff;
+      border-radius: 12px;
+      border: 2px solid #0ea5e9;
+    }
+    #gbif-explorer-widget h2 {
+      font-size: 26px;
+      margin: 0 0 16px 0;
+      color: #0c4a6e;
+    }
+    #gbif-explorer-widget .search-box {
+      margin-bottom: 20px;
+    }
+    #gbif-explorer-widget input {
+      padding: 12px;
+      border: 2px solid #bae6fd;
+      border-radius: 8px;
+      font-size: 16px;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    #gbif-explorer-widget button {
+      padding: 12px 24px;
+      background: #0ea5e9;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+    #gbif-explorer-widget button:hover {
+      background: #0284c7;
+    }
+    #gbif-explorer-widget .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    #gbif-explorer-widget .stat-card {
+      background: white;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    #gbif-explorer-widget .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: #0ea5e9;
+    }
+    #gbif-explorer-widget .stat-label {
+      font-size: 14px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+    #gbif-explorer-widget .banner {
+      background: #fef3c7;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 12px 0;
+      color: #92400e;
+    }
+    #gbif-explorer-widget .link-button {
+      display: inline-block;
+      padding: 8px 16px;
+      background: white;
+      color: #0ea5e9;
+      text-decoration: none;
+      border-radius: 6px;
+      margin-top: 8px;
+      border: 2px solid #0ea5e9;
+    }
+  </style>
+
+  <h2>🌍 GBIF Data Explorer</h2>
+  <p style="color: #475569; margin-bottom: 16px;">
+    Explore orchid occurrence data from the Global Biodiversity Information Facility
+  </p>
+  
+  <div class="search-box">
+    <input type="text" id="gbif-search" placeholder="Enter orchid genus (e.g., Phalaenopsis)" aria-label="Search GBIF data">
+    <button onclick="window.searchGBIF()">🔍 Search GBIF Database</button>
+  </div>
+  
+  <div id="gbif-results"></div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ============================================================================
+  // CONFIG - CHANGE ME
+  // ============================================================================
+  const CONFIG = {
+    BASE_URL: 'https://your-orchid-app.onrender.com',  // CHANGE ME
+  };
+  // ============================================================================
+  
+  const resultsDiv = document.getElementById('gbif-results');
+  const searchInput = document.getElementById('gbif-search');
+  
+  async function searchGBIF() {
+    const query = searchInput.value.trim();
+    if (!query) {
+      resultsDiv.innerHTML = '<div class="banner">Please enter an orchid genus to search.</div>';
+      return;
+    }
+    
+    resultsDiv.innerHTML = '<div style="text-align:center;padding:40px;color:#64748b;">🌍 Searching GBIF database...</div>';
+    
+    try {
+      const response = await fetch(`${CONFIG.BASE_URL}/api/gbif/occurrences?genus=${encodeURIComponent(query)}`, {
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      if (!response.ok) {
+        throw new Error('API unavailable');
+      }
+      
+      const data = await response.json();
+      renderGBIFResults(data);
+    } catch (error) {
+      resultsDiv.innerHTML = `<div class="banner">
+        ⚠️ GBIF data explorer temporarily unavailable.<br>
+        <a href="${CONFIG.BASE_URL}/widgets/gbif-data/" class="link-button" target="_blank">
+          View Full GBIF Explorer →
+        </a>
+      </div>`;
+    }
+  }
+  
+  function renderGBIFResults(data) {
+    if (!data || !data.count) {
+      resultsDiv.innerHTML = '<div class="banner">No GBIF occurrences found for this genus.</div>';
+      return;
+    }
+    
+    let html = '<div class="stats">';
+    html += `<div class="stat-card">
+      <div class="stat-value">${data.count.toLocaleString()}</div>
+      <div class="stat-label">Total Occurrences</div>
+    </div>`;
+    
+    if (data.countries) {
+      html += `<div class="stat-card">
+        <div class="stat-value">${data.countries}</div>
+        <div class="stat-label">Countries</div>
+      </div>`;
+    }
+    
+    if (data.specimens) {
+      html += `<div class="stat-card">
+        <div class="stat-value">${data.specimens.toLocaleString()}</div>
+        <div class="stat-label">Specimens</div>
+      </div>`;
+    }
+    
+    html += '</div>';
+    
+    if (data.top_countries && data.top_countries.length > 0) {
+      html += '<div style="background:white;padding:16px;border-radius:8px;margin-top:12px;">';
+      html += '<h3 style="margin:0 0 12px 0;color:#0c4a6e;">Top Locations</h3>';
+      html += '<ul style="margin:0;padding-left:20px;">';
+      data.top_countries.forEach(country => {
+        html += `<li style="color:#475569;margin:4px 0;">${country.name}: ${country.count.toLocaleString()} occurrences</li>`;
+      });
+      html += '</ul></div>';
+    }
+    
+    html += `<a href="${CONFIG.BASE_URL}/widgets/gbif-data/?genus=${encodeURIComponent(searchInput.value)}" 
+             class="link-button" target="_blank" style="margin-top:16px;">
+      View Full GBIF Data & Map →
+    </a>`;
+    
+    resultsDiv.innerHTML = html;
+  }
+  
+  searchInput.addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+      searchGBIF();
+    }
+  });
+  
+  window.searchGBIF = searchGBIF;
+})();
+</script>

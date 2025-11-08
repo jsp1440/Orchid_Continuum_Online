@@ -1,0 +1,90 @@
+/**
+ * ORCHID Continuum Brand Tokens
+ * Licensed deployment for FCOS (501(c)(3))
+ * 
+ * Brand used silently via design tokens; no visible "FCOS" label.
+ * Overrideable by other orchid societies for their deployments.
+ */
+
+:root {
+  /* Color Palette - Accessible AA Contrast */
+  --brand-bg: #fafafa;
+  --brand-surface: #ffffff;
+  --brand-text: #1f2937;
+  --brand-muted: #6b7280;
+  --brand-accent: #3b82f6;
+  --brand-accent-contrast: #ffffff;
+  --brand-accent-hover: #2563eb;
+  --brand-success: #10b981;
+  --brand-warning: #f59e0b;
+  --brand-error: #ef4444;
+  
+  /* Neutral Tones */
+  --brand-gray-50: #f9fafb;
+  --brand-gray-100: #f3f4f6;
+  --brand-gray-200: #e5e7eb;
+  --brand-gray-300: #d1d5db;
+  --brand-gray-400: #9ca3af;
+  --brand-gray-500: #6b7280;
+  --brand-gray-600: #4b5563;
+  --brand-gray-700: #374151;
+  --brand-gray-800: #1f2937;
+  --brand-gray-900: #111827;
+  
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  
+  /* Border Radius */
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+  
+  /* Typography */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+  
+  /* Type Scale (16px base) */
+  --scale-1: 14px;
+  --scale-2: 16px;
+  --scale-3: 18px;
+  --scale-4: 22px;
+  --scale-5: 26px;
+  --scale-6: 32px;
+  
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+  
+  /* Font Weights */
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  
+  /* Transitions */
+  --transition: all 0.3s ease;
+  --transition-fast: all 0.15s ease;
+}
+
+/* Optional: Dark mode support (for future) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --brand-bg: #111827;
+    --brand-surface: #1f2937;
+    --brand-text: #f9fafb;
+    --brand-muted: #9ca3af;
+  }
+}

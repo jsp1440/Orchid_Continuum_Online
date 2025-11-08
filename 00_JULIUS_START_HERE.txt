@@ -1,0 +1,17 @@
+JULIUS - YOUR COMPLETE TASK QUEUE
+
+Read JULIUS_MASTER_PLAN.md for the full overview.
+
+CURRENT TASK (Task 1): Complete EOL taxonomy extraction
+- Follow: JULIUS_READ_THIS_NOW.md
+- Output: julius_taxonomy_results.csv
+- Mark complete in tracker when done
+
+NEXT TASKS (Do in order):
+Task 2: JULIUS_GBIF_EXTRACTION.md (~144K images, 1-2 hours)
+Task 3: JULIUS_TROPICOS_EXTRACTION.md (~685K images, 1.5-2 hours)  
+Task 4: JULIUS_POWO_EXTRACTION.md (~30K images, 7-8 hours)
+
+GOAL: Extract ~1M image URLs, achieve 75-90% species coverage!
+
+Check /tracker endpoint to see your progress.

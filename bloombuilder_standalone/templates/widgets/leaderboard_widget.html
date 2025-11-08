@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard Widget</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body { 
+            background: transparent; 
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .leaderboard-widget {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .leaderboard-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .leaderboard-header h3 {
+            color: white;
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .game-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .game-tab {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: 600;
+        }
+        .game-tab:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .game-tab.active {
+            background: rgba(255,255,255,0.95);
+            color: #f5576c;
+            border-color: white;
+        }
+        .leaderboard-list {
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            padding: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s;
+        }
+        .leaderboard-item:hover {
+            transform: translateX(5px);
+        }
+        .rank {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 700;
+            margin-right: 15px;
+        }
+        .rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: white; }
+        .rank-2 { background: linear-gradient(135deg, #C0C0C0, #808080); color: white; }
+        .rank-3 { background: linear-gradient(135deg, #CD7F32, #8B4513); color: white; }
+        .rank-other { background: #e0e0e0; color: #666; }
+        .player-info {
+            flex: 1;
+        }
+        .player-name {
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+        .player-game {
+            font-size: 12px;
+            color: #999;
+            margin: 0;
+        }
+        .score {
+            font-size: 24px;
+            font-weight: 700;
+            color: #f5576c;
+            margin-left: 15px;
+        }
+        .trophy-icon {
+            margin-left: 10px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="leaderboard-widget">
+        <div class="leaderboard-header">
+            <h3><i data-feather="award"></i> Game Leaderboard</h3>
+        </div>
+        
+        <div class="game-tabs">
+            <div class="game-tab active" onclick="switchGame(event, 'all')" data-game="all">All Games</div>
+            <div class="game-tab" onclick="switchGame(event, 'memory')" data-game="memory">Memory Match</div>
+            <div class="game-tab" onclick="switchGame(event, 'quiz')" data-game="quiz">Quiz</div>
+            <div class="game-tab" onclick="switchGame(event, 'crossword')" data-game="crossword">Crossword</div>
+        </div>
+        
+        <div class="leaderboard-list" id="leaderboardList">
+            <div class="empty-state">
+                <i data-feather="loader" style="width: 48px; height: 48px; opacity: 0.3;"></i>
+                <p>Loading leaderboard...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        feather.replace();
+        
+        let currentGame = 'all';
+        let leaderboardData = [];
+        
+        function switchGame(event, gameType) {
+            currentGame = gameType;
+            
+            // Update active tab
+            document.querySelectorAll('.game-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Load leaderboard for game type
+            loadLeaderboard(gameType);
+        }
+        
+        function loadLeaderboard(gameType = 'all') {
+            const url = gameType === 'all' 
+                ? '/games/api/leaderboard' 
+                : `/games/api/leaderboard?game_type=${gameType}`;
+            
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    leaderboardData = data.leaderboard || [];
+                    displayLeaderboard();
+                })
+                .catch(err => {
+                    console.error('Failed to load leaderboard:', err);
+                    showEmptyState('Failed to load leaderboard');
+                });
+        }
+        
+        function displayLeaderboard() {
+            const container = document.getElementById('leaderboardList');
+            
+            if (leaderboardData.length === 0) {
+                showEmptyState('No scores yet. Be the first to play!');
+                return;
+            }
+            
+            container.innerHTML = leaderboardData.map((item, index) => {
+                const rank = index + 1;
+                const rankClass = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other';
+                const trophy = rank <= 3 ? `<i data-feather="trophy" class="trophy-icon" style="width: 20px; height: 20px; color: ${rank === 1 ? '#FFD700' : rank === 2 ? '#C0C0C0' : '#CD7F32'};"></i>` : '';
+                
+                return `
+                    <div class="leaderboard-item">
+                        <div class="rank ${rankClass}">${rank}</div>
+                        <div class="player-info">
+                            <p class="player-name">${item.player_name || 'Anonymous'}</p>
+                            <p class="player-game">${item.game_type || 'Unknown'} - ${formatTime(item.completion_time)}</p>
+                        </div>
+                        <div class="score">${item.score}${trophy}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            feather.replace();
+        }
+        
+        function showEmptyState(message) {
+            const container = document.getElementById('leaderboardList');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i data-feather="award" style="width: 48px; height: 48px; opacity: 0.3;"></i>
+                    <p>${message}</p>
+                </div>
+            `;
+            feather.replace();
+        }
+        
+        function formatTime(seconds) {
+            if (!seconds) return 'N/A';
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+        }
+        
+        // Initial load
+        loadLeaderboard('all');
+        
+        // Refresh every 30 seconds
+        setInterval(() => loadLeaderboard(currentGame), 30000);
+    </script>
+</body>
+</html>

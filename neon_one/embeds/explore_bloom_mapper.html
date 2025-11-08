@@ -1,0 +1,258 @@
+<!-- 
+  ORCHID Continuum — Licensed to FCOS (501(c)(3)) for nonprofit use.
+  FCOS branding (colors) applied via design tokens.
+-->
+<!DOCTYPE html>
+<!-- 
+  📅 Bloom Calendar & Habitat Mapper Widget
+  Self-contained embed for Neon One CMS
+  Shows seasonal bloom patterns and geographic distribution
+-->
+<div id="bloom-mapper-widget" role="region" aria-label="Bloom Calendar and Habitat Mapper">
+  <style>
+    #bloom-mapper-widget {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 16px;
+      color: white;
+    }
+    #bloom-mapper-widget h2 {
+      margin: 0 0 20px 0;
+      font-size: 26px;
+    }
+    #bloom-mapper-widget .input-section {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    #bloom-mapper-widget select, #bloom-mapper-widget button {
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 16px;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    #bloom-mapper-widget button {
+      background: #667eea;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    #bloom-mapper-widget button:hover {
+      background: #5568d3;
+    }
+    #bloom-mapper-widget .chart-container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    #bloom-mapper-widget .chart-title {
+      color: #2d3748;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    #bloom-mapper-widget .month-chart {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+    #bloom-mapper-widget .month-bar {
+      background: #e2e8f0;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4px;
+    }
+    #bloom-mapper-widget .bar {
+      width: 100%;
+      background: #667eea;
+      border-radius: 2px;
+      margin-bottom: 4px;
+    }
+    #bloom-mapper-widget .month-label {
+      font-size: 10px;
+      color: #64748b;
+      font-weight: 600;
+    }
+    #bloom-mapper-widget .regions-list {
+      color: #2d3748;
+    }
+    #bloom-mapper-widget .region-item {
+      padding: 8px;
+      margin: 4px 0;
+      background: #f7fafc;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    #bloom-mapper-widget .demo-badge {
+      background: #fef3c7;
+      color: #92400e;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    #bloom-mapper-widget .banner {
+      background: rgba(255,255,255,0.2);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+  </style>
+
+  <h2>📅 Bloom Calendar & Habitat Mapper</h2>
+  
+  <div class="input-section">
+    <label for="genus-select" style="color:#2d3748;font-weight:600;display:block;margin-bottom:8px;">
+      Select Orchid Genus:
+    </label>
+    <select id="genus-select" aria-label="Select genus"></select>
+    <button onclick="window.loadBloomData()" aria-label="Load bloom data">📊 Show Bloom Pattern & Distribution</button>
+  </div>
+  
+  <div id="bloom-content"></div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ============================================================================
+  // CONFIG - CHANGE ME
+  // ============================================================================
+  const CONFIG = {
+    BASE_URL: 'https://your-orchid-app.onrender.com',  // CHANGE ME
+  };
+  // ============================================================================
+  
+  const contentDiv = document.getElementById('bloom-content');
+  const genusSelect = document.getElementById('genus-select');
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  
+  async function loadGenera() {
+    try {
+      const response = await fetch(`${CONFIG.BASE_URL}/api/taxonomy/genera`);
+      if (response.ok) {
+        const genera = await response.json();
+        genera.slice(0, 50).forEach(genus => {
+          const option = document.createElement('option');
+          option.value = genus;
+          option.textContent = genus;
+          genusSelect.appendChild(option);
+        });
+        // Select first genus by default
+        if (genera.length > 0) {
+          genusSelect.value = genera[0];
+        }
+      }
+    } catch (e) {
+      genusSelect.innerHTML = '<option>Phalaenopsis</option><option>Cattleya</option>';
+    }
+  }
+  
+  async function loadBloomData() {
+    const genus = genusSelect.value;
+    if (!genus) {
+      contentDiv.innerHTML = '<div class="banner">Please select a genus.</div>';
+      return;
+    }
+    
+    contentDiv.innerHTML = '<div class="banner">🌸 Loading bloom and distribution data...</div>';
+    
+    try {
+      const [bloomResp, distResp] = await Promise.all([
+        fetch(`${CONFIG.BASE_URL}/api/taxonomy/bloomdata?genus=${encodeURIComponent(genus)}`),
+        fetch(`${CONFIG.BASE_URL}/api/taxonomy/distribution?genus=${encodeURIComponent(genus)}`)
+      ]);
+      
+      if (!bloomResp.ok || !distResp.ok) {
+        throw new Error('API error');
+      }
+      
+      const bloomData = await bloomResp.json();
+      const distData = await distResp.json();
+      
+      renderBloomChart(bloomData);
+      renderDistribution(distData);
+      
+    } catch (error) {
+      contentDiv.innerHTML = `<div class="banner" style="background:#fef2f2;color:#991b1b;">
+        ⚠️ Unable to load bloom data. Please check API configuration.
+      </div>`;
+    }
+  }
+  
+  function renderBloomChart(data) {
+    const isDemoData = data.demo || false;
+    const months = data.months || [];
+    const maxValue = Math.max(...months, 1);
+    
+    let html = '<div class="chart-container">';
+    html += `<div class="chart-title">
+      🌺 Bloom Pattern for ${data.genus}
+      ${isDemoData ? '<span class="demo-badge">Demo Data</span>' : ''}
+    </div>`;
+    
+    if (data.note) {
+      html += `<p style="color:#64748b;font-size:14px;margin-bottom:12px;">${data.note}</p>`;
+    }
+    
+    html += '<div class="month-chart">';
+    months.forEach((value, index) => {
+      const height = maxValue > 0 ? (value / maxValue) * 100 : 0;
+      html += `<div class="month-bar">
+        <div class="bar" style="height:${Math.max(height, 5)}px;"></div>
+        <div class="month-label">${monthNames[index]}</div>
+      </div>`;
+    });
+    html += '</div>';
+    html += '</div>';
+    
+    contentDiv.innerHTML = html;
+  }
+  
+  function renderDistribution(data) {
+    const isDemoData = data.demo || false;
+    const regions = data.regions || [];
+    
+    let html = '<div class="chart-container">';
+    html += `<div class="chart-title">
+      🌍 Geographic Distribution for ${data.genus}
+      ${isDemoData ? '<span class="demo-badge">Demo Data</span>' : ''}
+    </div>`;
+    
+    if (regions.length === 0) {
+      html += '<p style="color:#64748b;">No distribution data available.</p>';
+    } else {
+      html += '<div class="regions-list">';
+      regions.forEach(region => {
+        html += `<div class="region-item">
+          <span><strong>${region.country}</strong> ${region.continent ? `(${region.continent})` : ''}</span>
+          <span style="color:#667eea;font-weight:600;">${region.count} records</span>
+        </div>`;
+      });
+      html += '</div>';
+    }
+    
+    html += '</div>';
+    
+    contentDiv.innerHTML += html;
+  }
+  
+  window.loadBloomData = loadBloomData;
+  
+  // Initialize
+  loadGenera();
+})();
+</script>

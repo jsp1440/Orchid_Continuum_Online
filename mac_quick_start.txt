@@ -1,0 +1,32 @@
+🌺 QUICK START - Run on Your Mac Terminal
+
+=== STEP 1: Install Python packages ===
+pip3 install psycopg2-binary requests
+
+=== STEP 2: Set DATABASE_URL ===
+Copy this command (replace the URL part from Replit Secrets):
+
+export DATABASE_URL="postgresql://neondb_owner:npg_feOt1Ek0KLrF@ep-snowy-forest-a5d1v3hd.us-east-2.aws.neon.tech/neondb?sslmode=require"
+
+=== STEP 3: Download queue_worker.py ===
+Download queue_worker.py from this Replit project to your Mac
+
+=== STEP 4: Run workers ===
+python3 queue_worker.py mac-worker-1 > worker1.log 2>&1 &
+python3 queue_worker.py mac-worker-2 > worker2.log 2>&1 &
+python3 queue_worker.py mac-worker-3 > worker3.log 2>&1 &
+python3 queue_worker.py mac-worker-4 > worker4.log 2>&1 &
+
+=== STEP 5: Monitor ===
+tail -f worker1.log
+
+Or download and run:
+python3 check_harvester_status.py
+
+=== To Stop All Workers ===
+pkill -f queue_worker.py
+
+=== Current Status ===
+- Queue: 34,213 species need images
+- Each worker processes ~10-30 images/min
+- 4 workers = ~40-120 images/min from your Mac!

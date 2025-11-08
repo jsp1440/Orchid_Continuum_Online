@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Featured Articles - Orchid Continuum</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 0;
+        }
+        
+        .widget-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .widget-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        
+        .widget-header h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .widget-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .article-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        .article-card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #f8f9fa;
+        }
+        
+        .article-card-body {
+            padding: 1.25rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .article-card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            line-height: 1.3;
+        }
+        
+        .article-card-excerpt {
+            color: #6c757d;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+        
+        .article-card-meta {
+            font-size: 0.85rem;
+            color: #95a5a6;
+            margin-bottom: 1rem;
+        }
+        
+        .article-card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .article-tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+        
+        .article-card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            text-decoration: none;
+        }
+        
+        .btn-read {
+            background: #6f42c1;
+            color: white;
+        }
+        
+        .btn-read:hover {
+            background: #5a32a3;
+            color: white;
+        }
+        
+        .btn-print {
+            background: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+        
+        .btn-print:hover {
+            background: #e9ecef;
+        }
+        
+        .btn-share {
+            background: #f8f9fa;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+        
+        .btn-share:hover {
+            background: #e9ecef;
+        }
+        
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            padding: 3rem;
+        }
+        
+        .no-articles {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            padding: 3rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="widget-container">
+        <div class="widget-header">
+            <h2>Featured Articles</h2>
+            <p>Latest research and insights from the Orchid Continuum</p>
+        </div>
+        
+        <div id="articlesContainer">
+            <div class="loading">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p>Loading featured articles...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Fetch and render articles
+        async function loadFeaturedArticles() {
+            try {
+                const response = await fetch('/api/articles/featured?limit=8');
+                const articles = await response.json();
+                
+                const container = document.getElementById('articlesContainer');
+                
+                if (articles.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-articles">
+                            <i data-feather="book-open" style="width: 48px; height: 48px; margin-bottom: 1rem;"></i>
+                            <p>No featured articles yet. Check back soon!</p>
+                        </div>
+                    `;
+                    feather.replace();
+                    return;
+                }
+                
+                const grid = document.createElement('div');
+                grid.className = 'articles-grid';
+                
+                articles.forEach(article => {
+                    const card = createArticleCard(article);
+                    grid.appendChild(card);
+                });
+                
+                container.innerHTML = '';
+                container.appendChild(grid);
+                
+                // Replace feather icons
+                feather.replace();
+                
+            } catch (error) {
+                console.error('Error loading articles:', error);
+                document.getElementById('articlesContainer').innerHTML = `
+                    <div class="no-articles">
+                        <p>Error loading articles. Please try again later.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function createArticleCard(article) {
+            const card = document.createElement('div');
+            card.className = 'article-card';
+            
+            let imageHtml;
+            if (article.youtube_url) {
+                // Extract YouTube video ID
+                const videoId = article.youtube_url.split('/').pop().replace('watch?v=', '');
+                imageHtml = `<img src="https://img.youtube.com/vi/${videoId}/maxresdefault.jpg" alt="${article.title}" class="article-card-image" loading="lazy" style="object-fit: cover;">`;
+            } else if (article.hero_image) {
+                imageHtml = `<img src="${article.hero_image.url}" alt="${article.hero_image.alt}" class="article-card-image" loading="lazy">`;
+            } else {
+                imageHtml = '<div class="article-card-image"></div>';
+            }
+            
+            const tagsHtml = article.tags && article.tags.length > 0
+                ? `<div class="article-card-tags">
+                    ${article.tags.slice(0, 3).map(tag => `<span class="article-tag">${tag}</span>`).join('')}
+                   </div>`
+                : '';
+            
+            const authorName = article.author ? article.author.name : 'Unknown';
+            const publishDate = article.published_at ? new Date(article.published_at).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }) : '';
+            
+            card.innerHTML = `
+                ${imageHtml}
+                <div class="article-card-body">
+                    <h3 class="article-card-title">${article.title}</h3>
+                    <p class="article-card-excerpt">${article.excerpt || ''}</p>
+                    <div class="article-card-meta">
+                        By ${authorName}${publishDate ? ' • ' + publishDate : ''}
+                    </div>
+                    ${tagsHtml}
+                    <div class="article-card-actions">
+                        <a href="/articles/${article.slug}" class="action-btn btn-read" target="_blank">
+                            <i data-feather="book-open" style="width: 16px; height: 16px;"></i>
+                            Read
+                        </a>
+                        <button class="action-btn btn-print" onclick="printArticle('${article.slug}')">
+                            <i data-feather="printer" style="width: 16px; height: 16px;"></i>
+                            Print
+                        </button>
+                        <button class="action-btn btn-share" onclick="shareArticle('${article.slug}', '${article.title}')">
+                            <i data-feather="share-2" style="width: 16px; height: 16px;"></i>
+                            Share
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+        
+        function printArticle(slug) {
+            window.open(`/articles/${slug}?print=1`, '_blank');
+        }
+        
+        function shareArticle(slug, title) {
+            const url = `${window.location.origin}/articles/${slug}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    url: url
+                }).catch(err => console.log('Share cancelled'));
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(url)
+                    .then(() => {
+                        alert('Link copied to clipboard!');
+                    })
+                    .catch(() => {
+                        // Ultimate fallback: open Twitter share
+                        const shareUrl = encodeURIComponent(url);
+                        const shareTitle = encodeURIComponent(title);
+                        window.open(`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`, '_blank');
+                    });
+            }
+        }
+        
+        // Load articles when page loads
+        loadFeaturedArticles();
+    </script>
+</body>
+</html>

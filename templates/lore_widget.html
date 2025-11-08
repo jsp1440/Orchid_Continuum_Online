@@ -1,0 +1,269 @@
+<!-- Orchid Lore & Life Widget - Migrated from Famous AI -->
+<!-- Stories, cultural history, community tales -->
+
+<style>
+    .lore-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .lore-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    
+    .lore-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+    }
+    
+    .lore-subtitle {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1.2rem;
+        font-style: italic;
+    }
+    
+    /* Story Cards */
+    .story-grid {
+        display: grid;
+        gap: 2rem;
+    }
+    
+    .story-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 16px;
+        padding: 2rem;
+        transition: all 0.3s ease;
+    }
+    
+    .story-card:hover {
+        border-color: rgba(139, 92, 246, 0.5);
+        box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);
+    }
+    
+    .story-category {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: rgba(139, 92, 246, 0.2);
+        color: #a78bfa;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+    
+    .story-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #ec4899;
+    }
+    
+    .story-excerpt {
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+    }
+    
+    .story-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
+    }
+    
+    .read-more {
+        background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 25px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+    
+    .read-more:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+    }
+    
+    /* Filter Tabs */
+    .filter-tabs {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+        padding: 0.75rem 1.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 25px;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+    }
+    
+    .filter-btn:hover,
+    .filter-btn.active {
+        background: rgba(139, 92, 246, 0.2);
+        border-color: rgba(139, 92, 246, 0.5);
+        color: #a78bfa;
+    }
+    
+    .story-icon {
+        font-size: 3rem;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+        .story-meta {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+    }
+</style>
+
+<div class="lore-container">
+    <div class="lore-header">
+        <h1>📖 Orchid Lore & Life</h1>
+        <p class="lore-subtitle">Discover the fascinating stories, legends, and cultural history of orchids</p>
+    </div>
+    
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+        <button class="filter-btn active" onclick="filterStories('all')">🌍 All Stories</button>
+        <button class="filter-btn" onclick="filterStories('mythology')">🏛️ Mythology</button>
+        <button class="filter-btn" onclick="filterStories('science')">🔬 Science</button>
+        <button class="filter-btn" onclick="filterStories('culture')">🎭 Culture</button>
+        <button class="filter-btn" onclick="filterStories('community')">👥 Community</button>
+    </div>
+    
+    <!-- Story Grid -->
+    <div class="story-grid" id="storyGrid">
+        <!-- Stories will be loaded here -->
+    </div>
+</div>
+
+<script>
+const stories = [
+    {
+        category: 'mythology',
+        icon: '🏛️',
+        title: 'The Legend of Orchis',
+        excerpt: 'In ancient Greek mythology, a young man named Orchis fell in love with a priestess of Dionysus. When his advances were rejected, the gods transformed him into the flower we know today. The Greeks believed orchids were symbols of virility and fertility, and the flower\'s bulbous roots reminded them of the human form. This mythological origin gave orchids their name - derived from the Greek word "orchis" meaning testicle.',
+        author: 'Ancient Greek Mythology',
+        date: 'Classical Era'
+    },
+    {
+        category: 'culture',
+        icon: '🎭',
+        title: 'Victorian Orchid Mania',
+        excerpt: 'During the 19th century, wealthy Victorians became obsessed with collecting rare orchids. Orchid hunters risked their lives exploring remote jungles in Southeast Asia, South America, and Madagascar. Many perished from disease, accidents, or hostile encounters while seeking exotic specimens. A single rare orchid could sell for the equivalent of $30,000 today. This "Orchidelirium" sparked a botanical gold rush that changed horticulture forever.',
+        author: 'Victorian History',
+        date: '1800s'
+    },
+    {
+        category: 'science',
+        icon: '🔬',
+        title: 'Darwin\'s Orchid Prophecy',
+        excerpt: 'In 1862, Charles Darwin received a Madagascar orchid (Angraecum sesquipedale) with a 12-inch nectar tube. He boldly predicted a moth must exist with an equally long tongue to pollinate it. Scientists mocked him - until 1903, when they discovered the Morgan\'s sphinx moth with an 11-inch tongue! This remarkable prediction demonstrated evolution\'s power and proved Darwin\'s theory of co-evolution between plants and pollinators.',
+        author: 'Charles Darwin',
+        date: '1862'
+    },
+    {
+        category: 'culture',
+        icon: '🌸',
+        title: 'Chinese Orchid Poetry',
+        excerpt: 'For over 2,500 years, Chinese scholars have celebrated orchids in poetry and art. Confucius called the orchid "the king of fragrant plants," symbolizing nobility, refinement, and friendship. Chinese painters elevated the orchid to one of the "Four Gentlemen" (along with bamboo, plum blossom, and chrysanthemum) - plants representing the ideal virtues of a scholar. The graceful curves of orchid leaves became a meditation on beauty and simplicity.',
+        author: 'Chinese Cultural Tradition',
+        date: '500 BCE - Present'
+    },
+    {
+        category: 'science',
+        icon: '🍄',
+        title: 'The Orchid-Fungi Partnership',
+        excerpt: 'One of nature\'s most fascinating relationships exists between orchids and mycorrhizal fungi. Orchid seeds are microscopic - basically just embryos with no stored food. They cannot germinate alone! They MUST partner with specific fungi that provide nutrients until the seedling develops. This ancient symbiosis is millions of years old. Some orchids remain dependent on fungi their entire lives, while others become independent after establishing leaves and roots.',
+        author: 'Botanical Science',
+        date: 'Discovery ongoing'
+    },
+    {
+        category: 'mythology',
+        icon: '💎',
+        title: 'Aztec Vanilla Tribute',
+        excerpt: 'The Aztecs cultivated vanilla orchids (Vanilla planifolia) and demanded them as tribute from conquered peoples. They mixed vanilla with cacao to create the sacred drink "xocolatl" - reserved for nobility and warriors. When Spanish conquistador Hernán Cortés tasted this drink in 1519, he brought vanilla to Europe, where it became the world\'s most popular flavoring. The vanilla orchid remains the only orchid cultivated for food.',
+        author: 'Aztec History',
+        date: '1400-1500s'
+    },
+    {
+        category: 'community',
+        icon: '👥',
+        title: 'Modern Orchid Societies',
+        excerpt: 'Today, millions of orchid enthusiasts belong to societies worldwide, sharing knowledge, hosting shows, and preserving rare species. The American Orchid Society (founded 1921) has over 10,000 members. Monthly meetings feature presentations on cultivation, conservation, and species discovery. These passionate communities continue the tradition of orchid appreciation while focusing on sustainable practices and habitat protection rather than wild collection.',
+        author: 'Global Orchid Community',
+        date: '1921 - Present'
+    },
+    {
+        category: 'science',
+        icon: '🌈',
+        title: 'The Quest for Blue Orchids',
+        excerpt: 'Despite producing almost every color imaginable, orchids lack the genetic machinery to create true blue pigments. Scientists have tried for decades to genetically engineer a blue orchid, inserting genes from blue delphiniums and other flowers. While they\'ve achieved lavender and purple shades, a true blue remains elusive. The "blue" orchids sold in stores are actually white Phalaenopsis dyed with blue ink - a temporary effect that fades as new blooms appear!',
+        author: 'Genetic Research',
+        date: 'Ongoing Challenge'
+    }
+];
+
+function loadStories(filter = 'all') {
+    const grid = document.getElementById('storyGrid');
+    const filteredStories = filter === 'all' 
+        ? stories 
+        : stories.filter(s => s.category === filter);
+    
+    grid.innerHTML = filteredStories.map(story => `
+        <div class="story-card" data-category="${story.category}">
+            <div class="story-icon">${story.icon}</div>
+            <span class="story-category">${story.category.charAt(0).toUpperCase() + story.category.slice(1)}</span>
+            <h2 class="story-title">${story.title}</h2>
+            <p class="story-excerpt">${story.excerpt}</p>
+            <div class="story-meta">
+                <div>
+                    <strong>${story.author}</strong><br>
+                    <span>${story.date}</span>
+                </div>
+                <a href="#" class="read-more" onclick="alert('Full story feature coming soon!'); return false;">
+                    Read More →
+                </a>
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterStories(category) {
+    // Update active button
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Load filtered stories
+    loadStories(category);
+}
+
+// Initialize
+loadStories();
+</script>

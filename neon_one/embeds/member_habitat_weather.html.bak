@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<!-- 
+  🌤️ Habitat/Weather Comparison Widget
+  Self-contained embed for Neon One CMS
+  Compares local climate with orchid native habitat
+-->
+<div id="habitat-weather-widget" role="region" aria-label="Habitat Weather Comparison">
+  <style>
+    #habitat-weather-widget {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+      border-radius: 16px;
+      color: white;
+    }
+    #habitat-weather-widget h2 {
+      margin: 0 0 16px 0;
+      font-size: 26px;
+    }
+    #habitat-weather-widget .search-box {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    #habitat-weather-widget input {
+      padding: 12px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 16px;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    #habitat-weather-widget button {
+      background: #06b6d4;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+    #habitat-weather-widget button:hover {
+      background: #0891b2;
+    }
+    #habitat-weather-widget .comparison {
+      background: white;
+      color: #1f2937;
+      padding: 20px;
+      border-radius: 12px;
+    }
+    #habitat-weather-widget .comparison-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid #e5e7eb;
+      align-items: center;
+    }
+    #habitat-weather-widget .comparison-row:last-child {
+      border-bottom: none;
+    }
+    #habitat-weather-widget .location {
+      font-size: 14px;
+      color: #6b7280;
+      text-align: center;
+    }
+    #habitat-weather-widget .value {
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+    }
+    #habitat-weather-widget .label {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: #4b5563;
+    }
+    #habitat-weather-widget .match-icon {
+      font-size: 24px;
+    }
+    #habitat-weather-widget .banner {
+      background: rgba(255,255,255,0.2);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+  </style>
+
+  <h2>🌤️ Habitat & Weather Match</h2>
+  <p style="margin-bottom:16px;opacity:0.9;">
+    Compare your local climate with an orchid's native habitat
+  </p>
+  
+  <div class="search-box">
+    <input type="text" id="location-input" placeholder="Your location (e.g., Miami, FL)" aria-label="Your location">
+    <input type="text" id="orchid-input" placeholder="Orchid name (e.g., Phalaenopsis amabilis)" aria-label="Orchid name">
+    <button onclick="window.compareHabitat()">🔍 Compare</button>
+  </div>
+  
+  <div id="comparison-results"></div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ============================================================================
+  // CONFIG - CHANGE ME
+  // ============================================================================
+  const CONFIG = {
+    BASE_URL: 'https://your-orchid-app.onrender.com',  // CHANGE ME
+  };
+  // ============================================================================
+  
+  const resultsDiv = document.getElementById('comparison-results');
+  
+  async function compareHabitat() {
+    const location = document.getElementById('location-input').value.trim();
+    const orchid = document.getElementById('orchid-input').value.trim();
+    
+    if (!location || !orchid) {
+      resultsDiv.innerHTML = '<div class="banner">Please enter both location and orchid name.</div>';
+      return;
+    }
+    
+    resultsDiv.innerHTML = '<div class="banner">🌍 Analyzing climate data...</div>';
+    
+    try {
+      const response = await fetch(`${CONFIG.BASE_URL}/api/habitat/compare`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ location, orchid })
+      });
+      
+      if (!response.ok) {
+        throw new Error('API unavailable');
+      }
+      
+      const data = await response.json();
+      renderComparison(data);
+    } catch (error) {
+      resultsDiv.innerHTML = `<div class="banner" style="background:#fef2f2;color:#991b1b;">
+        ⚠️ Weather comparison service temporarily unavailable.<br>
+        This feature requires backend API access.<br><br>
+        <a href="${CONFIG.BASE_URL}/weather-habitat/widget" target="_blank" style="color:#991b1b;font-weight:600;">
+          Try Full Widget →
+        </a>
+      </div>`;
+    }
+  }
+  
+  function renderComparison(data) {
+    const matchIcon = data.match_score > 80 ? '✅' : data.match_score > 60 ? '⚠️' : '❌';
+    
+    let html = '<div class="comparison">';
+    html += `<div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:48px;">${matchIcon}</div>
+      <div style="font-size:20px;font-weight:700;color:#1f2937;">
+        ${data.match_score}% Match
+      </div>
+    </div>`;
+    
+    html += '<div class="comparison-row">';
+    html += '<div class="location">Your Location</div>';
+    html += '<div class="label">Temperature</div>';
+    html += '<div class="location">Native Habitat</div>';
+    html += '</div>';
+    
+    html += '<div class="comparison-row">';
+    html += `<div class="value">${data.your_temp || '--'}°F</div>`;
+    html += '<div class="match-icon">${matchIcon}</div>';
+    html += `<div class="value">${data.native_temp || '--'}°F</div>`;
+    html += '</div>';
+    
+    if (data.your_humidity && data.native_humidity) {
+      html += '<div class="comparison-row">';
+      html += '<div class="location">Humidity</div>';
+      html += '<div></div>';
+      html += '<div class="location">Humidity</div>';
+      html += '</div>';
+      
+      html += '<div class="comparison-row">';
+      html += `<div class="value">${data.your_humidity}%</div>`;
+      html += '<div class="match-icon">${matchIcon}</div>';
+      html += `<div class="value">${data.native_humidity}%</div>`;
+      html += '</div>';
+    }
+    
+    if (data.advice) {
+      html += `<div style="margin-top:20px;padding:16px;background:#f0f9ff;border-radius:8px;color:#1e40af;">
+        <strong>💡 Growing Tip:</strong> ${data.advice}
+      </div>`;
+    }
+    
+    html += '</div>';
+    
+    resultsDiv.innerHTML = html;
+  }
+  
+  window.compareHabitat = compareHabitat;
+})();
+</script>

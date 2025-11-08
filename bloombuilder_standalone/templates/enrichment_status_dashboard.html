@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+
+{% block title %}GBIF/EOL Enrichment Status Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="text-orchid">
+                <i data-feather="activity" class="me-2"></i>
+                GBIF/EOL Data Enrichment Status
+            </h1>
+            <p class="lead text-muted">Real-time monitoring of automated data acquisition and enrichment</p>
+        </div>
+    </div>
+
+    <!-- Overall Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-dark border-orchid">
+                <div class="card-body text-center">
+                    <i data-feather="database" class="text-orchid" style="width: 48px; height: 48px;"></i>
+                    <h3 class="mt-2">{{ stats.total_orchids }}</h3>
+                    <p class="text-muted mb-0">Total Orchids</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-dark border-success">
+                <div class="card-body text-center">
+                    <i data-feather="map-pin" class="text-success" style="width: 48px; height: 48px;"></i>
+                    <h3 class="mt-2">{{ stats.has_gbif_data }}</h3>
+                    <p class="text-muted mb-0">GBIF Data ({{ stats.has_gbif_data_pct }}%)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-dark border-info">
+                <div class="card-body text-center">
+                    <i data-feather="image" class="text-info" style="width: 48px; height: 48px;"></i>
+                    <h3 class="mt-2">{{ stats.has_gdrive_images }}</h3>
+                    <p class="text-muted mb-0">GDrive Images ({{ stats.has_gdrive_images_pct }}%)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-dark border-warning">
+                <div class="card-body text-center">
+                    <i data-feather="globe" class="text-warning" style="width: 48px; height: 48px;"></i>
+                    <h3 class="mt-2">{{ stats.has_habitat }}</h3>
+                    <p class="text-muted mb-0">Habitat Data ({{ stats.has_habitat_pct }}%)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Automated Scheduler Status -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark border-orchid">
+                <div class="card-header bg-orchid text-white">
+                    <h5 class="mb-0">
+                        <i data-feather="clock" class="me-2"></i>
+                        Automated Scheduler Status
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="alert alert-success mb-2">
+                                <strong><i data-feather="check-circle" class="me-1"></i> Image Acquisition:</strong>
+                                <br>Every 2 hours (GBIF/EOL)
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="alert alert-info mb-2">
+                                <strong><i data-feather="refresh-cw" class="me-1"></i> Metadata Updates:</strong>
+                                <br>Every 2 hours
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="alert alert-warning mb-2">
+                                <strong><i data-feather="moon" class="me-1"></i> Full Refresh:</strong>
+                                <br>Daily at 3:00 AM
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mb-0 text-muted">
+                        <i data-feather="info" class="me-1"></i>
+                        <strong>How It Works:</strong> The system automatically queries GBIF for occurrence data and coordinates, 
+                        downloads images from GBIF/EOL, stores them in Google Drive, and enriches orchid records with habitat, 
+                        distribution, and phenotypic trait data.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enrichment Progress -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i data-feather="trending-up" class="me-2"></i>
+                        Enrichment Progress
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="text-muted">AI Analysis Coverage</label>
+                        <div class="progress" style="height: 30px;">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                 style="width: {{ stats.has_ai_analysis_pct }}%">
+                                {{ stats.has_ai_analysis }} / {{ stats.total_orchids }} ({{ stats.has_ai_analysis_pct }}%)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="text-muted">GBIF Distribution Data</label>
+                        <div class="progress" style="height: 30px;">
+                            <div class="progress-bar bg-info" role="progressbar" 
+                                 style="width: {{ stats.has_gbif_data_pct }}%">
+                                {{ stats.has_gbif_data }} / {{ stats.total_orchids }} ({{ stats.has_gbif_data_pct }}%)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="text-muted">Google Drive Images</label>
+                        <div class="progress" style="height: 30px;">
+                            <div class="progress-bar bg-warning" role="progressbar" 
+                                 style="width: {{ stats.has_gdrive_images_pct }}%">
+                                {{ stats.has_gdrive_images }} / {{ stats.total_orchids }} ({{ stats.has_gdrive_images_pct }}%)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="text-muted">Habitat Information</label>
+                        <div class="progress" style="height: 30px;">
+                            <div class="progress-bar bg-orchid" role="progressbar" 
+                                 style="width: {{ stats.has_habitat_pct }}%">
+                                {{ stats.has_habitat }} / {{ stats.total_orchids }} ({{ stats.has_habitat_pct }}%)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GBIF Data Examples (Proof of Acquisition) -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark border-success">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i data-feather="check-square" class="me-2"></i>
+                        GBIF Data Acquired (Proof of Active Enrichment)
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if gbif_examples %}
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Scientific Name</th>
+                                    <th>Countries</th>
+                                    <th>Occurrences</th>
+                                    <th>Coordinates</th>
+                                    <th>Last Updated</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for example in gbif_examples %}
+                                <tr>
+                                    <td>{{ example.id }}</td>
+                                    <td>{{ example.name }}</td>
+                                    <td>
+                                        {% if example.countries %}
+                                        <span class="badge bg-success">{{ example.countries|length }} countries</span>
+                                        <small class="text-muted">{{ example.countries[:3]|join(', ') }}</small>
+                                        {% else %}
+                                        <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ example.occurrence_count }}</td>
+                                    <td>{{ example.coordinates_count }} points</td>
+                                    <td>{{ example.updated.strftime('%Y-%m-%d %H:%M') if example.updated else '-' }}</td>
+                                    <td>
+                                        <a href="/orchid/{{ example.id }}/botanical-analysis" class="btn btn-sm btn-orchid">
+                                            View Map
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No GBIF data acquired yet. Scheduler will run every 2 hours.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Drive Images (Proof of Image Acquisition) -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark border-info">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i data-feather="image" class="me-2"></i>
+                        Google Drive Images Acquired
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if gdrive_examples %}
+                    <div class="row">
+                        {% for orchid in gdrive_examples[:6] %}
+                        <div class="col-md-2 mb-3">
+                            <div class="card bg-dark border-secondary">
+                                <img src="/gdrive-image/{{ orchid.google_drive_id }}" 
+                                     class="card-img-top" 
+                                     alt="{{ orchid.scientific_name or orchid.display_name }}"
+                                     style="height: 150px; object-fit: cover;">
+                                <div class="card-body p-2">
+                                    <small class="text-muted">{{ orchid.scientific_name or orchid.display_name }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <p class="text-muted mb-0">
+                        <strong>{{ stats.has_gdrive_images }}</strong> orchids have Google Drive images acquired from GBIF/EOL
+                    </p>
+                    {% else %}
+                    <p class="text-muted">No Google Drive images acquired yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark border-secondary">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i data-feather="activity" class="me-2"></i>
+                        Recent Enrichment Activity (Last 24 Hours)
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_updates %}
+                    <div class="table-responsive">
+                        <table class="table table-dark table-sm">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Habitat</th>
+                                    <th>GDrive</th>
+                                    <th>Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for orchid in recent_updates %}
+                                <tr>
+                                    <td>{{ orchid.id }}</td>
+                                    <td>{{ orchid.scientific_name or orchid.display_name }}</td>
+                                    <td>
+                                        {% if orchid.native_habitat %}
+                                        <i data-feather="check" class="text-success"></i>
+                                        {% else %}
+                                        <i data-feather="x" class="text-muted"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if orchid.google_drive_id %}
+                                        <i data-feather="check" class="text-success"></i>
+                                        {% else %}
+                                        <i data-feather="x" class="text-muted"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ orchid.updated_at.strftime('%Y-%m-%d %H:%M') if orchid.updated_at else '-' }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No recent updates in the last 24 hours.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-dark border-orchid">
+                <div class="card-header bg-orchid text-white">
+                    <h5 class="mb-0">
+                        <i data-feather="zap" class="me-2"></i>
+                        Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <a href="/admin/field-completion" class="btn btn-orchid me-2">
+                        <i data-feather="bar-chart-2" class="me-1"></i>
+                        Field Completion Dashboard
+                    </a>
+                    <a href="/admin/enrichment" class="btn btn-info me-2">
+                        <i data-feather="edit" class="me-1"></i>
+                        Manual Enrichment
+                    </a>
+                    <button onclick="location.reload()" class="btn btn-success">
+                        <i data-feather="refresh-cw" class="me-1"></i>
+                        Refresh Status
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-refresh every 30 seconds
+    setTimeout(() => location.reload(), 30000);
+    
+    // Initialize Feather icons
+    feather.replace();
+</script>
+{% endblock %}

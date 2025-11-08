@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: orchid-api
+    env: python
+    plan: free
+    buildCommand: pip install -r apps/api/requirements.txt
+    startCommand: uvicorn apps.api.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: ALLOWED_ORIGINS
+        value: https://*.neonone.com,https://fcos.org
+  - type: worker
+    name: orchid-worker
+    env: python
+    plan: free
+    buildCommand: pip install -r apps/api/requirements.txt
+    startCommand: python apps/worker/worker.py
+    autoDeploy: true
+
+databases:
+  - name: orchid-postgres
+    plan: free
+
+redis:
+  - name: orchid-redis
+    plan: free

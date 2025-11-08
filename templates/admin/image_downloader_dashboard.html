@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+{% block title %}Image Downloader System - Orchid Continuum{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i data-feather="download-cloud"></i> 
+                Image Downloader System
+            </h1>
+            <p class="lead">
+                Download and organize 105,000+ orchid images from GBIF and EOL to Google Drive
+            </p>
+        </div>
+    </div>
+
+    <!-- Status Cards -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i data-feather="database"></i> GBIF Images
+                    </h5>
+                    <h2 id="gbif-downloaded">0</h2>
+                    <p class="mb-0">
+                        <span id="gbif-total">0</span> total | 
+                        <span id="gbif-remaining">0</span> remaining
+                    </p>
+                    <div class="progress mt-2" style="height: 10px;">
+                        <div id="gbif-progress-bar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <small id="gbif-percent">0%</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i data-feather="globe"></i> EOL Images
+                    </h5>
+                    <h2 id="eol-downloaded">0</h2>
+                    <p class="mb-0">
+                        <span id="eol-total">0</span> total | 
+                        <span id="eol-remaining">0</span> remaining
+                    </p>
+                    <div class="progress mt-2" style="height: 10px;">
+                        <div id="eol-progress-bar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <small id="eol-percent">0%</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Combined Progress -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Overall Progress</h5>
+                    <h2 id="total-downloaded">0</h2>
+                    <p class="text-muted">
+                        <span id="total-images">0</span> total images | 
+                        <span id="total-remaining">0</span> remaining
+                    </p>
+                    <div class="progress" style="height: 20px;">
+                        <div id="total-progress-bar" class="progress-bar bg-success" role="progressbar" style="width: 0%">
+                            <span id="total-percent">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Controls -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Download Controls</h5>
+                    
+                    <div id="status-message" class="alert" style="display: none;"></div>
+                    
+                    <div class="row mt-3">
+                        <!-- Test Download -->
+                        <div class="col-md-4">
+                            <div class="card border-warning">
+                                <div class="card-body">
+                                    <h6 class="card-title">🧪 Test Download</h6>
+                                    <p class="card-text small">Download 5 images to test the system</p>
+                                    <button class="btn btn-warning btn-sm" onclick="startTestDownload()" id="test-btn">
+                                        <i data-feather="check-circle"></i> Test (5 images)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- GBIF Download -->
+                        <div class="col-md-4">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <h6 class="card-title">🔬 GBIF Only</h6>
+                                    <p class="card-text small">Download 10,534 GBIF specimen images</p>
+                                    <input type="number" class="form-control form-control-sm mb-2" id="gbif-limit" placeholder="Limit (blank = all)">
+                                    <button class="btn btn-primary btn-sm" onclick="startDownload('gbif')" id="gbif-btn">
+                                        <i data-feather="download"></i> Start GBIF
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- EOL Download -->
+                        <div class="col-md-4">
+                            <div class="card border-info">
+                                <div class="card-body">
+                                    <h6 class="card-title">🌍 EOL Only</h6>
+                                    <p class="card-text small">Download 95,000 EOL images</p>
+                                    <input type="number" class="form-control form-control-sm mb-2" id="eol-limit" placeholder="Limit (blank = all)">
+                                    <button class="btn btn-info btn-sm" onclick="startDownload('eol')" id="eol-btn">
+                                        <i data-feather="download"></i> Start EOL
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <!-- Download Both -->
+                        <div class="col-12">
+                            <div class="card border-success">
+                                <div class="card-body">
+                                    <h6 class="card-title">🚀 Download Everything</h6>
+                                    <p class="card-text">Download all 105,000+ images from both GBIF and EOL</p>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="small">Batch Size:</label>
+                                            <input type="number" class="form-control form-control-sm" id="batch-size" value="50">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="small">Limit (testing):</label>
+                                            <input type="number" class="form-control form-control-sm" id="both-limit" placeholder="Blank = all">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="small">&nbsp;</label><br>
+                                            <button class="btn btn-success" onclick="startDownload('both')" id="both-btn">
+                                                <i data-feather="download-cloud"></i> Download All Images
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Current Status -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Current Status</h5>
+                    <div id="current-status">
+                        <p class="text-muted"><em>No download in progress</em></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instructions -->
+    <div class="row mt-4 mb-5">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">📖 Instructions</h5>
+                    <ol>
+                        <li><strong>Test First:</strong> Click "Test (5 images)" to download 5 images and verify Google Drive is working</li>
+                        <li><strong>Start Small:</strong> Use "Limit" field to download a specific number of images (e.g., 100) before running the full download</li>
+                        <li><strong>Monitor Progress:</strong> The dashboard updates automatically every 5 seconds</li>
+                        <li><strong>Google Drive Organization:</strong> Images are organized into folders:
+                            <ul>
+                                <li><code>Orchid_Research_Images/GBIF_Specimens/[Genus]/</code></li>
+                                <li><code>Orchid_Research_Images/EOL_Images/</code></li>
+                            </ul>
+                        </li>
+                        <li><strong>Resume Capability:</strong> If download stops, just restart - it will skip already downloaded images</li>
+                        <li><strong>Time Estimate:</strong> ~105,000 images at 0.5s each = ~14.5 hours</li>
+                    </ol>
+                    <div class="alert alert-warning mt-3">
+                        <strong>⚠️ Important:</strong> Keep this browser tab open while downloading. The process runs in the background, but closing the tab will stop it.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-refresh status every 5 seconds
+let statusInterval;
+
+function updateStatus() {
+    fetch('/api/admin/image-downloader/status')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const { progress, is_running, current_source, stats } = data;
+                
+                // Update GBIF stats
+                document.getElementById('gbif-downloaded').textContent = progress.gbif.downloaded.toLocaleString();
+                document.getElementById('gbif-total').textContent = progress.gbif.total.toLocaleString();
+                document.getElementById('gbif-remaining').textContent = progress.gbif.remaining.toLocaleString();
+                document.getElementById('gbif-percent').textContent = progress.gbif.percent + '%';
+                document.getElementById('gbif-progress-bar').style.width = progress.gbif.percent + '%';
+                
+                // Update EOL stats
+                document.getElementById('eol-downloaded').textContent = progress.eol.downloaded.toLocaleString();
+                document.getElementById('eol-total').textContent = progress.eol.total.toLocaleString();
+                document.getElementById('eol-remaining').textContent = progress.eol.remaining.toLocaleString();
+                document.getElementById('eol-percent').textContent = progress.eol.percent + '%';
+                document.getElementById('eol-progress-bar').style.width = progress.eol.percent + '%';
+                
+                // Update total
+                const totalDownloaded = progress.combined.downloaded;
+                const totalImages = progress.combined.total;
+                const totalRemaining = progress.combined.remaining;
+                const totalPercent = totalImages > 0 ? ((totalDownloaded / totalImages) * 100).toFixed(2) : 0;
+                
+                document.getElementById('total-downloaded').textContent = totalDownloaded.toLocaleString();
+                document.getElementById('total-images').textContent = totalImages.toLocaleString();
+                document.getElementById('total-remaining').textContent = totalRemaining.toLocaleString();
+                document.getElementById('total-percent').textContent = totalPercent + '%';
+                document.getElementById('total-progress-bar').style.width = totalPercent + '%';
+                
+                // Update status message
+                if (is_running) {
+                    document.getElementById('current-status').innerHTML = `
+                        <div class="spinner-border spinner-border-sm text-success" role="status"></div>
+                        <strong class="text-success ms-2">Download in progress: ${current_source || 'processing'}...</strong>
+                        ${stats.total_processed ? `<p class="mt-2 mb-0">Processed: ${stats.total_processed} | Success: ${stats.successful_downloads} | Failed: ${stats.failed_downloads}</p>` : ''}
+                    `;
+                    // Disable buttons
+                    document.querySelectorAll('button[id$="-btn"]').forEach(btn => btn.disabled = true);
+                } else {
+                    document.getElementById('current-status').innerHTML = '<p class="text-muted mb-0"><em>No download in progress</em></p>';
+                    // Enable buttons
+                    document.querySelectorAll('button[id$="-btn"]').forEach(btn => btn.disabled = false);
+                }
+            }
+        })
+        .catch(error => console.error('Error updating status:', error));
+}
+
+function startDownload(source) {
+    const limit = source === 'gbif' ? document.getElementById('gbif-limit').value :
+                  source === 'eol' ? document.getElementById('eol-limit').value :
+                  document.getElementById('both-limit').value;
+    
+    const batchSize = document.getElementById('batch-size').value || 50;
+    
+    if (!confirm(`Start downloading ${source.toUpperCase()} images${limit ? ` (limit: ${limit})` : ' (ALL)'}?`)) {
+        return;
+    }
+    
+    fetch('/api/admin/image-downloader/start', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            source: source,
+            batch_size: parseInt(batchSize),
+            limit: limit ? parseInt(limit) : null
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showMessage('Download started! Monitor progress above.', 'success');
+        } else {
+            showMessage('Error: ' + data.error, 'danger');
+        }
+    })
+    .catch(error => {
+        showMessage('Error starting download: ' + error, 'danger');
+    });
+}
+
+function startTestDownload() {
+    if (!confirm('Download 5 test images to verify Google Drive is working?')) {
+        return;
+    }
+    
+    fetch('/api/admin/image-downloader/test', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'}
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showMessage('Test download started! Watch the progress above.', 'success');
+        } else {
+            showMessage('Error: ' + data.error, 'danger');
+        }
+    })
+    .catch(error => {
+        showMessage('Error starting test: ' + error, 'danger');
+    });
+}
+
+function showMessage(message, type) {
+    const msgDiv = document.getElementById('status-message');
+    msgDiv.className = `alert alert-${type}`;
+    msgDiv.textContent = message;
+    msgDiv.style.display = 'block';
+    
+    setTimeout(() => {
+        msgDiv.style.display = 'none';
+    }, 5000);
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    // Load initial status
+    updateStatus();
+    
+    // Auto-refresh every 5 seconds
+    statusInterval = setInterval(updateStatus, 5000);
+    
+    // Initialize Feather icons
+    if (typeof feather !== 'undefined') {
+        feather.replace();
+    }
+});
+</script>
+
+{% endblock %}

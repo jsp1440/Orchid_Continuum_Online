@@ -1,0 +1,560 @@
+{% extends "base.html" %}
+
+{% block title %}Word Playground - Learn Botanical Greek & Latin{% endblock %}
+
+{% block content %}
+<style>
+.playground-hero {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    padding: 60px 20px;
+    margin-bottom: 40px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.playground-hero h1 {
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.playground-hero p {
+    color: rgba(255,255,255,0.95);
+    font-size: 1.2rem;
+}
+
+.game-container {
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.word-parts-bank {
+    margin-bottom: 40px;
+}
+
+.word-part-category {
+    margin-bottom: 25px;
+}
+
+.word-part-category h4 {
+    color: #f093fb;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.word-parts-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.word-part-tile {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    cursor: grab;
+    user-select: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.word-part-tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.word-part-tile:active {
+    cursor: grabbing;
+}
+
+.word-part-tile.dragging {
+    opacity: 0.5;
+}
+
+.drop-zone {
+    min-height: 150px;
+    border: 3px dashed #667eea;
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    background: rgba(102, 126, 234, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.drop-zone.drag-over {
+    background: rgba(102, 126, 234, 0.3);
+    border-color: #f093fb;
+}
+
+.drop-zone.empty {
+    color: rgba(255,255,255,0.5);
+    font-size: 1.2rem;
+}
+
+.dropped-tile {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.dropped-tile:hover {
+    transform: scale(1.05);
+}
+
+.game-controls {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.btn-game {
+    padding: 15px 40px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.btn-check {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+}
+
+.btn-clear {
+    background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+    color: white;
+}
+
+.btn-hint {
+    background: linear-gradient(135deg, #fdbb2d 0%, #22c1c3 100%);
+    color: white;
+}
+
+.btn-game:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.score-board {
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.score-display {
+    font-size: 3rem;
+    color: #f093fb;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.result-message {
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: none;
+    animation: slideIn 0.5s ease;
+}
+
+.result-message.success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    color: white;
+}
+
+.result-message.error {
+    background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+    color: white;
+}
+
+.discovered-words {
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 40px;
+}
+
+.discovered-words h3 {
+    color: #f093fb;
+    margin-bottom: 20px;
+}
+
+.word-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin: 5px;
+    font-weight: 600;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.etymology-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    max-width: 350px;
+    background: rgba(20,20,20,0.95);
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    display: none;
+    z-index: 1000;
+}
+
+.etymology-popup.show {
+    display: block;
+    animation: slideIn 0.5s ease;
+}
+
+.challenge-list {
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 30px;
+}
+
+.challenge-item {
+    background: rgba(102, 126, 234, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    border-left: 4px solid #f093fb;
+}
+
+.challenge-item.completed {
+    opacity: 0.6;
+    border-left-color: #38ef7d;
+}
+</style>
+
+<div class="playground-hero">
+    <h1><i data-feather="layers"></i> Word Playground</h1>
+    <p>Build botanical words from Greek & Latin roots - drag, drop, and discover!</p>
+</div>
+
+<div class="container">
+    <div class="score-board">
+        <div class="score-display" id="scoreDisplay">0</div>
+        <p>Words Discovered: <span id="wordCount">0</span></p>
+    </div>
+
+    <div id="resultMessage" class="result-message"></div>
+
+    <div class="game-container">
+        <h3 style="color: #f093fb; margin-bottom: 25px;"><i data-feather="target"></i> Build a Botanical Word</h3>
+        
+        <div class="drop-zone empty" id="dropZone">
+            Drag word parts here to build botanical terms!
+        </div>
+
+        <div class="game-controls">
+            <button class="btn-game btn-check" onclick="checkWord()">
+                <i data-feather="check-circle"></i> Check Word
+            </button>
+            <button class="btn-game btn-clear" onclick="clearDropZone()">
+                <i data-feather="x-circle"></i> Clear
+            </button>
+            <button class="btn-game btn-hint" onclick="showHint()">
+                <i data-feather="lightbulb"></i> Hint
+            </button>
+        </div>
+
+        <div class="word-parts-bank">
+            <div class="word-part-category">
+                <h4><i data-feather="arrow-right"></i> Prefixes (Beginning)</h4>
+                <div class="word-parts-grid" id="prefixes">
+                    {% for part in word_parts.prefixes %}
+                    <div class="word-part-tile" draggable="true" 
+                         data-affix="{{ part.affix }}"
+                         data-meaning="{{ part.meaning }}"
+                         data-etymology="{{ part.etymology }}"
+                         ondragstart="drag(event)"
+                         onclick="showEtymology('{{ part.affix }}', '{{ part.meaning }}', '{{ part.etymology }}')">
+                        {{ part.affix }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="word-part-category">
+                <h4><i data-feather="square"></i> Roots (Middle)</h4>
+                <div class="word-parts-grid" id="roots">
+                    {% for part in word_parts.roots %}
+                    <div class="word-part-tile" draggable="true" 
+                         data-affix="{{ part.affix }}"
+                         data-meaning="{{ part.meaning }}"
+                         data-etymology="{{ part.etymology }}"
+                         ondragstart="drag(event)"
+                         onclick="showEtymology('{{ part.affix }}', '{{ part.meaning }}', '{{ part.etymology }}')">
+                        {{ part.affix }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="word-part-category">
+                <h4><i data-feather="arrow-left"></i> Suffixes (Ending)</h4>
+                <div class="word-parts-grid" id="suffixes">
+                    {% for part in word_parts.suffixes %}
+                    <div class="word-part-tile" draggable="true" 
+                         data-affix="{{ part.affix }}"
+                         data-meaning="{{ part.meaning }}"
+                         data-etymology="{{ part.etymology }}"
+                         ondragstart="drag(event)"
+                         onclick="showEtymology('{{ part.affix }}', '{{ part.meaning }}', '{{ part.etymology }}')">
+                        {{ part.affix }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="discovered-words" id="discoveredWords" style="display: none;">
+        <h3><i data-feather="award"></i> Your Discoveries</h3>
+        <div id="discoveredList"></div>
+    </div>
+
+    <div class="challenge-list">
+        <h3 style="color: #f093fb; margin-bottom: 20px;"><i data-feather="book-open"></i> Challenge Words to Discover</h3>
+        {% for word in valid_words %}
+        <div class="challenge-item" id="challenge-{{ word.word }}">
+            <strong>{{ word.word.capitalize() }}</strong>: {{ word.definition }}
+            <div style="margin-top: 8px; font-size: 0.9rem; color: rgba(255,255,255,0.7);">
+                Parts: {{ word.parts|join(' + ') }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="etymology-popup" id="etymologyPopup">
+    <h5 id="etymologyAffix"></h5>
+    <p id="etymologyMeaning"></p>
+    <p id="etymologyOrigin" style="font-size: 0.9rem; color: rgba(255,255,255,0.7);"></p>
+</div>
+
+<script>
+let score = 0;
+let discoveredWords = new Set();
+let droppedParts = [];
+
+// Drag and drop handlers
+function drag(event) {
+    event.dataTransfer.setData("text", event.target.dataset.affix);
+    event.target.classList.add('dragging');
+}
+
+function allowDrop(event) {
+    event.preventDefault();
+    document.getElementById('dropZone').classList.add('drag-over');
+}
+
+function drop(event) {
+    event.preventDefault();
+    const dropZone = document.getElementById('dropZone');
+    dropZone.classList.remove('drag-over');
+    
+    const affix = event.dataTransfer.getData("text");
+    if (affix) {
+        addPartToDropZone(affix);
+    }
+}
+
+function addPartToDropZone(affix) {
+    const dropZone = document.getElementById('dropZone');
+    
+    // Remove empty state
+    if (dropZone.classList.contains('empty')) {
+        dropZone.classList.remove('empty');
+        dropZone.innerHTML = '';
+    }
+    
+    // Add dropped tile
+    const tile = document.createElement('div');
+    tile.className = 'dropped-tile';
+    tile.textContent = affix;
+    tile.onclick = () => removePartFromDropZone(tile, affix);
+    
+    dropZone.appendChild(tile);
+    droppedParts.push(affix);
+}
+
+function removePartFromDropZone(tile, affix) {
+    tile.remove();
+    droppedParts = droppedParts.filter(p => p !== affix);
+    
+    // Add empty state if needed
+    const dropZone = document.getElementById('dropZone');
+    if (dropZone.children.length === 0) {
+        dropZone.classList.add('empty');
+        dropZone.textContent = 'Drag word parts here to build botanical terms!';
+    }
+}
+
+function clearDropZone() {
+    const dropZone = document.getElementById('dropZone');
+    dropZone.innerHTML = 'Drag word parts here to build botanical terms!';
+    dropZone.classList.add('empty');
+    droppedParts = [];
+    hideMessage();
+}
+
+async function checkWord() {
+    if (droppedParts.length === 0) {
+        showMessage('Add some word parts first!', 'error');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/university/api/word-playground/validate', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({parts: droppedParts})
+        });
+        
+        const result = await response.json();
+        
+        if (result.valid) {
+            showMessage(`✅ ${result.message}<br><em>"${result.definition}"</em>`, 'success');
+            score += result.score;
+            discoveredWords.add(result.word);
+            updateScore();
+            addDiscoveredWord(result.word, result.definition);
+            markChallengeComplete(result.word);
+            clearDropZone();
+        } else {
+            showMessage(`❌ ${result.message}<br>Try a different combination!`, 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showMessage('Error checking word. Please try again.', 'error');
+    }
+}
+
+function showMessage(text, type) {
+    const msg = document.getElementById('resultMessage');
+    msg.innerHTML = text;
+    msg.className = `result-message ${type}`;
+    msg.style.display = 'block';
+    
+    if (type === 'success') {
+        setTimeout(() => msg.style.display = 'none', 5000);
+    }
+}
+
+function hideMessage() {
+    document.getElementById('resultMessage').style.display = 'none';
+}
+
+function updateScore() {
+    document.getElementById('scoreDisplay').textContent = score;
+    document.getElementById('wordCount').textContent = discoveredWords.size;
+}
+
+function addDiscoveredWord(word, definition) {
+    const container = document.getElementById('discoveredWords');
+    const list = document.getElementById('discoveredList');
+    
+    container.style.display = 'block';
+    
+    const badge = document.createElement('div');
+    badge.className = 'word-badge';
+    badge.innerHTML = `<strong>${word.charAt(0).toUpperCase() + word.slice(1)}</strong>: ${definition}`;
+    
+    list.appendChild(badge);
+}
+
+function markChallengeComplete(word) {
+    const challengeEl = document.getElementById(`challenge-${word}`);
+    if (challengeEl) {
+        challengeEl.classList.add('completed');
+    }
+}
+
+function showHint() {
+    const hints = [
+        "Try combining a prefix + root + suffix!",
+        "Start with 'myco-' (fungus) + 'rhiz' (root) + '-al' (relating to)",
+        "Build 'epiphytic': epi- + phyte + -ic",
+        "Try making words about form: hetero/homo/poly + morph + -ic",
+        "Experiment with different combinations - there are many valid words!"
+    ];
+    
+    const randomHint = hints[Math.floor(Math.random() * hints.length)];
+    showMessage(`💡 Hint: ${randomHint}`, 'success');
+}
+
+function showEtymology(affix, meaning, etymology) {
+    const popup = document.getElementById('etymologyPopup');
+    document.getElementById('etymologyAffix').textContent = affix;
+    document.getElementById('etymologyMeaning').textContent = `Meaning: ${meaning}`;
+    document.getElementById('etymologyOrigin').textContent = etymology;
+    
+    popup.classList.add('show');
+    
+    setTimeout(() => {
+        popup.classList.remove('show');
+    }, 4000);
+}
+
+// Set up drop zone
+const dropZone = document.getElementById('dropZone');
+dropZone.addEventListener('dragover', allowDrop);
+dropZone.addEventListener('drop', drop);
+dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('drag-over');
+});
+
+// Remove dragging class when drag ends
+document.querySelectorAll('.word-part-tile').forEach(tile => {
+    tile.addEventListener('dragend', () => {
+        tile.classList.remove('dragging');
+    });
+});
+</script>
+
+<script>
+// Initialize Feather icons
+if (typeof feather !== 'undefined') {
+    feather.replace();
+}
+</script>
+
+{% endblock %}

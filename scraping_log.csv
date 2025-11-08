@@ -1,0 +1,19 @@
+id,source,url,status,error_message,items_found,items_processed,created_at
+1,roberta_fox,https://robertafox.com,error,"HTTPSConnectionPool(host='robertafox.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x7f53339e75d0>: Failed to resolve 'robertafox.com' ([Errno -2] Name or service not known)""))",0,0,2025-08-21 08:11:02.613545
+2,gary_yong_gee,https://garyyonggee.com,error,"HTTPSConnectionPool(host='garyyonggee.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x7f5332a052d0>: Failed to resolve 'garyyonggee.com' ([Errno -2] Name or service not known)""))",0,0,2025-08-21 08:11:16.96998
+3,gary_yong_gee,https://garyyonggee.com,error,"HTTPSConnectionPool(host='garyyonggee.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x7f4391905e90>: Failed to resolve 'garyyonggee.com' ([Errno -2] Name or service not known)""))",0,0,2025-08-23 16:35:08.883514
+4,roberta_fox,https://robertafox.com,error,"HTTPSConnectionPool(host='robertafox.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x7f4379c0ad90>: Failed to resolve 'robertafox.com' ([Errno -2] Name or service not known)""))",0,0,2025-08-23 16:35:09.090432
+5,gary_yong_gee,https://garyyonggee.com,error,"HTTPSConnectionPool(host='garyyonggee.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x7fe44793f2d0>: Failed to resolve 'garyyonggee.com' ([Errno -2] Name or service not known)""))",0,0,2025-08-23 16:40:11.183665
+6,roberta_fox,https://robertafox.com,error,"HTTPSConnectionPool(host='robertafox.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x7fe447945350>: Failed to resolve 'robertafox.com' ([Errno -2] Name or service not known)""))",0,0,2025-08-23 16:40:11.360866
+8,gary_yong_gee,https://garyyonggee.com,error,"HTTPSConnectionPool(host='garyyonggee.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x7f60914e8750>: Failed to resolve 'garyyonggee.com' ([Errno -2] Name or service not known)""))",0,0,2025-08-23 17:09:26.490362
+9,roberta_fox,https://robertafox.com,error,"HTTPSConnectionPool(host='robertafox.com', port=443): Max retries exceeded with url: / (Caused by NameResolutionError(""<urllib3.connection.HTTPSConnection object at 0x7f607980e5d0>: Failed to resolve 'robertafox.com' ([Errno -2] Name or service not known)""))",0,0,2025-08-23 17:09:26.664604
+10,gary_yong_gee,https://yonggee.name,processing,,0,0,2025-08-24 00:30:35.215386
+11,gary_yong_gee,https://yonggee.name,processing,,0,0,2025-08-24 02:47:41.478284
+12,gary_yong_gee,https://orchids.yonggee.name,success,,0,0,2025-08-24 02:49:38.077952
+13,roberta_fox,https://southcoastorchidsociety.com/bio_RobertaFox.html,error,"('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",0,0,2025-08-24 02:49:38.944745
+14,gary_yong_gee,https://orchids.yonggee.name,success,,0,0,2025-08-24 02:51:31.171524
+15,roberta_fox,https://rlfox.tripod.com/index1.html,success,,9,0,2025-08-24 02:51:31.43569
+16,roberta_fox,https://rlfox.tripod.com/index1.html,processing,,0,0,2025-09-10 09:39:29.975462
+17,roberta_fox,https://rlfox.tripod.com/index1.html,processing,,0,0,2025-09-10 09:40:09.883841
+18,gary_yong_gee,https://orchids.yonggee.name,success,,0,0,2025-09-10 09:40:53.265499
+19,roberta_fox,https://rlfox.tripod.com/index1.html,processing,,0,0,2025-09-10 09:40:53.59516

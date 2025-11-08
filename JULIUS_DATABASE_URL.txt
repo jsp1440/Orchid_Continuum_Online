@@ -1,0 +1,30 @@
+DATABASE_URL for Julius:
+
+postgresql://neondb_owner:npg_feOt1Ek0KLrF@ep-snowy-firefly-afvebui7.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
+
+=========================================
+SETUP INSTRUCTIONS:
+=========================================
+
+1. Create .env file with the DATABASE_URL above:
+   echo 'DATABASE_URL=<paste_url_here>' > .env
+
+2. Launch 32 workers:
+   bash launcher.sh
+
+3. Start watchdog:
+   python -u watchdog.py >> watchdog.log 2>&1 &
+
+4. Verify workers are running:
+   ps aux | grep julius_multi_source_worker | wc -l
+   (Should show 32)
+
+5. Pull 10-minute throughput report to see images/hour!
+
+=========================================
+DATABASE INFO:
+=========================================
+- Type: PostgreSQL (Neon/Replit)
+- Current data: 111,461 images, 1,583 species
+- Tables: harvest_jobs (queue), orchid_images (results), orchid_taxonomy (35,327 species)
+- Ready for 32 workers with optimized params!

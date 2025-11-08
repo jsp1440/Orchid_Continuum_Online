@@ -1,0 +1,229 @@
+<!-- 
+  ORCHID Continuum — Licensed to FCOS (501(c)(3)) for nonprofit use.
+  FCOS branding (colors) applied via design tokens.
+-->
+<!DOCTYPE html>
+<!-- 
+  🔗 Member Taxonomy Linker Widget
+  Self-contained embed for Neon One CMS
+  Auto-link member's plant names to taxonomy database
+-->
+<div id="taxonomy-linker-widget" role="region" aria-label="Taxonomy Linker">
+  <style>
+    #taxonomy-linker-widget {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 2px solid #3b82f6;
+    }
+    #taxonomy-linker-widget h2 {
+      margin: 0 0 16px 0;
+      font-size: 26px;
+      color: #1e40af;
+    }
+    #taxonomy-linker-widget textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      min-height: 120px;
+      margin-bottom: 12px;
+    }
+    #taxonomy-linker-widget button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    #taxonomy-linker-widget button:hover {
+      background: #2563eb;
+    }
+    #taxonomy-linker-widget .results-grid {
+      margin-top: 20px;
+    }
+    #taxonomy-linker-widget .result-item {
+      background: white;
+      padding: 16px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border-left: 4px solid #3b82f6;
+    }
+    #taxonomy-linker-widget .input-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 12px;
+    }
+    #taxonomy-linker-widget .match-card {
+      background: #f0f9ff;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 8px;
+    }
+    #taxonomy-linker-widget .match-name {
+      font-style: italic;
+      font-weight: 600;
+      color: #1e40af;
+      margin-bottom: 4px;
+    }
+    #taxonomy-linker-widget .match-detail {
+      font-size: 14px;
+      color: #64748b;
+      margin: 2px 0;
+    }
+    #taxonomy-linker-widget .confidence-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    #taxonomy-linker-widget .confidence-high {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    #taxonomy-linker-widget .confidence-medium {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    #taxonomy-linker-widget .no-match {
+      color: #dc2626;
+      font-style: italic;
+    }
+    #taxonomy-linker-widget .banner {
+      background: #dbeafe;
+      padding: 12px;
+      border-radius: 8px;
+      color: #1e40af;
+      margin-bottom: 16px;
+    }
+  </style>
+
+  <h2>🔗 Taxonomy Linker</h2>
+  <p style="color:#64748b;margin-bottom:16px;">
+    Paste your orchid list (one per line) and we'll match them to our taxonomy database!
+  </p>
+  
+  <textarea id="plant-list" placeholder="Example:&#10;Phalaenopsis amabilis&#10;Cattleya mossiae&#10;Moth Orchid&#10;Dendrobium nobile" aria-label="Plant list"></textarea>
+  
+  <button onclick="window.resolveNames()" aria-label="Resolve taxonomy">🔍 Match to Taxonomy Database</button>
+  
+  <div id="linker-results"></div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ============================================================================
+  // CONFIG - CHANGE ME
+  // ============================================================================
+  const CONFIG = {
+    BASE_URL: 'https://your-orchid-app.onrender.com',  // CHANGE ME
+  };
+  // ============================================================================
+  
+  const resultsDiv = document.getElementById('linker-results');
+  const textarea = document.getElementById('plant-list');
+  
+  async function resolveNames() {
+    const text = textarea.value.trim();
+    if (!text) {
+      resultsDiv.innerHTML = '<div class="banner">Please enter at least one plant name.</div>';
+      return;
+    }
+    
+    const items = text.split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0);
+    
+    if (items.length === 0) {
+      resultsDiv.innerHTML = '<div class="banner">Please enter at least one plant name.</div>';
+      return;
+    }
+    
+    resultsDiv.innerHTML = '<div class="banner">🔍 Searching taxonomy database...</div>';
+    
+    try {
+      const response = await fetch(`${CONFIG.BASE_URL}/api/member/taxonomy/resolve`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ items: items })
+      });
+      
+      if (!response.ok) throw new Error('API unavailable');
+      
+      const data = await response.json();
+      renderResults(data);
+    } catch (error) {
+      resultsDiv.innerHTML = `<div class="banner" style="background:#fef2f2;color:#991b1b;">
+        ⚠️ Unable to connect to taxonomy database. Please check API configuration.
+      </div>`;
+    }
+  }
+  
+  function renderResults(data) {
+    if (!data.resolved || data.resolved.length === 0) {
+      resultsDiv.innerHTML = '<div class="banner">No results to display.</div>';
+      return;
+    }
+    
+    let html = '<div class="results-grid">';
+    html += `<div class="banner">
+      ✓ Found matches for ${data.total_matched} of ${data.total_input} plants
+    </div>`;
+    
+    data.resolved.forEach(item => {
+      html += '<div class="result-item">';
+      html += `<div class="input-text">🌸 "${item.input}"</div>`;
+      
+      if (item.matches.length === 0) {
+        html += '<p class="no-match">No matches found in database</p>';
+      } else {
+        item.matches.forEach(match => {
+          html += '<div class="match-card">';
+          html += `<div class="match-name">${match.scientific_name} 
+            <span class="confidence-badge confidence-${match.confidence}">${match.confidence}</span>
+          </div>`;
+          
+          if (match.author) {
+            html += `<div class="match-detail"><strong>Author:</strong> ${match.author}</div>`;
+          }
+          if (match.common_names) {
+            html += `<div class="match-detail"><strong>Common:</strong> ${match.common_names}</div>`;
+          }
+          if (match.native_region) {
+            html += `<div class="match-detail"><strong>Native to:</strong> ${match.native_region}</div>`;
+          }
+          if (match.habitat) {
+            html += `<div class="match-detail"><strong>Habitat:</strong> ${match.habitat.substring(0, 100)}${match.habitat.length > 100 ? '...' : ''}</div>`;
+          }
+          
+          html += '</div>';
+        });
+      }
+      
+      html += '</div>';
+    });
+    
+    html += '</div>';
+    resultsDiv.innerHTML = html;
+  }
+  
+  window.resolveNames = resolveNames;
+})();
+</script>

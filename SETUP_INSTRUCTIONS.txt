@@ -1,0 +1,174 @@
+🌺 ORCHID IMAGE DOWNLOADER - MAC SETUP INSTRUCTIONS
+=========================================================
+
+SIMPLE 5-STEP SETUP GUIDE
+
+Total Images: 105,534 (10,534 GBIF + 95,000 EOL)
+Estimated Time: 8-40 hours
+Storage Needed: 100-200 GB
+
+
+STEP 1: OPEN TERMINAL
+-----------------------
+1. Press Command + Space
+2. Type "Terminal"
+3. Press Enter
+
+
+STEP 2: NAVIGATE TO FOLDER
+---------------------------
+Type this command (replace with your actual folder location):
+
+cd ~/Downloads/OrchidImageDownloader
+
+Press Enter
+
+
+STEP 3: INSTALL PYTHON PACKAGES
+--------------------------------
+Copy and paste this command:
+
+pip3 install -r mac_requirements.txt
+
+Press Enter and wait for it to finish
+
+
+STEP 4: CREATE IMAGE FOLDERS
+-----------------------------
+Copy and paste these commands:
+
+mkdir -p static/images/orchid
+mkdir -p static/images/eol
+
+Press Enter after each one
+
+
+STEP 5: SET DATABASE CONNECTION
+--------------------------------
+You need your DATABASE_URL from Replit.
+
+In Replit:
+- Go to Tools → Secrets
+- Find DATABASE_URL
+- Copy the ENTIRE value (starts with postgresql://)
+
+In Terminal, paste this command (replace YOUR_URL with what you copied):
+
+export DATABASE_URL="postgresql://neondb_owner:YOUR_PASSWORD_HERE@ep-snow..."
+
+Press Enter
+
+
+STEP 6: START DOWNLOADING
+--------------------------
+
+FOR GBIF IMAGES (10,534 images, ~8-10 hours):
+
+python3 download_to_static.py
+
+Press Enter and let it run!
+
+
+FOR EOL IMAGES (95,000 images, ~30-40 hours):
+
+Open a NEW Terminal window and run:
+
+python3 download_eol_images.py
+
+Press Enter
+
+
+WHAT YOU'LL SEE
+---------------
+The script will show progress like this:
+
+[1/10,534] ID 1338
+  ✅ Downloaded 1.49 MB
+  🔒 SHA256: 2e200590a17d6cba...
+  📂 Saved: /static/images/orchid/orchid_1338.jpg
+  💾 Database updated
+
+
+TO CHECK PROGRESS
+-----------------
+Open a new Terminal window and type:
+
+ls static/images/orchid/ | wc -l
+
+This shows how many GBIF images have downloaded
+
+
+ls static/images/eol/ | wc -l
+
+This shows how many EOL images have downloaded
+
+
+IF YOU NEED TO STOP
+-------------------
+Press Control + C in the Terminal window
+
+To resume later, just run the same command again:
+python3 download_to_static.py
+
+The script automatically resumes where it left off!
+
+
+KEEP MAC AWAKE
+--------------
+To prevent your Mac from sleeping during download:
+
+caffeinate -i python3 download_to_static.py
+
+
+TROUBLESHOOTING
+---------------
+
+Problem: "pip3: command not found"
+Solution: Install Python first:
+brew install python3
+
+Problem: "Permission denied"
+Solution: Make script executable:
+chmod +x download_to_static.py
+chmod +x download_eol_images.py
+
+Problem: Downloads are slow
+This is normal! Each image takes ~1 second to download and verify.
+
+
+WHEN COMPLETE
+-------------
+You'll see:
+
+🎉 DOWNLOAD COMPLETE!
+Images downloaded: 10,534
+Images failed: 0
+
+All images will be in:
+~/Downloads/OrchidImageDownloader/static/images/
+
+You can then:
+- Upload to Google Drive
+- Deploy to Render
+- Use however you want!
+
+
+YOUR DATABASE URL
+-----------------
+Get this from Replit → Tools → Secrets → DATABASE_URL
+
+It looks like:
+postgresql://neondb_owner:npg_feOt1Ek0KLrF@ep-snow-forest-12345.us-east-2.aws.neon.tech/neondb
+
+
+QUESTIONS?
+----------
+- GBIF download: ~3 hours minimum
+- EOL download: ~26 hours minimum
+- Total: ~30-35 hours for everything
+- Can run both at same time in separate Terminal windows
+- Scripts auto-resume if interrupted
+- All images get proper species names
+- All images verified with SHA256 hashes
+
+Let it run overnight and check in the morning! 🌺

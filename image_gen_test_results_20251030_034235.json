@@ -1,0 +1,60 @@
+{
+  "Paphiopedilum rothschildianum_scientific": {
+    "dalle3": {
+      "provider": "OpenAI",
+      "model": "DALL-E 3",
+      "success": false,
+      "image_url": null,
+      "processing_time": 1.582941,
+      "cost": 0.0,
+      "error": "Error code: 400 - {'error': {'message': 'Billing hard limit has been reached', 'type': 'image_generation_user_error', 'param': None, 'code': 'billing_hard_limit_reached'}}"
+    },
+    "flux_replicate": {
+      "provider": "Replicate",
+      "model": "FLUX SCHNELL",
+      "success": false,
+      "image_url": null,
+      "processing_time": 0.280086,
+      "cost": 0.0,
+      "error": "ReplicateError Details:\ntitle: Insufficient credit\nstatus: 402\ndetail: You have insufficient credit to run this model. Go to https://replicate.com/account/billing#billing to purchase credit. Once you purchase credit, please wait a few minutes before trying again."
+    },
+    "flux_together": {
+      "provider": "Together AI",
+      "model": "FLUX SCHNELL",
+      "success": true,
+      "image_url": "https://api.together.ai/shrt/nYe7zcKleHz0nZpu",
+      "processing_time": 3.764485,
+      "cost": 0.0,
+      "error": null
+    }
+  },
+  "Paphiopedilum rothschildianum_artistic": {
+    "dalle3": {
+      "provider": "OpenAI",
+      "model": "DALL-E 3",
+      "success": false,
+      "image_url": null,
+      "processing_time": 1.351605,
+      "cost": 0.0,
+      "error": "Error code: 400 - {'error': {'message': 'Billing hard limit has been reached', 'type': 'image_generation_user_error', 'param': None, 'code': 'billing_hard_limit_reached'}}"
+    },
+    "flux_replicate": {
+      "provider": "Replicate",
+      "model": "FLUX SCHNELL",
+      "success": false,
+      "image_url": null,
+      "processing_time": 0.108342,
+      "cost": 0.0,
+      "error": "ReplicateError Details:\nstatus: 429\ndetail: Request was throttled. Your rate limit for creating predictions is reduced to 6 requests per minute with a burst of 1 requests until you add a payment method. Your rate limit resets in ~5s."
+    },
+    "flux_together": {
+      "provider": "Together AI",
+      "model": "FLUX SCHNELL",
+      "success": true,
+      "image_url": "https://api.together.ai/shrt/udBl5RkmJouLU2nG",
+      "processing_time": 2.203568,
+      "cost": 0.0,
+      "error": null
+    }
+  }
+}

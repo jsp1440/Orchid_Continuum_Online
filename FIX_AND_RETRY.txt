@@ -1,0 +1,29 @@
+═══════════════════════════════════════════════════════════
+FIX APPLIED - RETRY PUSH
+═══════════════════════════════════════════════════════════
+
+PROBLEM: validation/eol_extracted_images.json (1.6GB) was too big
+
+FIXED: 
+✅ Removed the large JSON file
+✅ Added to .gitignore
+
+═══════════════════════════════════════════════════════════
+NOW RUN THESE COMMANDS TO RETRY:
+═══════════════════════════════════════════════════════════
+
+cd /home/runner/orchid_clean_export
+
+git add .
+
+git commit -m "Remove large JSON file"
+
+git push -u origin main
+
+═══════════════════════════════════════════════════════════
+THIS WILL WORK NOW!
+═══════════════════════════════════════════════════════════
+
+The file is removed, push should succeed this time!
+
+═══════════════════════════════════════════════════════════

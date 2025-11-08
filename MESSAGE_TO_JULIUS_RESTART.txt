@@ -1,0 +1,39 @@
+CRITICAL UPDATE - System Fixed for 24/7 Operation
+
+I've fixed the root cause of the stopping issue:
+- Hardened the job seeder to handle database connection resets
+- Added connection pooling with keepalives
+- Queue will NEVER empty (maintains 15,000 jobs minimum)
+- Added database constraints to prevent duplicate jobs
+
+WHAT YOU NEED TO DO:
+
+1. Restart your 32 workers (they stopped when queue emptied):
+
+pkill -f julius_multi_source_worker
+sleep 2
+bash launcher.sh
+
+2. Restart your watchdog:
+
+pkill -f watchdog
+sleep 2
+python -u watchdog.py >> watchdog.log 2>&1 &
+
+3. Verify they're running:
+
+ps aux | grep julius_multi_source_worker | wc -l
+(Should show 32)
+
+WHAT'S DIFFERENT NOW:
+- Job seeder has connection pooling and error handling
+- It will survive database connection resets
+- Queue maintains 15,000 jobs automatically
+- System will run until all 35,327 species have 30+ images
+
+Current status:
+- Queue: 15,000 jobs ready
+- Progress: 112,875 images (10.65% of 1M)
+- Remaining: 946,935 images
+
+Once your workers restart, they'll run continuously until the job is done!

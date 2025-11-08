@@ -1,0 +1,172 @@
+<!-- 
+  ORCHID Continuum — Licensed to FCOS (501(c)(3)) for nonprofit use.
+  FCOS branding (colors) applied via design tokens.
+-->
+<!DOCTYPE html>
+<!-- 
+  🎯 Orchid Bingo Widget
+  Self-contained embed for Neon One CMS
+  Educational game for kids and public
+-->
+<div id="orchid-bingo-widget" role="region" aria-label="Orchid Bingo Game">
+  <style>
+    #orchid-bingo-widget {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      border-radius: 16px;
+      color: white;
+    }
+    #orchid-bingo-widget h2 {
+      margin: 0 0 16px 0;
+      font-size: 28px;
+      text-align: center;
+    }
+    #orchid-bingo-widget .bingo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    #orchid-bingo-widget .bingo-cell {
+      aspect-ratio: 1;
+      background: #fce7f3;
+      border: 2px solid #ec4899;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 12px;
+      text-align: center;
+      padding: 4px;
+      color: #831843;
+      font-weight: 600;
+    }
+    #orchid-bingo-widget .bingo-cell:hover {
+      background: #fbcfe8;
+    }
+    #orchid-bingo-widget .bingo-cell.marked {
+      background: #ec4899;
+      color: white;
+    }
+    #orchid-bingo-widget .bingo-cell.free {
+      background: #10b981;
+      color: white;
+      font-size: 16px;
+    }
+    #orchid-bingo-widget button {
+      background: white;
+      color: #f5576c;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+    }
+    #orchid-bingo-widget button:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    #orchid-bingo-widget .score {
+      background: rgba(255,255,255,0.2);
+      padding: 12px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+  </style>
+
+  <h2>🎯 Orchid Bingo</h2>
+  <div class="score">Matches: <span id="bingo-score">0</span>/24</div>
+  <div class="bingo-grid" id="bingo-grid"></div>
+  <button onclick="window.newBingoGame()">🎲 New Game</button>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ============================================================================
+  // CONFIG - CHANGE ME
+  // ============================================================================
+  const CONFIG = {
+    BASE_URL: 'https://your-orchid-app.onrender.com',  // CHANGE ME
+  };
+  // ============================================================================
+  
+  const gridDiv = document.getElementById('bingo-grid');
+  const scoreSpan = document.getElementById('bingo-score');
+  
+  // Orchid bingo terms (educational)
+  const bingoTerms = [
+    'Phalaenopsis', 'Cattleya', 'Dendrobium', 'Vanilla', 'Oncidium',
+    'Cymbidium', 'Vanda', 'Paphiopedilum', 'Miltonia', 'Zygopetalum',
+    'Brassia', 'Odontoglossum', 'Epidendrum', 'Masdevallia', 'Maxillaria',
+    'Bulbophyllum', 'Coelogyne', 'Laelia', 'Ludisia', 'Psychopsis',
+    'Rhynchostylis', 'Sophronitis', 'Stanhopea', 'Tolumnia'
+  ];
+  
+  let markedCells = new Set();
+  let currentBoard = [];
+  
+  function shuffleArray(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+  
+  function generateBoard() {
+    currentBoard = shuffleArray(bingoTerms);
+    markedCells = new Set();
+    markedCells.add(12); // Mark center as FREE
+    renderBoard();
+  }
+  
+  function renderBoard() {
+    let html = '';
+    for (let i = 0; i < 25; i++) {
+      const isFree = i === 12;
+      const isMarked = markedCells.has(i);
+      const cssClass = isFree ? 'bingo-cell free' : (isMarked ? 'bingo-cell marked' : 'bingo-cell');
+      const text = isFree ? '★ FREE ★' : currentBoard[i];
+      html += `<div class="${cssClass}" onclick="window.markBingoCell(${i})" role="button" tabindex="0">${text}</div>`;
+    }
+    gridDiv.innerHTML = html;
+    scoreSpan.textContent = markedCells.size - 1; // Exclude FREE space
+  }
+  
+  function markBingoCell(index) {
+    if (index === 12) return; // FREE space always marked
+    
+    if (markedCells.has(index)) {
+      markedCells.delete(index);
+    } else {
+      markedCells.add(index);
+    }
+    renderBoard();
+  }
+  
+  function newBingoGame() {
+    generateBoard();
+  }
+  
+  window.markBingoCell = markBingoCell;
+  window.newBingoGame = newBingoGame;
+  
+  // Initialize
+  generateBoard();
+})();
+</script>

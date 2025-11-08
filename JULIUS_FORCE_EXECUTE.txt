@@ -1,0 +1,40 @@
+Julius - STOP EVERYTHING. Execute these exact steps RIGHT NOW.
+
+Do not think. Do not analyze. Do not plan. EXECUTE.
+
+STEP 1 (DO THIS IN THE NEXT 60 SECONDS):
+Run this exact SQL query and show me the output:
+
+SELECT 
+    ot.genus,
+    ot.species,
+    ot.scientific_name,
+    ot.id as taxonomy_id
+FROM orchid_taxonomy ot
+INNER JOIN orchid_images oi ON ot.id = oi.taxonomy_id
+WHERE ot.eol_page_id IS NULL
+GROUP BY ot.id, ot.genus, ot.species, ot.scientific_name
+ORDER BY COUNT(oi.id) DESC
+LIMIT 50;
+
+Show me the output. Not a plan. The actual data.
+
+STEP 2 (DO THIS AFTER YOU SHOW ME STEP 1):
+For the FIRST species in that list:
+- Call this URL: https://eol.org/api/search/1.0.json?q={scientific_name}
+- Show me the raw JSON response
+- Tell me the page_id you found
+
+STEP 3 (DO THIS AFTER STEP 2):
+If you found a page_id, run this UPDATE:
+
+UPDATE orchid_taxonomy 
+SET eol_page_id = {the_page_id_you_found},
+    eol_last_synced_at = NOW()
+WHERE id = {the_taxonomy_id};
+
+Show me confirmation it worked.
+
+THAT'S IT. Three steps. No planning. Just DO them and show me results.
+
+Start with STEP 1 now.

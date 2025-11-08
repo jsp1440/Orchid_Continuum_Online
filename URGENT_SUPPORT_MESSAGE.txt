@@ -1,0 +1,31 @@
+Project URL: https://replit.com/@fcospresident/workspace
+
+URGENT - Multiple Critical Issues Blocking Project
+
+ISSUE 1: .replit file is EMPTY and cannot be edited
+- The .replit file shows in file tree but has 0 lines (completely empty)
+- When I try to open it, I only see "Generate Code with AI" prompts, no actual code
+- Cannot edit it through the UI or shell (system says "forbidden")
+- Need you to restore the .replit file with this configuration:
+
+modules = ["postgresql-16", "nodejs-20", "python3"]
+
+NOTE: Remove python-3.11 from modules - that was causing Python package conflicts
+
+ISSUE 2: Python version conflict (related to Issue 1)
+- All Python packages stuck in Python 3.11 directories
+- Python 3.12 is running but can't import packages
+- Getting errors: "cannot import name '_imaging' from 'PIL'"
+- Need package reinstallation for Python 3.12 after .replit is fixed
+
+ISSUE 3: Copy/paste produces garbled URL-encoded text
+- Copying text from ANY file and pasting into external apps produces gibberish
+- Example: "Subject%3A%20Cannot%20edit" instead of "Subject: Cannot edit"
+- Makes it impossible to share code or communicate outside Replit
+- This is blocking normal workflow
+
+All three issues are blocking work. The empty .replit file is the root cause of issues 1 and 2.
+
+Please fix urgently.
+
+Thank you

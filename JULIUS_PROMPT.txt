@@ -1,0 +1,62 @@
+URGENT EOL TAXONOMY RESCUE MISSION FOR JULIUS AI
+=================================================
+
+Hi Julius,
+
+I need your help with an URGENT data rescue mission for The Orchid Continuum project.
+
+BACKGROUND:
+- We have 95,000 Encyclopedia of Life (EOL) orchid image URLs
+- All 95,000 have page_ids but ZERO taxonomy data (no genus, species, or scientific names)
+- EOL API is inaccessible from Replit due to SSL errors
+- These URLs may expire soon - we need to preserve the taxonomy NOW
+
+YOUR TASK:
+Run the attached Python script to fetch taxonomy data from EOL's API for all 95,000 page_ids.
+
+FILES I'M SENDING YOU:
+1. EXTERNAL_FETCH_EOL_TAXONOMY.py (the script - RUN THIS)
+2. EOL_IMAGES_COMPLETE_95000.csv (input data with 95,000 page_ids)
+
+INSTRUCTIONS:
+
+Step 1: Install dependencies
+pip install requests
+
+Step 2: Run the script
+python3 EXTERNAL_FETCH_EOL_TAXONOMY.py EOL_IMAGES_COMPLETE_95000.csv eol_taxonomy_harvested.csv
+
+Step 3: Let it run (estimated 13-26 hours)
+- Queries EOL API for each page_id
+- Extracts: scientific_name, genus, species, family, common_names
+- Progress updates every 100 records
+- Safe rate limiting (0.5 sec/request)
+
+Step 4: Send back the results
+Upload eol_taxonomy_harvested.csv when complete
+
+WHAT THE OUTPUT WILL LOOK LIKE:
+Columns: page_id, scientific_name, genus, species, family, common_names, api_status, error
+
+EXPECTED RESULTS:
+- Success: ~70,000-80,000 records with full taxonomy
+- No data: ~10,000-20,000 (EOL has no scientificName)
+- Errors: ~5,000-10,000 (API failures)
+
+QUALITY ASSURANCE:
+The harvested data will be validated against 7,439 verified orchid species before import.
+Only taxonomy matching verified genera/species will be imported (accuracy over speed).
+
+TIMELINE:
+- Start: NOW (as soon as you read this)
+- Check-in: 1-2 hours (user will check your progress)
+- Complete: Return eol_taxonomy_harvested.csv when done
+
+PRIORITY: 🔴 CRITICAL URGENT
+This is a data rescue mission - EOL URLs may expire permanently.
+
+Questions? Let us know if EOL API is unresponsive.
+
+Thanks Julius! Start whenever you're ready.
+
+- Orchid Continuum Team

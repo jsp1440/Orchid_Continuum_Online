@@ -1,0 +1,71 @@
+{
+  "cycle_started": "2025-10-05T17:38:04.499368",
+  "sources": {
+    "gary_yong_gee": {
+      "success": false,
+      "error": "No API endpoints available"
+    },
+    "roberta_fox": {
+      "success": true,
+      "collected": 26,
+      "rejected": 1332,
+      "duration": 74.77095246315002
+    },
+    "ron_parsons": {
+      "success": true,
+      "collected": 1,
+      "photogallery": 1,
+      "personal": 0,
+      "duration": 41.34018158912659
+    },
+    "svo_species": {
+      "success": true,
+      "collected": 0,
+      "genera": [
+        "Sarcochilus",
+        "Catasetum",
+        "Zygopetalum",
+        "Cattleya"
+      ],
+      "duration": 0.08993768692016602
+    },
+    "svo_hybrids": {
+      "success": true,
+      "collected": 0,
+      "rejected": 0,
+      "duration": 33.329758405685425
+    }
+  },
+  "summary": {
+    "total_collected": 27,
+    "cycle_duration": 171.79058623313904,
+    "sources_processed": 5,
+    "stats": {
+      "gary_yong_gee": {
+        "collected": 0,
+        "errors": 0,
+        "last_run": null
+      },
+      "roberta_fox": {
+        "collected": 26,
+        "errors": 1332,
+        "last_run": "2025-10-05T17:39:26.526530"
+      },
+      "ron_parsons": {
+        "collected": 1,
+        "errors": 0,
+        "last_run": "2025-10-05T17:40:12.867716"
+      },
+      "svo_species": {
+        "collected": 0,
+        "errors": 0,
+        "last_run": "2025-10-05T17:40:17.958508"
+      },
+      "svo_hybrids": {
+        "collected": 0,
+        "errors": 0,
+        "last_run": "2025-10-05T17:40:56.289364"
+      }
+    }
+  }
+}

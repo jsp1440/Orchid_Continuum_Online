@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!-- 
+  📚 My Orchid Collection Widget
+  Self-contained embed for Neon One CMS
+  Member-linked collection with care tracking
+-->
+<div id="my-collection-widget" role="region" aria-label="My Orchid Collection">
+  <style>
+    #my-collection-widget {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 2px solid #10b981;
+    }
+    #my-collection-widget h2 {
+      margin: 0 0 16px 0;
+      font-size: 26px;
+      color: #065f46;
+    }
+    #my-collection-widget .auth-banner {
+      background: #fef3c7;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      color: #92400e;
+      text-align: center;
+    }
+    #my-collection-widget .collection-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    #my-collection-widget .collection-item {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border-left: 4px solid #10b981;
+    }
+    #my-collection-widget .item-name {
+      font-size: 18px;
+      font-weight: 600;
+      font-style: italic;
+      color: #065f46;
+      margin-bottom: 8px;
+    }
+    #my-collection-widget .item-detail {
+      font-size: 14px;
+      color: #6b7280;
+      margin: 4px 0;
+    }
+    #my-collection-widget button {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    #my-collection-widget button:hover {
+      background: #059669;
+    }
+    #my-collection-widget .add-form {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    #my-collection-widget input {
+      padding: 10px;
+      border: 2px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 14px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  </style>
+
+  <h2>📚 My Orchid Collection</h2>
+  
+  <div id="collection-content"></div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ============================================================================
+  // CONFIG - CHANGE ME
+  // ============================================================================
+  const CONFIG = {
+    BASE_URL: 'https://your-orchid-app.onrender.com',  // CHANGE ME
+    REQUIRES_AUTH: true  // Set to false to allow anonymous collections
+  };
+  // ============================================================================
+  
+  const contentDiv = document.getElementById('collection-content');
+  let collection = [];
+  
+  // Load collection from localStorage for demo
+  function loadLocalCollection() {
+    try {
+      const stored = localStorage.getItem('orchid_collection');
+      return stored ? JSON.parse(stored) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+  
+  function saveLocalCollection() {
+    try {
+      localStorage.setItem('orchid_collection', JSON.stringify(collection));
+    } catch (e) {
+      console.error('Failed to save collection');
+    }
+  }
+  
+  async function checkAuth() {
+    if (!CONFIG.REQUIRES_AUTH) return true;
+    
+    try {
+      const response = await fetch(`${CONFIG.BASE_URL}/api/auth/status`, {
+        credentials: 'include'
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data.authenticated;
+      }
+    } catch (e) {
+      // Auth check failed
+    }
+    return false;
+  }
+  
+  function renderCollection() {
+    if (collection.length === 0) {
+      contentDiv.innerHTML = `
+        <div class="auth-banner">
+          Your collection is empty! Add your first orchid below.
+        </div>
+        ${renderAddForm()}
+      `;
+      return;
+    }
+    
+    let html = renderAddForm();
+    html += '<div class="collection-grid">';
+    collection.forEach((item, index) => {
+      html += `<div class="collection-item">
+        <div class="item-name">${item.name}</div>
+        ${item.acquired ? `<div class="item-detail">📅 Added: ${item.acquired}</div>` : ''}
+        ${item.notes ? `<div class="item-detail">📝 ${item.notes}</div>` : ''}
+        <button onclick="window.removeFromCollection(${index})">🗑️ Remove</button>
+      </div>`;
+    });
+    html += '</div>';
+    
+    contentDiv.innerHTML = html;
+  }
+  
+  function renderAddForm() {
+    return `<div class="add-form">
+      <h3 style="margin:0 0 12px 0;color:#065f46;">Add to Collection</h3>
+      <input type="text" id="orchid-name" placeholder="Orchid name (e.g., Phalaenopsis amabilis)" aria-label="Orchid name">
+      <input type="text" id="orchid-notes" placeholder="Notes (optional)" aria-label="Notes">
+      <button onclick="window.addToCollection()" style="width:100%;">➕ Add Orchid</button>
+    </div>`;
+  }
+  
+  function addToCollection() {
+    const nameInput = document.getElementById('orchid-name');
+    const notesInput = document.getElementById('orchid-notes');
+    
+    const name = nameInput.value.trim();
+    if (!name) {
+      alert('Please enter an orchid name');
+      return;
+    }
+    
+    collection.push({
+      name: name,
+      notes: notesInput.value.trim(),
+      acquired: new Date().toLocaleDateString()
+    });
+    
+    saveLocalCollection();
+    renderCollection();
+  }
+  
+  function removeFromCollection(index) {
+    if (confirm('Remove this orchid from your collection?')) {
+      collection.splice(index, 1);
+      saveLocalCollection();
+      renderCollection();
+    }
+  }
+  
+  async function initialize() {
+    const isAuth = await checkAuth();
+    
+    if (CONFIG.REQUIRES_AUTH && !isAuth) {
+      contentDiv.innerHTML = `<div class="auth-banner">
+        🔒 Please log in to view your collection.<br><br>
+        <a href="${CONFIG.BASE_URL}/auth/login" style="color:#065f46;font-weight:600;">Log In →</a>
+      </div>`;
+      return;
+    }
+    
+    // Load from localStorage (in production, this would load from backend)
+    collection = loadLocalCollection();
+    renderCollection();
+  }
+  
+  window.addToCollection = addToCollection;
+  window.removeFromCollection = removeFromCollection;
+  
+  initialize();
+})();
+</script>

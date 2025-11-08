@@ -1,0 +1,45 @@
+═══════════════════════════════════════════════════════════
+GIT PUSH FIX - EXACT COMMANDS TO RUN
+═══════════════════════════════════════════════════════════
+
+PROBLEM: 5.2GB of data files in external_databases blocking Git push
+- 3.8GB in eol_traitbank/
+- 1.4GB in zenodo_data/
+
+SOLUTION: Remove from Git but keep on server
+
+═══════════════════════════════════════════════════════════
+STEP 1: Remove Git Lock
+═══════════════════════════════════════════════════════════
+
+rm -f /home/runner/workspace/.git/index.lock
+
+═══════════════════════════════════════════════════════════
+STEP 2: Remove Large Folders from Git Tracking
+═══════════════════════════════════════════════════════════
+
+cd /home/runner/workspace
+git rm -r --cached external_databases/eol_traitbank
+git rm -r --cached external_databases/zenodo_data
+
+═══════════════════════════════════════════════════════════
+STEP 3: Commit and Push
+═══════════════════════════════════════════════════════════
+
+git add .gitignore
+git add .
+git commit -m "Fix: Remove large data files from Git (5.2GB), keep on server"
+git push origin main
+
+═══════════════════════════════════════════════════════════
+WHAT THIS DOES:
+═══════════════════════════════════════════════════════════
+
+✅ Keeps files on Replit server (app still works)
+✅ Removes them from Git history (no more push errors)
+✅ .gitignore prevents re-adding them
+✅ Render gets code only, not 5GB of data
+
+═══════════════════════════════════════════════════════════
+
+Copy/paste these commands one at a time!

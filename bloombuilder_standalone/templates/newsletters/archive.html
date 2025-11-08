@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter Archive - Five Cities Orchid Society</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .archive-header {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .newsletter-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .newsletter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .newsletter-date {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        .newsletter-preview {
+            color: #666;
+            margin: 1rem 0;
+        }
+        .btn-read {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        .btn-read:hover {
+            transform: scale(1.05);
+            color: white;
+        }
+        .featured-badge {
+            background: #ffd700;
+            color: #333;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="archive-header text-center">
+            <i data-feather="mail" style="width: 48px; height: 48px; color: #667eea;"></i>
+            <h1 class="mt-3">Newsletter Archive</h1>
+            <p class="lead">Browse past issues of our monthly newsletter featuring member photos, articles, and orchid care tips</p>
+        </div>
+
+        <div class="row">
+            {% if newsletters and newsletters|length > 0 %}
+                {% for newsletter in newsletters %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="newsletter-card">
+                        {% if loop.index0 == 0 %}
+                        <span class="featured-badge">Latest Issue</span>
+                        {% endif %}
+                        
+                        <div class="newsletter-date">
+                            <i data-feather="calendar"></i>
+                            {{ newsletter.month }} {{ newsletter.year }}
+                        </div>
+                        
+                        <h4 class="mt-3">{{ newsletter.title or 'Monthly Newsletter' }}</h4>
+                        
+                        <div class="newsletter-preview">
+                            {{ newsletter.preview_text or 'Member photos, articles, growing tips, and FCOS updates' }}
+                        </div>
+                        
+                        <div class="d-flex gap-2 mt-3">
+                            {% if newsletter.pdf_url %}
+                            <a href="{{ newsletter.pdf_url }}" class="btn btn-read btn-sm" target="_blank">
+                                <i data-feather="download" style="width: 16px; height: 16px;"></i>
+                                Download PDF
+                            </a>
+                            {% endif %}
+                            
+                            {% if newsletter.web_url %}
+                            <a href="{{ newsletter.web_url }}" class="btn btn-outline-primary btn-sm">
+                                <i data-feather="external-link" style="width: 16px; height: 16px;"></i>
+                                Read Online
+                            </a>
+                            {% endif %}
+                        </div>
+                        
+                        {% if newsletter.featured_photos %}
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <i data-feather="camera"></i>
+                                {{ newsletter.featured_photos|length }} Member Photos
+                            </small>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info text-center">
+                        <i data-feather="info"></i>
+                        <h4>Newsletter Archive Coming Soon!</h4>
+                        <p>We're building our newsletter archive. Check back soon for past issues featuring:</p>
+                        <ul class="list-unstyled mt-3">
+                            <li>📸 Member-submitted orchid photos</li>
+                            <li>📰 Educational articles and care tips</li>
+                            <li>📅 Event announcements and recaps</li>
+                            <li>🌺 Featured orchid of the month</li>
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

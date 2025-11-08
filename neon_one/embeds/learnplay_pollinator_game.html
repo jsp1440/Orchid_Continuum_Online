@@ -1,0 +1,238 @@
+<!-- 
+  ORCHID Continuum — Licensed to FCOS (501(c)(3)) for nonprofit use.
+  FCOS branding (colors) applied via design tokens.
+-->
+<!DOCTYPE html>
+<!-- 
+  🐝 Pollinator Match Game Widget
+  Self-contained embed for Neon One CMS
+  Educational game to guess orchid pollinators
+-->
+<div id="pollinator-game-widget" role="region" aria-label="Pollinator Match Game">
+  <style>
+    #pollinator-game-widget {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 30px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      border-radius: 16px;
+      color: white;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    #pollinator-game-widget h2 {
+      margin: 0 0 12px 0;
+      font-size: 28px;
+      text-align: center;
+    }
+    #pollinator-game-widget .subtitle {
+      text-align: center;
+      margin-bottom: 24px;
+      opacity: 0.9;
+    }
+    #pollinator-game-widget .question-card {
+      background: white;
+      color: #2d3748;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    #pollinator-game-widget .species-name {
+      font-size: 22px;
+      font-style: italic;
+      font-weight: 600;
+      color: #10b981;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    #pollinator-game-widget .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    #pollinator-game-widget .option-btn {
+      padding: 20px;
+      background: #f7fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 18px;
+      text-align: center;
+    }
+    #pollinator-game-widget .option-btn:hover {
+      background: #edf2f7;
+      border-color: #10b981;
+    }
+    #pollinator-game-widget .option-btn.selected {
+      background: #d1fae5;
+      border-color: #10b981;
+    }
+    #pollinator-game-widget .option-btn.correct {
+      background: #d1fae5;
+      border-color: #10b981;
+      color: #065f46;
+    }
+    #pollinator-game-widget .option-btn.wrong {
+      background: #fee2e2;
+      border-color: #ef4444;
+      color: #991b1b;
+    }
+    #pollinator-game-widget .result {
+      background: #f0f9ff;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      color: #0c4a6e;
+    }
+    #pollinator-game-widget button {
+      background: white;
+      color: #10b981;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 12px;
+    }
+    #pollinator-game-widget button:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    #pollinator-game-widget .banner {
+      background: rgba(255,255,255,0.2);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+  </style>
+
+  <h2>🐝 Pollinator Match Game</h2>
+  <p class="subtitle">Guess which pollinator visits this orchid!</p>
+  
+  <div id="game-content"></div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ============================================================================
+  // CONFIG - CHANGE ME
+  // ============================================================================
+  const CONFIG = {
+    BASE_URL: 'https://your-orchid-app.onrender.com',  // CHANGE ME
+  };
+  // ============================================================================
+  
+  const contentDiv = document.getElementById('game-content');
+  let currentQuestion = null;
+  let selectedOption = null;
+  let revealed = false;
+  
+  async function loadQuestion() {
+    revealed = false;
+    selectedOption = null;
+    contentDiv.innerHTML = '<div class="banner">🌸 Loading new question...</div>';
+    
+    try {
+      const response = await fetch(`${CONFIG.BASE_URL}/api/taxonomy/pollinator`);
+      if (!response.ok) throw new Error('API unavailable');
+      
+      currentQuestion = await response.json();
+      renderQuestion();
+    } catch (error) {
+      contentDiv.innerHTML = `<div class="banner" style="background:#fef2f2;color:#991b1b;">
+        ⚠️ Unable to load pollinator game. Please check API configuration.
+      </div>`;
+    }
+  }
+  
+  function renderQuestion() {
+    if (!currentQuestion) return;
+    
+    let html = '<div class="question-card">';
+    html += `<div class="species-name">${currentQuestion.species}</div>`;
+    
+    if (currentQuestion.common_name) {
+      html += `<p style="text-align:center;color:#64748b;margin-bottom:20px;">"${currentQuestion.common_name}"</p>`;
+    }
+    
+    html += '<p style="text-align:center;font-weight:600;margin-bottom:16px;color:#4b5563;">
+      What pollinates this orchid?
+    </p>';
+    
+    html += '<div class="options-grid">';
+    currentQuestion.options.forEach((option, index) => {
+      let className = 'option-btn';
+      if (revealed) {
+        if (index === currentQuestion.correct_index) {
+          className += ' correct';
+        } else if (index === selectedOption) {
+          className += ' wrong';
+        }
+      } else if (index === selectedOption) {
+        className += ' selected';
+      }
+      
+      const pollIcon = {
+        'Bee': '🐝',
+        'Moth': '🦋',
+        'Hummingbird': '🐦',
+        'Fly': '🪰',
+        'Wind': '💨',
+        'Unknown': '❓'
+      }[option] || '🌸';
+      
+      html += `<div class="${className}" onclick="window.selectPollinator(${index})" role="button" tabindex="0">
+        <div style="font-size:32px;margin-bottom:8px;">${pollIcon}</div>
+        ${option}
+      </div>`;
+    });
+    html += '</div>';
+    
+    if (revealed) {
+      html += `<div class="result">
+        <strong>✓ Correct Answer:</strong> ${currentQuestion.options[currentQuestion.correct_index]}<br>
+        <strong>Why?</strong> ${currentQuestion.rationale}
+        ${currentQuestion.demo ? '<br><em>(Note: This is based on heuristics; actual pollinator data coming soon!)</em>' : ''}
+      </div>`;
+    }
+    
+    html += '</div>';
+    
+    if (!revealed && selectedOption !== null) {
+      html += '<button onclick="window.revealAnswer()">🔍 Reveal Answer</button>';
+    }
+    if (revealed) {
+      html += '<button onclick="window.nextQuestion()">➡️ Next Orchid</button>';
+    }
+    
+    contentDiv.innerHTML = html;
+  }
+  
+  function selectPollinator(index) {
+    if (revealed) return;
+    selectedOption = index;
+    renderQuestion();
+  }
+  
+  function revealAnswer() {
+    revealed = true;
+    renderQuestion();
+  }
+  
+  function nextQuestion() {
+    loadQuestion();
+  }
+  
+  window.selectPollinator = selectPollinator;
+  window.revealAnswer = revealAnswer;
+  window.nextQuestion = nextQuestion;
+  
+  // Initialize
+  loadQuestion();
+})();
+</script>

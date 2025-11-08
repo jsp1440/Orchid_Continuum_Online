@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<!-- 
+  🌺 Orchid of the Day Widget
+  Self-contained embed for Neon One CMS
+  No external dependencies
+-->
+<div id="orchid-of-the-day-widget" role="region" aria-label="Orchid of the Day">
+  <style>
+    #orchid-of-the-day-widget {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 16px;
+      color: white;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    #orchid-of-the-day-widget h2 {
+      margin: 0 0 16px 0;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    #orchid-of-the-day-widget .orchid-card {
+      background: white;
+      color: #333;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    #orchid-of-the-day-widget .orchid-name {
+      font-size: 22px;
+      font-weight: 600;
+      font-style: italic;
+      margin: 0 0 8px 0;
+      color: #667eea;
+    }
+    #orchid-of-the-day-widget .orchid-info {
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+    #orchid-of-the-day-widget .orchid-label {
+      font-weight: 600;
+      color: #666;
+    }
+    #orchid-of-the-day-widget button {
+      background: white;
+      color: #667eea;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+    }
+    #orchid-of-the-day-widget button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    #orchid-of-the-day-widget .banner {
+      background: #fff3cd;
+      color: #856404;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      border: 1px solid #ffc107;
+    }
+    #orchid-of-the-day-widget .error {
+      background: #f8d7da;
+      color: #721c24;
+      border-color: #f5c6cb;
+    }
+    #orchid-of-the-day-widget .loading {
+      text-align: center;
+      padding: 40px;
+      font-size: 18px;
+    }
+  </style>
+
+  <h2>🌺 Orchid of the Day</h2>
+  <div id="otd-content"></div>
+  <button onclick="window.loadOrchidOfTheDay()" aria-label="Load new orchid">🔄 New Orchid</button>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ============================================================================
+  // CONFIG - CHANGE ME
+  // ============================================================================
+  const CONFIG = {
+    // Set this to your deployed Render/Replit base URL
+    BASE_URL: 'https://your-orchid-app.onrender.com',  // CHANGE ME
+    
+    // Optional: Set to false if you want to hide AI status banners
+    SHOW_AI_BANNER: true
+  };
+  // ============================================================================
+  
+  const contentDiv = document.getElementById('otd-content');
+  
+  async function checkAIStatus() {
+    if (!CONFIG.SHOW_AI_BANNER) return null;
+    try {
+      const response = await fetch(`${CONFIG.BASE_URL}/api/ai/status`, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data;
+      }
+    } catch (e) {
+      // Silently fail - AI status check is optional
+    }
+    return null;
+  }
+  
+  async function fetchRandomOrchid() {
+    try {
+      const response = await fetch(`${CONFIG.BASE_URL}/api/taxonomy/random`, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`API returned ${response.status}`);
+      }
+      
+      const orchid = await response.json();
+      return orchid;
+    } catch (error) {
+      console.error('Failed to fetch orchid:', error);
+      return null;
+    }
+  }
+  
+  function renderOrchid(orchid, aiStatus) {
+    let html = '';
+    
+    // Show AI banner if disabled
+    if (aiStatus && aiStatus.status === 'disabled') {
+      html += `<div class="banner">ℹ️ AI features are currently paused to conserve resources. Basic orchid information is still available!</div>`;
+    }
+    
+    if (!orchid) {
+      html += `<div class="banner error">
+        ⚠️ Unable to connect to the Orchid API. Please check that BASE_URL is set correctly in the widget code.
+        <br><br>Current BASE_URL: <code>${CONFIG.BASE_URL}</code>
+      </div>`;
+      contentDiv.innerHTML = html;
+      return;
+    }
+    
+    html += `<div class="orchid-card">
+      <h3 class="orchid-name">${orchid.scientific_name || orchid.genus + ' ' + orchid.species || 'Unknown Orchid'}</h3>`;
+    
+    if (orchid.common_names) {
+      html += `<p class="orchid-info"><span class="orchid-label">Common Name:</span> ${orchid.common_names}</p>`;
+    }
+    
+    if (orchid.genus) {
+      html += `<p class="orchid-info"><span class="orchid-label">Genus:</span> ${orchid.genus}</p>`;
+    }
+    
+    if (orchid.author) {
+      html += `<p class="orchid-info"><span class="orchid-label">Author:</span> ${orchid.author}</p>`;
+    }
+    
+    if (orchid.distribution) {
+      html += `<p class="orchid-info"><span class="orchid-label">Distribution:</span> ${orchid.distribution}</p>`;
+    }
+    
+    html += `</div>`;
+    contentDiv.innerHTML = html;
+  }
+  
+  async function loadOrchidOfTheDay() {
+    contentDiv.innerHTML = '<div class="loading">🌸 Loading orchid...</div>';
+    
+    const [orchid, aiStatus] = await Promise.all([
+      fetchRandomOrchid(),
+      checkAIStatus()
+    ]);
+    
+    renderOrchid(orchid, aiStatus);
+  }
+  
+  // Make function globally accessible for button onclick
+  window.loadOrchidOfTheDay = loadOrchidOfTheDay;
+  
+  // Auto-load on page load
+  loadOrchidOfTheDay();
+})();
+</script>

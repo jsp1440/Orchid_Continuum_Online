@@ -1,0 +1,268 @@
+INFO:root:📊 Connecting to database: postgresql://neondb_owner:****@ep-snowy-firefly-afvebui7.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
+INFO:root:Database tables created successfully
+INFO:root:✅ Replit Auth initialized successfully
+INFO:judging_standards:Initializing judging standards...
+INFO:judging_standards:Judging standards initialization complete
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+INFO:googleapiclient.discovery_cache:file_cache is only supported with oauth2client<4.0.0
+INFO:google_cloud_integration:✅ Google Cloud services initialized successfully
+INFO:google_cloud_integration:🌤️ Google Cloud Integration initialized
+INFO:root:🌤️ Google Cloud integration available for AI Breeder Pro
+INFO:svo_enhanced_scraper:🌤️ Using enhanced Google Cloud integration
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): oauth2.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://oauth2.googleapis.com:443 "POST /token HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): www.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://www.googleapis.com:443 "GET /drive/v3/files?q=mimeType%3D%22application%2Fvnd.google-apps.spreadsheet%22+and+name+%3D+%22SVO_Hybrid_Data%22&pageSize=1000&supportsAllDrives=True&includeItemsFromAllDrives=True&fields=kind%2CnextPageToken%2Cfiles%28id%2Cname%2CcreatedTime%2CmodifiedTime%29 HTTP/1.1" 200 None
+DEBUG:urllib3.connectionpool:https://www.googleapis.com:443 "POST /drive/v3/files?supportsAllDrives=True HTTP/1.1" 403 None
+ERROR:svo_enhanced_scraper:❌ Failed to initialize Google Sheets: APIError: [403]: The user's Drive storage quota has been exceeded.
+INFO:svo_enhanced_scraper:🌅 Sunset Valley Orchids Enhanced Scraper initialized
+INFO:svo_enhanced_scraper:🧬 Retrieved 12 SVO breeding records for AI analysis
+INFO:root:✅ Loaded 12 real SVO breeding records
+INFO:root:🧬 AI Breeder Assistant Pro widget registered successfully
+INFO:root:✅ AOS Glossary system initialized successfully
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:orchid_nursery_directory:🌱 Loaded 12 nurseries into directory
+INFO:orchid_nursery_directory:🌱 Orchid Nursery Directory initialized with 12 nurseries
+INFO:orchid_society_directory:🏛️ Loaded 15 societies into directory
+INFO:orchid_society_directory:🏛️ Orchid Society Directory initialized with 15 societies
+DEBUG:htmldate.validators:minimum date setting: 1995-01-01 00:00:00
+INFO:admin_system:✅ Admin authentication properly configured for Fcospresident@gmail.com
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+INFO:google_sheets_service:Google Sheets connection established successfully
+INFO:gbif_routes:🌍 GBIF Integration routes registered successfully
+INFO:ai_orchid_routes:🤖 AI Orchid Identification routes registered successfully
+INFO:simplified_orchid_mapping:🗺️ Simplified Orchid Geographic Mapping system initialized
+INFO:geographic_mapping_routes:🗺️ Geographic Mapping routes registered successfully
+INFO:simplified_analytics:📊 Simplified Analytics system initialized
+INFO:enhanced_mapping_routes:🔬 Enhanced Mapping routes registered successfully
+INFO:database_backup_system:🛡️ Database backup system initialized
+INFO:comprehensive_system_monitor:🚀 Comprehensive System Monitor initialized
+DEBUG:matplotlib:matplotlib data path: /home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/matplotlib/mpl-data
+DEBUG:matplotlib:CONFIGDIR=/home/runner/workspace/.config/matplotlib
+DEBUG:matplotlib:interactive is False
+DEBUG:matplotlib:platform is linux
+DEBUG:matplotlib:CACHEDIR=/home/runner/workspace/.cache/matplotlib
+DEBUG:matplotlib.font_manager:Using fontManager instance from /home/runner/workspace/.cache/matplotlib/fontlist-v390.json
+INFO:automated_repair_system:🔧 Automated Repair System initialized
+INFO:gbif_botanical_service:🌿✅ GBIF Botanical Service initialized and ready
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.gbif.org:443
+DEBUG:urllib3.connectionpool:https://api.gbif.org:443 "GET /v1/species/search?q=Orchidaceae&rank=FAMILY&limit=10 HTTP/1.1" 200 8354
+INFO:external_databases.gbif_integration:🌺 Found Orchidaceae family key: 201312665
+INFO:gbif_botanical_service:✅ GBIF Botanical Service initialized successfully
+INFO:trefle_admin_routes:🌿 Trefle Admin Routes registered successfully
+INFO:routes:✅ GBIF Botanical Service imported successfully
+INFO:report_routes:🔄 Started automatic cleanup scheduler
+INFO:routes:📊 Report generation system registered successfully
+INFO:routes:🛡️ Integrity guardian imported successfully
+WARNING:philosophy_quiz_system:Widget integration not available: Working outside of request context.
+
+This typically means that you attempted to use functionality that needed
+an active HTTP request. Consult the documentation on testing for
+information about how to avoid this problem.
+INFO:routes:✅ Philosophy Quiz system loaded successfully
+INFO:routes:🔇 Automatic image health monitoring disabled
+INFO:weather_habitat_routes:Weather/Habitat Comparison routes registered successfully
+INFO:mycorrhizal_research_system:🍄 Mycorrhizal Research System initialized
+INFO:climate_research_system:🌡️ Climate Research System initialized
+INFO:global_orchid_climate_analysis:🌍 Global Orchid Climate Analysis System initialized
+WARNING:unified_climate_command_center:Mycorrhizal research system not available
+WARNING:unified_climate_command_center:Climate research system not available
+INFO:ai_research_assistant:🤖 AI Research Assistant initialized
+INFO:research_data_manager:🗄️ Research database initialized
+INFO:research_data_manager:📊 Research Data Manager initialized
+INFO:unified_climate_command_center:🎯 Unified Climate Research Command Center initialized
+INFO:literature_search_system:📚 Literature Search Engine initialized
+INFO:historical_climate_system:🌡️ Historical Climate Analyzer initialized
+INFO:ai_research_director:🎯 PRIMARY MISSION INITIALIZED: Global Carbon Revolution: Autonomous Orchid-Fungal Climate Solution
+INFO:ai_research_director:🚀 ACTIVATED 5 AUTONOMOUS PROTOCOLS FOR WORLD SALVATION
+INFO:ai_research_director:🤖🌍 AUTONOMOUS AI CLIMATE COMMANDER ACTIVATED - MISSION: SAVE THE WORLD
+INFO:botany_lab_stats:🧪 Botany Lab Stats & Imports system registered successfully
+INFO:scheduler:🚫 DEMO MODE: Background scheduler disabled for stability
+INFO:scheduler:✅ Demo will run with existing data only
+INFO:routes:AI Widget Builder registered successfully
+INFO:routes:Orchid Debugger System registered successfully
+INFO:routes:Photo Provenance System registered successfully
+INFO:member_feedback_system:Member Feedback System registered successfully
+INFO:routes:Member Feedback System registered successfully
+INFO:admin_monitoring_dashboard:Admin Monitoring Dashboard registered successfully
+INFO:routes:Admin Monitoring Dashboard registered successfully
+INFO:member_authentication:Member Authentication System registered successfully
+INFO:routes:Member Authentication System registered successfully
+INFO:visitor_demo_system:Visitor Demo System initialized successfully
+INFO:game_infrastructure:Game Infrastructure System initialized successfully
+INFO:orchid_memory_game:Orchid Memory Game System initialized successfully
+INFO:rebus_puzzle_system:Rebus Puzzle System initialized successfully
+INFO:visitor_teasers:Visitor Teasers System registered successfully
+INFO:visitor_teasers:Membership template filters added successfully
+INFO:member_personalization:Member Personalization System initialized successfully
+INFO:orchid_care_manager:Orchid Care Manager System initialized successfully
+INFO:routes:Visitor Teasers System registered successfully
+INFO:routes:Visitor Demo System registered successfully
+INFO:routes:Game Infrastructure registered successfully
+INFO:routes:Memory Game System registered successfully
+INFO:routes:Rebus Puzzle System registered successfully
+INFO:routes:Member Personalization System registered successfully
+INFO:routes:Orchid Care Manager registered successfully
+INFO:routes:Care Wheel Generator registered successfully
+INFO:routes:Media Migration System registered successfully
+INFO:aos_baker_culture_routes:AOS-Baker Culture Sheet routes registered successfully
+INFO:routes:AOS-Baker Culture Sheet system registered successfully
+INFO:routes:🔇 Automatic vigilant monitoring disabled
+INFO:ai_system_monitor:🔇 AI monitoring disabled
+INFO:routes:🤖 AI SYSTEM MONITOR: Auto-started intelligent functionality validation
+INFO:routes:📊 Admin Control Center DISABLED for stability
+INFO:routes:🔬 Admin SVO Research Dashboard registered successfully
+INFO:routes:🔧 Automated Repair System DISABLED for stability
+INFO:admin_quick_enrichment:⚡ Quick Enrichment system initialized
+INFO:routes:⚡ Quick Enrichment system registered successfully
+INFO:automated_batch_enrichment:🤖 Automated Batch Enrichment system initialized
+INFO:routes:🤖 Automated Batch Enrichment system registered successfully
+INFO:routes:🚀 ORCHID CONTINUUM: Enhanced monitoring and auto-repair systems active!
+INFO:science_observation_widget:🔬 Science Observation Widget registered successfully
+INFO:science_observation_widget:🔬 Science Observation Widget already registered
+INFO:routes:🔬 Science Observation Widget registered successfully
+INFO:routes:✅ 35th Parallel Hypothesis Testing System registered
+INFO:routes:Orchid Trivia Challenge Widget registered successfully
+INFO:processing_pipeline_monitor:✅ Processing pipeline database tables initialized
+INFO:processing_pipeline_monitor:🔍 Processing Pipeline Monitor initialized
+INFO:processing_monitor_routes:🔍 Processing Monitor routes registered successfully
+INFO:routes:🔍 Processing Pipeline Monitor registered successfully
+INFO:ai_orchid_chat:🤖 AI Orchid Chat interface registered successfully
+INFO:routes:🤖 AI Orchid Chat interface registered successfully
+INFO:care_helper_widget:🌺 Care Helper widget registered successfully
+INFO:routes:🌺 Care Helper widget registered successfully
+INFO:guided_care_form:🌺 Guided Care Form registered successfully
+INFO:routes:🌺 Guided Care Form registered successfully
+INFO:orchid_care_widget_package:🎨 Orchid Care Widget Package registered successfully
+INFO:routes:🎨 Orchid Care Widget Package registered successfully
+INFO:ai_collection_onboarding:🎯 AI Collection Onboarding registered successfully
+INFO:routes:🎯 AI Collection Onboarding registered successfully
+INFO:source_adapter_system:📋 Registered 2 source adapters
+INFO:enhanced_system_integration:🚀 Enhanced systems registered successfully
+INFO:enhanced_system_integration:📱 Mobile field research system available at /field/
+INFO:enhanced_system_integration:🌍 International scraping admin at /admin/international/
+INFO:routes:🚀 Enhanced international scraping and mobile field research systems registered
+INFO:routes:📱 Mobile field research available at: /field/
+INFO:routes:🌍 International scraping admin at: /admin/international/
+INFO:routes:🌱 Orchid Nursery Directory API routes registered successfully
+INFO:routes:🏛️ Orchid Society Directory API routes registered successfully
+INFO:routes:🧠 Knowledge Base routes registered successfully
+INFO:routes:🌺 FCOS Import System routes registered successfully
+INFO:routes:🌿 GBIF Ecosystem API Integration routes registered successfully
+INFO:orchid_ai_research_hub:✅ OpenAI client initialized successfully
+INFO:routes:🤖 OrchidAI Research Hub imported successfully
+INFO:routes:🏥 AI Orchid Health Diagnostic imported successfully
+INFO:routes:🏥 AI Orchid Health Diagnostic API endpoint registered at /api/orchid-health-diagnostic
+INFO:routes:🌱 Personalized Growing Condition Matcher imported successfully
+INFO:routes:🌱 Personalized Growing Condition Matcher API endpoint registered at /api/growing-condition-matcher
+INFO:routes:🌟 AI Breeder Assistant Pro available via /widgets/ai-breeder-pro
+INFO:routes:🗓️ Adaptive Care Calendar Generator imported successfully
+INFO:routes:🗓️ Adaptive Care Calendar API endpoints registered at /api/care-calendar and /api/care-calendar-templates
+INFO:routes:🔍 Orchid Authentication Detector imported successfully
+INFO:routes:🔍 Orchid Authentication API endpoints registered at /api/orchid-authentication and /api/orchid-authentication-capabilities
+INFO:master_ai_widget_manager:✅ OpenAI client initialized for AI Widget Manager
+INFO:master_ai_widget_manager:✅ AI Widget Manager database initialized
+INFO:master_ai_widget_manager:🚀 AI Widget Manager monitoring systems started
+INFO:master_ai_widget_manager:🧠 Master AI Widget Manager initialized successfully
+INFO:master_ai_widget_manager:🧠 Master AI Widget Manager routes registered successfully
+INFO:routes:🧠 Master AI Widget Manager registered successfully at /ai-widget-manager
+INFO:routes:🧠 Master AI Orchid Widget Manager - Autonomous monitoring and optimization system active
+INFO:routes:🏠 Master Grower Dashboard and widget routes registered
+INFO:routes:🌺 EOL Orchid Explorer API endpoint registered at /api/eol-orchid-explorer
+INFO:routes:🤖 AI Research API endpoints registered successfully at /api/ai-research/*
+INFO:routes:🔍 Admin Name Validation routes registered at /admin/name-validation
+INFO:powo_integration:🌿 POWO (Kew Gardens) Integration initialized
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.gbif.org:443
+DEBUG:urllib3.connectionpool:https://api.gbif.org:443 "GET /v1/species/search?q=Orchidaceae&rank=FAMILY&limit=10 HTTP/1.1" 200 8354
+INFO:external_databases.gbif_integration:🌺 Found Orchidaceae family key: 201312665
+INFO:complete_species_collector:🌍 Complete Species Collector initialized - Goal: Image every orchid species worldwide
+INFO:image_collection_routes:🖼️ Image Collection routes registered successfully
+INFO:routes:🖼️ Image Collection System registered successfully
+INFO:orchestrator_health_system:🏥 Health Validator initialized - Strict Mode: ON
+INFO:breeder_pro_orchestrator:✅ SVO Scraper imported successfully
+INFO:gdrive_manager:🔑 Using service account JSON credentials
+INFO:googleapiclient.discovery_cache:file_cache is only supported with oauth2client<4.0.0
+INFO:gdrive_manager:✅ Google Drive service initialized successfully
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/drive/v3/files?q=name%3D%27OrchidContinuum_Central%27+and+mimeType%3D%27application%2Fvnd.google-apps.folder%27&alt=json
+DEBUG:google_auth_httplib2:Making request: POST https://oauth2.googleapis.com/token
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/drive/v3/files?q=name%3D%27Orchid_Quick_Images%27+and+mimeType%3D%27application%2Fvnd.google-apps.folder%27+and+%271WLVbVFggKg8HWfEUHgLehfrt89LIcL6E%27+in+parents&alt=json
+DEBUG:gdrive_manager:📁 Setup folder: Orchid_Quick_Images -> 1lq3geCUExxnoAHwvzTXI6isyapgTwp2e
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/drive/v3/files?q=name%3D%27TAXONOMY_MASTER%27+and+mimeType%3D%27application%2Fvnd.google-apps.folder%27+and+%271WLVbVFggKg8HWfEUHgLehfrt89LIcL6E%27+in+parents&alt=json
+DEBUG:gdrive_manager:📁 Setup folder: TAXONOMY_MASTER -> 1_BYz14Mj4ltu2iuM7mNIk9khrMtuoVpY
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/drive/v3/files?q=name%3D%27Legacy_Submissions%27+and+mimeType%3D%27application%2Fvnd.google-apps.folder%27+and+%271WLVbVFggKg8HWfEUHgLehfrt89LIcL6E%27+in+parents&alt=json
+DEBUG:gdrive_manager:📁 Setup folder: Legacy_Submissions -> 1E2Gmc08Yw3A5h-NjnxFzYBZOANbL9XLt
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/drive/v3/files?q=name%3D%27Scraped_Content_Gary_Yong_Gee%27+and+mimeType%3D%27application%2Fvnd.google-apps.folder%27+and+%271WLVbVFggKg8HWfEUHgLehfrt89LIcL6E%27+in+parents&alt=json
+DEBUG:gdrive_manager:📁 Setup folder: Scraped_Content_Gary_Yong_Gee -> 1fPAvc1y_4Eg6nu7KMnB4Ic8R_3Y_IFf8
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/drive/v3/files?q=name%3D%27Scraped_Content_Roberta_Fox%27+and+mimeType%3D%27application%2Fvnd.google-apps.folder%27+and+%271WLVbVFggKg8HWfEUHgLehfrt89LIcL6E%27+in+parents&alt=json
+DEBUG:gdrive_manager:📁 Setup folder: Scraped_Content_Roberta_Fox -> 1JWCAIOM9YP5t6fQamg1G1VnUXC5bRbwr
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/drive/v3/files?q=name%3D%27Processed_Metadata%27+and+mimeType%3D%27application%2Fvnd.google-apps.folder%27+and+%271WLVbVFggKg8HWfEUHgLehfrt89LIcL6E%27+in+parents&alt=json
+DEBUG:gdrive_manager:📁 Setup folder: Processed_Metadata -> 12x9kmkFGurLAFl4KD15gvdoJxGdEe_uR
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/drive/v3/files?q=name%3D%27Widget_Outputs%27+and+mimeType%3D%27application%2Fvnd.google-apps.folder%27+and+%271WLVbVFggKg8HWfEUHgLehfrt89LIcL6E%27+in+parents&alt=json
+DEBUG:gdrive_manager:📁 Setup folder: Widget_Outputs -> 1LN5uu42RpDrTvXbSNc2VyXSjzyM_p-rN
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/drive/v3/files?q=name%3D%27AI_Breeding_Data%27+and+mimeType%3D%27application%2Fvnd.google-apps.folder%27+and+%271WLVbVFggKg8HWfEUHgLehfrt89LIcL6E%27+in+parents&alt=json
+DEBUG:gdrive_manager:📁 Setup folder: AI_Breeding_Data -> 1L9i04dcyQerUvVTwp5AOSyObs9b2J_Z6
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/drive/v3/files?q=name%3D%27Batch_Uploads%27+and+mimeType%3D%27application%2Fvnd.google-apps.folder%27+and+%271WLVbVFggKg8HWfEUHgLehfrt89LIcL6E%27+in+parents&alt=json
+DEBUG:gdrive_manager:📁 Setup folder: Batch_Uploads -> 1Q_Y0CFN_KWGXQrCfRjHDuLkFBRbcoZqz
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/drive/v3/files?q=name%3D%27Orchid_Edited_Photos%27+and+mimeType%3D%27application%2Fvnd.google-apps.folder%27+and+%271WLVbVFggKg8HWfEUHgLehfrt89LIcL6E%27+in+parents&alt=json
+DEBUG:gdrive_manager:📁 Setup folder: Orchid_Edited_Photos -> 11DvqMJdqWdTP6_Br27QZiu_kMVef0hRK
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/drive/v3/files?q=name%3D%27Imported_Orchids%27+and+mimeType%3D%27application%2Fvnd.google-apps.folder%27+and+%271WLVbVFggKg8HWfEUHgLehfrt89LIcL6E%27+in+parents&alt=json
+DEBUG:gdrive_manager:📁 Setup folder: Imported_Orchids -> 1TWvqcrbcBisHBSFV6bTSWgaR55Nkllij
+INFO:gdrive_manager:✅ Google Drive folder structure setup complete
+INFO:gdrive_manager:🌤️ GDrive Manager initialized
+INFO:breeder_pro_orchestrator:✅ Google Drive Manager imported successfully
+INFO:sheets_manager:✅ Sheets Manager connected to Google Cloud
+INFO:sheets_manager:📊 Sheets Manager initialized
+INFO:breeder_pro_orchestrator:✅ Sheets Manager imported successfully
+INFO:breeder_pro_orchestrator:✅ AI Trait Analyzer imported successfully
+ERROR:breeder_pro_orchestrator:CRITICAL: Report Generator not available: cannot import name 'ReportGenerator' from 'report_generator' (/home/runner/workspace/report_generator.py)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.gbif.org:443
+DEBUG:urllib3.connectionpool:https://api.gbif.org:443 "GET /v1/species/search?q=Orchidaceae&rank=FAMILY&limit=10 HTTP/1.1" 200 8354
+INFO:external_databases.gbif_integration:🌺 Found Orchidaceae family key: 201312665
+INFO:orchid_data_enrichment:✅ GBIF integration initialized
+INFO:orchid_data_enrichment:✅ EOL integration initialized
+INFO:orchid_data_enrichment:✅ OpenAI client initialized for fallback enrichment
+INFO:orchid_data_enrichment:🌺 Orchid Data Enrichment System initialized
+INFO:batch_gbif_eol_enrichment:✅ GBIF Integration module loaded
+INFO:batch_gbif_eol_enrichment:✅ EOL Integration module loaded
+INFO:batch_gbif_eol_enrichment:✅ AI Vision Enrichment module loaded
+INFO:__main__:🌺 Starting batch enrichment of 5914 orchids
+INFO:__main__:📊 This will populate 87+ research-grade fields from GBIF and EOL databases
+INFO:__main__:⏱️ Estimated time: 295 minutes (3 seconds per orchid average)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.gbif.org:443
+DEBUG:urllib3.connectionpool:https://api.gbif.org:443 "GET /v1/species/search?q=Orchidaceae&rank=FAMILY&limit=10 HTTP/1.1" 200 8354
+INFO:external_databases.gbif_integration:🌺 Found Orchidaceae family key: 201312665
+INFO:batch_gbif_eol_enrichment:🌍 GBIF Integration: ENABLED
+INFO:batch_gbif_eol_enrichment:🌿 EOL Integration: ENABLED
+INFO:batch_gbif_eol_enrichment:🎨 AI Vision Analysis: DISABLED
+Traceback (most recent call last):
+  File "<string>", line 33, in <module>
+AttributeError: 'BatchOrchidEnrichment' object has no attribute 'process_batch'
+Judging standards initialized
+🧬 AI Breeder Assistant Pro widget initialized with enhanced features
+🧬 Orchid Genetics Laboratory registered successfully
+✅ FCOS Orchid Judge PWA routes registered
+Google Drive import system initialized
+Orchid comparison system initialized
+Citation and attribution system initialized
+Widget system for external integration initialized
+YouTube Orchid Widget initialized for FCOS integration
+Neon One Widget Package initialized for CMS integration
+✅ Loaded 49 orchid ecosystem records
+🔗 Orchid Interaction Explorer routes registered successfully
+Orchid Interaction Explorer system initialized
+📊 System Monitor Dashboard initialized
+System Monitor Dashboard initialized (monitoring disabled)
+Orchid Games system initialized
+API v2 routes initialized - FastAPI-compatible endpoints available
+Taxonomy Verification system initialized
+AI Collection Manager system initialized
+Breeder Pro+ Orchestrator initialization error: CRITICAL: Report Generator not available: cannot import name 'ReportGenerator' from 'report_generator' (/home/runner/workspace/report_generator.py)
+🔍 SVO Analysis web interface initialized
+🤖 OrchidAI Research Hub initialized with unified AI capabilities
+🌿 Trefle Ecosystem Enrichment admin interface initialized
+🤖 Julius AI API initialized for data analysis integration
+📊 Julius AI Enrichment Insights dashboard registered successfully
+🌺 Orchid Data Enrichment System registered successfully
+📊 Field Completion Dashboard registered successfully

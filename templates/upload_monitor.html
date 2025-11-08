@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌺 Upload Monitor - Orchid Continuum</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            padding: 20px;
+        }
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .stat-box {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+        .progress {
+            height: 30px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #4CAF50 0%, #8BC34A 100%);
+        }
+        .recent-upload {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid #4CAF50;
+            margin-bottom: 8px;
+            border-radius: 5px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .status-running {
+            background: #4CAF50;
+            color: white;
+        }
+        .status-error {
+            background: #f44336;
+            color: white;
+        }
+        h1, h2, h3 {
+            color: #fff;
+        }
+        .refresh-indicator {
+            display: inline-block;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .log-container {
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            padding: 15px;
+            border-radius: 10px;
+            height: 300px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+        }
+        @media (max-width: 768px) {
+            .stat-value {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1>🌺 Orchid Image Upload Monitor</h1>
+                <p class="text-muted">Real-time progress for Google Drive upload</p>
+                <div class="d-flex align-items-center">
+                    <span class="status-badge status-running me-2">● RUNNING</span>
+                    <small class="text-muted">
+                        Auto-refreshing every 30 seconds 
+                        <i data-feather="refresh-cw" class="refresh-indicator" style="width: 16px; height: 16px;"></i>
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Progress Stats -->
+            <div class="col-md-3 col-6">
+                <div class="stat-box">
+                    <div class="stat-value" id="uploaded">-</div>
+                    <div class="stat-label">Uploaded</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-box">
+                    <div class="stat-value" id="remaining">-</div>
+                    <div class="stat-label">Remaining</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-box">
+                    <div class="stat-value" id="percent">-</div>
+                    <div class="stat-label">Complete</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-box">
+                    <div class="stat-value" id="days">-</div>
+                    <div class="stat-label">Days Left</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="dashboard-card">
+                    <h3>Progress</h3>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" id="progressBar" style="width: 0%">
+                            0%
+                        </div>
+                    </div>
+                    <div class="mt-3 row">
+                        <div class="col-md-6">
+                            <p><strong>Upload Speed:</strong> <span id="speed">-</span> images/min</p>
+                            <p><strong>Last Hour:</strong> <span id="lastHour">-</span> images</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Time Remaining:</strong> <span id="timeRemaining">-</span></p>
+                            <p><strong>ETA:</strong> <span id="eta">Calculating...</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="dashboard-card">
+                    <h3>Recent Uploads</h3>
+                    <div id="recentUploads">
+                        <p class="text-muted">Loading...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dashboard-card">
+                    <h3>Upload Log (Last 50 Lines)</h3>
+                    <div class="log-container" id="logContainer">
+                        Loading log...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="dashboard-card">
+                    <small class="text-muted">
+                        Last updated: <span id="lastUpdated">-</span>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateDashboard() {
+            fetch('/api/upload-status')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update stats
+                        document.getElementById('uploaded').textContent = data.uploaded.toLocaleString();
+                        document.getElementById('remaining').textContent = data.remaining.toLocaleString();
+                        document.getElementById('percent').textContent = data.percent + '%';
+                        document.getElementById('days').textContent = data.estimates.days.toFixed(1);
+                        
+                        // Update progress bar
+                        const progressBar = document.getElementById('progressBar');
+                        progressBar.style.width = data.percent + '%';
+                        progressBar.textContent = data.percent + '%';
+                        
+                        // Update speed
+                        document.getElementById('speed').textContent = data.speed.per_minute;
+                        document.getElementById('lastHour').textContent = data.speed.last_hour;
+                        
+                        // Update time estimates
+                        const hours = data.estimates.hours;
+                        const days = data.estimates.days;
+                        let timeStr = '';
+                        if (days >= 1) {
+                            timeStr = `${days.toFixed(1)} days (${hours.toFixed(0)} hours)`;
+                        } else {
+                            timeStr = `${hours.toFixed(1)} hours`;
+                        }
+                        document.getElementById('timeRemaining').textContent = timeStr;
+                        document.getElementById('eta').textContent = data.estimates.eta;
+                        
+                        // Update recent uploads
+                        const recentDiv = document.getElementById('recentUploads');
+                        if (data.recent_uploads.length > 0) {
+                            recentDiv.innerHTML = data.recent_uploads.map(upload => `
+                                <div class="recent-upload">
+                                    <strong>${upload.species}</strong>
+                                    <br>
+                                    <small class="text-muted">${upload.time}</small>
+                                </div>
+                            `).join('');
+                        } else {
+                            recentDiv.innerHTML = '<p class="text-muted">No uploads yet</p>';
+                        }
+                        
+                        // Update timestamp
+                        document.getElementById('lastUpdated').textContent = data.last_updated;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching status:', error);
+                });
+            
+            // Update log
+            fetch('/api/upload-log')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('logContainer').textContent = data.log;
+                        // Auto-scroll to bottom
+                        const logContainer = document.getElementById('logContainer');
+                        logContainer.scrollTop = logContainer.scrollHeight;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching log:', error);
+                });
+        }
+        
+        // Initial load
+        updateDashboard();
+        
+        // Auto-refresh every 30 seconds
+        setInterval(updateDashboard, 30000);
+        
+        // Initialize Feather icons
+        feather.replace();
+    </script>
+</body>
+</html>

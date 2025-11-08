@@ -1,0 +1,41 @@
+═══════════════════════════════════════════════════════════
+GIT PUSH FIX V2 - CORRECTED COMMANDS
+═══════════════════════════════════════════════════════════
+
+ISSUE: eol_traitbank path didn't match (might not be in Git)
+ISSUE: 228 commits ahead of origin/main
+
+═══════════════════════════════════════════════════════════
+STEP 1: Add .gitignore changes (already done)
+═══════════════════════════════════════════════════════════
+
+cd /home/runner/workspace
+git add .gitignore
+
+═══════════════════════════════════════════════════════════
+STEP 2: Commit ALL current changes
+═══════════════════════════════════════════════════════════
+
+git add .
+git commit -m "Deploy: Famous AI widgets + Render fixes + exclude large data files"
+
+═══════════════════════════════════════════════════════════
+STEP 3: Push (this should work now!)
+═══════════════════════════════════════════════════════════
+
+git push origin main
+
+═══════════════════════════════════════════════════════════
+IF AUTHENTICATION ERROR:
+═══════════════════════════════════════════════════════════
+
+Use Replit's built-in Git UI:
+1. Click "Version Control" icon (left sidebar)
+2. Click "Push" button
+3. Replit handles authentication automatically
+
+OR use SSH if configured:
+git remote set-url origin git@github.com:jsp1440/Orchid_Continuum_Online.git
+git push origin main
+
+═══════════════════════════════════════════════════════════

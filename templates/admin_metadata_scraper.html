@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block title %}Metadata-Only Scraper - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1><i data-feather="image"></i> Metadata-Only Scraper</h1>
+                <a href="/admin" class="btn btn-outline-light">
+                    <i data-feather="arrow-left"></i> Back to Admin
+                </a>
+            </div>
+
+            <!-- Info Card -->
+            <div class="alert alert-info mb-4">
+                <h5><i data-feather="info"></i> How It Works</h5>
+                <p class="mb-0">
+                    This scraper <strong>extracts image URLs</strong> from Gary Yong Gee and Roberta Fox websites, 
+                    <strong>analyzes them with OpenAI Vision API</strong>, and <strong>saves 61-field metadata</strong> 
+                    WITHOUT downloading images. This approach:
+                </p>
+                <ul class="mb-0 mt-2">
+                    <li>✅ Bypasses storage limits (no image downloads)</li>
+                    <li>✅ Faster processing (direct URL analysis)</li>
+                    <li>✅ Cheaper costs (no hosting fees)</li>
+                    <li>✅ Enriches database massively</li>
+                </ul>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title"><i data-feather="database"></i> Total Orchids</h5>
+                            <h2 class="mb-0">{{ stats.total_orchids|default(0) }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <h5 class="card-title"><i data-feather="link"></i> With Image URLs</h5>
+                            <h2 class="mb-0">{{ stats.with_image_url|default(0) }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-warning text-dark">
+                        <div class="card-body">
+                            <h5 class="card-title"><i data-feather="alert-circle"></i> Missing Metadata</h5>
+                            <h2 class="mb-0">{{ stats.missing_metadata|default(0) }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scraper Controls -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5><i data-feather="settings"></i> Scraper Controls</h5>
+                </div>
+                <div class="card-body">
+                    <form id="scraperForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="source" class="form-label">Source Website</label>
+                                    <select class="form-select" id="source" name="source">
+                                        <option value="both" selected>Both (Gary Yong Gee & Roberta Fox)</option>
+                                        <option value="gary">Gary Yong Gee Only</option>
+                                        <option value="roberta">Roberta Fox Only</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="max_images" class="form-label">Max Images to Process</label>
+                                    <input type="number" class="form-control" id="max_images" name="max_images" 
+                                           value="50" min="1" max="500" step="10">
+                                    <div class="form-text">Recommended: Start with 50 images for testing</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-lg btn-primary" id="startScraperBtn">
+                                <i data-feather="play"></i> Start Metadata-Only Scraping
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Progress Display -->
+                    <div id="progressDisplay" class="mt-4" style="display: none;">
+                        <div class="alert alert-info">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i data-feather="loader" class="spinning-icon"></i>
+                                    <strong>Scraping in progress...</strong>
+                                    <div id="progressText" class="small mt-1">Starting scraper...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Display -->
+                    <div id="resultsDisplay" class="mt-4" style="display: none;">
+                        <!-- Results will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Scraping Logs -->
+            <div class="card">
+                <div class="card-header">
+                    <h5><i data-feather="list"></i> Recent Scraping Logs</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_logs %}
+                    <div class="table-responsive">
+                        <table class="table table-dark table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Source</th>
+                                    <th>URL</th>
+                                    <th>Status</th>
+                                    <th>Items Found</th>
+                                    <th>Items Processed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for log in recent_logs %}
+                                <tr>
+                                    <td>{{ log.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                    <td>{{ log.source }}</td>
+                                    <td class="text-truncate" style="max-width: 300px;">{{ log.url }}</td>
+                                    <td>
+                                        {% if log.status == 'success' %}
+                                        <span class="badge bg-success">Success</span>
+                                        {% elif log.status == 'error' %}
+                                        <span class="badge bg-danger">Error</span>
+                                        {% else %}
+                                        <span class="badge bg-secondary">{{ log.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ log.items_found }}</td>
+                                    <td>{{ log.items_processed }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted">No scraping logs yet. Start the scraper to see results here.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.spinning-icon {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const scraperForm = document.getElementById('scraperForm');
+    const startScraperBtn = document.getElementById('startScraperBtn');
+    const progressDisplay = document.getElementById('progressDisplay');
+    const progressText = document.getElementById('progressText');
+    const resultsDisplay = document.getElementById('resultsDisplay');
+
+    scraperForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Get form values
+        const source = document.getElementById('source').value;
+        const maxImages = parseInt(document.getElementById('max_images').value);
+
+        // Disable form
+        startScraperBtn.disabled = true;
+        progressDisplay.style.display = 'block';
+        resultsDisplay.style.display = 'none';
+        progressText.textContent = 'Scraping image URLs from websites...';
+
+        try {
+            const response = await fetch('/admin/run-metadata-scraper', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    source: source,
+                    max_images: maxImages
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                progressDisplay.style.display = 'none';
+                resultsDisplay.style.display = 'block';
+                const alertClass = data.failed > 0 ? 'alert-warning' : 'alert-success';
+                const errorHtml = data.errors && data.errors.length > 0 
+                    ? `<div class="mt-3"><strong>Errors:</strong><ul class="small">${data.errors.map(e => `<li>${e}</li>`).join('')}</ul></div>`
+                    : '';
+                
+                resultsDisplay.innerHTML = `
+                    <div class="alert ${alertClass}">
+                        <h5><i data-feather="check-circle"></i> Scraping Complete!</h5>
+                        <hr>
+                        <ul class="mb-0">
+                            <li><strong>URLs Collected:</strong> ${data.urls_collected}</li>
+                            <li><strong>Images Processed:</strong> ${data.images_processed}</li>
+                            <li><strong>Orchids Saved:</strong> ${data.orchids_saved}</li>
+                            <li><strong>Failed:</strong> ${data.failed || 0}</li>
+                        </ul>
+                        ${errorHtml}
+                        <div class="mt-3">
+                            <a href="/admin/field-completion" class="btn btn-light">
+                                <i data-feather="bar-chart-2"></i> View Enrichment Results
+                            </a>
+                        </div>
+                    </div>
+                `;
+                feather.replace();
+            } else {
+                throw new Error(data.error || 'Scraping failed');
+            }
+        } catch (error) {
+            progressDisplay.style.display = 'none';
+            resultsDisplay.style.display = 'block';
+            resultsDisplay.innerHTML = `
+                <div class="alert alert-danger">
+                    <h5><i data-feather="alert-triangle"></i> Error</h5>
+                    <p class="mb-0">${error.message}</p>
+                </div>
+            `;
+            feather.replace();
+        } finally {
+            // Re-enable form
+            startScraperBtn.disabled = false;
+            feather.replace();
+        }
+    });
+
+    // Initialize Feather icons
+    feather.replace();
+});
+</script>
+{% endblock %}

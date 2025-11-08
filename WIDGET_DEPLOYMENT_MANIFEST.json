@@ -1,0 +1,125 @@
+[
+  {
+    "page": "Home",
+    "widgets": [
+      {
+        "name": "Orchid of the Day",
+        "type": "Gallery",
+        "delivery": "CDN",
+        "status": "active",
+        "notes": "Primary visual hook on homepage"
+      },
+      {
+        "name": "Themed Gallery",
+        "type": "Gallery",
+        "delivery": "CDN",
+        "status": "active",
+        "notes": "Rotating theme galleries: Fragrant, Night-Blooming, Madagascar"
+      }
+    ]
+  },
+  {
+    "page": "Explore Orchids",
+    "widgets": [
+      {
+        "name": "Taxonomy Browser",
+        "type": "Research",
+        "delivery": "CDN",
+        "status": "active",
+        "notes": "Browse 35,000 orchid taxonomy records with image preview"
+      },
+      {
+        "name": "GBIF Data Explorer",
+        "type": "Research",
+        "delivery": "CDN",
+        "status": "active",
+        "notes": "Display occurrence and distribution data from GBIF"
+      },
+      {
+        "name": "Bloom Calendar & Habitat Mapper",
+        "type": "Research",
+        "delivery": "backend",
+        "status": "active",
+        "notes": "Seasonal bloom patterns and geographic distribution by genus"
+      }
+    ]
+  },
+  {
+    "page": "Learn & Play",
+    "widgets": [
+      {
+        "name": "Bingo",
+        "type": "Educational",
+        "delivery": "CDN",
+        "status": "active",
+        "notes": "Engagement tool for public and kids"
+      },
+      {
+        "name": "Philosophy Quiz",
+        "type": "Educational",
+        "delivery": "CDN",
+        "status": "active",
+        "notes": "Lead magnet for newsletter and membership"
+      },
+      {
+        "name": "Pollinator Match Game",
+        "type": "Educational",
+        "delivery": "CDN",
+        "status": "active",
+        "notes": "Educational game to guess orchid pollinators with rationale"
+      },
+      {
+        "name": "Mystery Orchid Quiz",
+        "type": "Educational",
+        "delivery": "CDN",
+        "status": "active",
+        "notes": "Guess the genus quiz with reveal and image display"
+      }
+    ]
+  },
+  {
+    "page": "Member Tools",
+    "widgets": [
+      {
+        "name": "My Collection",
+        "type": "Display",
+        "delivery": "backend",
+        "status": "active",
+        "notes": "Member-linked orchid collection with weather/habitat comparison"
+      },
+      {
+        "name": "Habitat/Weather",
+        "type": "Analysis",
+        "delivery": "backend",
+        "status": "active",
+        "notes": "Compares local climate data with native habitat"
+      },
+      {
+        "name": "Taxonomy Linker",
+        "type": "Tools",
+        "delivery": "backend",
+        "status": "active",
+        "notes": "Batch resolve member plant names to taxonomy database"
+      }
+    ]
+  },
+  {
+    "page": "FCOS Board (Admin)",
+    "widgets": [
+      {
+        "name": "Admin Dashboard",
+        "type": "System",
+        "delivery": "backend",
+        "status": "restricted",
+        "notes": "Internal use only"
+      },
+      {
+        "name": "Widget Health Monitor",
+        "type": "System",
+        "delivery": "backend",
+        "status": "restricted",
+        "notes": "Tracks uptime and performance"
+      }
+    ]
+  }
+]

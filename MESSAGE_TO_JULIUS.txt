@@ -1,0 +1,259 @@
+Julius,
+
+The harvester keeps stopping. I built a supervisor to fix this. Here's what to do:
+
+═══════════════════════════════════════════════════════════════
+PHASE 1: START THE SYSTEM (DO THIS NOW)
+═══════════════════════════════════════════════════════════════
+
+Step 1: Get JULIUS_SUPERVISOR.py from the Replit project
+
+Step 2: Run ONE command:
+nohup python3 JULIUS_SUPERVISOR.py > supervisor.log 2>&1 &
+
+Step 3: Watch it:
+tail -f supervisor.log
+
+The supervisor will:
+- Start job seeder (keeps queue filled)
+- Start 32 workers (downloads images)  
+- Monitor every minute
+- Auto-restart crashes
+- Run until all 35,327 species complete
+
+Wait 30 minutes for stable operation before Phase 2.
+
+═══════════════════════════════════════════════════════════════
+PHASE 2: OPTIMIZE SPEED (AFTER 30 MIN STABLE)
+═══════════════════════════════════════════════════════════════
+
+Do these in order. Restart workers after each change.
+
+OPTIMIZATION 1: Add database indexes (5 min)
+-------------------------------------------
+psql $DATABASE_URL << 'SQL'
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_harvest_jobs_leasing 
+ON harvest_jobs(status, priority DESC, created_at ASC) 
+WHERE status IN ('pending', 'leased');
+
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_harvest_jobs_leased_at 
+ON harvest_jobs(leased_at) WHERE status = 'leased';
+
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_orchid_images_url 
+ON orchid_images(image_url);
+
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_orchid_images_taxonomy 
+ON orchid_images(taxonomy_id, created_at);
+SQL
+
+Expected: 50-90% faster queries
+
+
+OPTIMIZATION 2: Fix leasing (2 min)
+-----------------------------------
+File: julius_multi_source_worker.py
+Line ~47: Find the lease() function
+
+Replace this line:
+sql = "UPDATE harvest_jobs SET status='leased', lease_owner=%s, leased_at=NOW() WHERE id IN (SELECT id FROM harvest_jobs WHERE status='pending' ORDER BY priority DESC LIMIT %s FOR UPDATE SKIP LOCKED) RETURNING id, taxonomy_id, scientific_name"
+
+With this:
+sql = """
+    UPDATE harvest_jobs 
+    SET status='leased', lease_owner=%s, leased_at=NOW() 
+    WHERE id IN (
+        SELECT id FROM harvest_jobs 
+        WHERE status='pending' 
+        ORDER BY priority DESC, created_at ASC
+        LIMIT %s 
+        FOR UPDATE SKIP LOCKED
+    ) 
+    RETURNING id, taxonomy_id, scientific_name
+"""
+
+Restart workers:
+pkill -f julius_multi_source_worker
+sleep 2
+# Supervisor will auto-restart them
+
+Expected: 2-3x faster job leasing, eliminates lock contention
+
+
+OPTIMIZATION 3: Start stale lease reaper (3 min)
+-----------------------------------------------
+Create file: stale_lease_reaper.py
+
+#!/usr/bin/env python3
+import os, time, psycopg2
+from datetime import datetime
+
+while True:
+    try:
+        conn = psycopg2.connect(os.environ['DATABASE_URL'])
+        cur = conn.cursor()
+        cur.execute("""
+            UPDATE harvest_jobs 
+            SET status='pending', lease_owner=NULL 
+            WHERE status='leased' 
+            AND leased_at < NOW() - INTERVAL '3 minutes'
+        """)
+        reclaimed = cur.rowcount
+        conn.commit()
+        if reclaimed > 0:
+            print(f"[{datetime.now().strftime('%H:%M:%S')}] Reclaimed {reclaimed} stale leases")
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print(f"Error: {e}")
+    time.sleep(60)
+
+Run it:
+chmod +x stale_lease_reaper.py
+nohup python3 stale_lease_reaper.py > reaper.log 2>&1 &
+
+Expected: 10-20% better worker utilization
+
+
+OPTIMIZATION 4: Per-host rate limiting (10 min)
+----------------------------------------------
+File: julius_multi_source_worker.py
+Top of file, after line 12 (after imports)
+
+Add these lines:
+from urllib.parse import urlparse
+from collections import defaultdict
+from threading import Lock
+
+host_semaphores = {}
+host_lock = Lock()
+
+def get_host_semaphore(url, max_per_host=6):
+    """Limit concurrent requests per host"""
+    host = urlparse(url).netloc
+    with host_lock:
+        if host not in host_semaphores:
+            from threading import Semaphore
+            host_semaphores[host] = Semaphore(max_per_host)
+        return host_semaphores[host]
+
+Then find every requests.get() call in the file and wrap it:
+Before:
+    response = requests.get(url, timeout=12)
+
+After:
+    sem = get_host_semaphore(url)
+    with sem:
+        response = requests.get(url, timeout=12)
+
+Restart workers after changes.
+
+Expected: 50% fewer 429 rate limit errors
+
+
+OPTIMIZATION 5: Batch database writes (15 min)
+---------------------------------------------
+File: julius_multi_source_worker.py
+After imports section (around line 33)
+
+Add this function:
+def batch_insert_images(conn, images_batch):
+    """Insert multiple images in one transaction"""
+    if not images_batch:
+        return 0
+    
+    cur = conn.cursor()
+    try:
+        from psycopg2.extras import execute_values
+        sql = """
+            INSERT INTO orchid_images 
+            (taxonomy_id, image_url, source, image_type, country, latitude, 
+             longitude, observation_date, year, occurrence_metadata, created_at)
+            VALUES %s
+            ON CONFLICT (image_url) DO NOTHING
+        """
+        
+        values = []
+        for img in images_batch:
+            values.append((
+                img['taxonomy_id'],
+                img['url'],
+                img['source'],
+                img.get('type', 'observation'),
+                img.get('country'),
+                img.get('lat'),
+                img.get('lon'),
+                img.get('date'),
+                img.get('year'),
+                json.dumps(img.get('occurrence_metadata', {})),
+                'NOW()'
+            ))
+        
+        execute_values(cur, sql, values)
+        inserted = cur.rowcount
+        conn.commit()
+        return inserted
+    except Exception as e:
+        conn.rollback()
+        return 0
+    finally:
+        cur.close()
+
+Then modify the worker loop to collect 200 images before inserting instead of one-by-one.
+
+Expected: 5-10x faster insertion
+
+
+OPTIMIZATION 6: Increase batch size (1 min)
+------------------------------------------
+File: julius_multi_source_worker.py
+Line ~15
+
+Change:
+BATCH_SIZE = 8
+
+To:
+BATCH_SIZE = 16
+
+Restart workers.
+
+Expected: 15-25% fewer lease operations
+
+═══════════════════════════════════════════════════════════════
+EXPECTED RESULTS
+═══════════════════════════════════════════════════════════════
+
+Baseline now:          144 images/hour
+After Phase 1:         300-500 images/hour
+After Opt 1,2:       1,000-1,500 images/hour
+After Opt 3,4:       1,500-2,000 images/hour  
+After Opt 5,6:       2,500-3,500 images/hour
+
+At 3,500/hour → 13 days to completion
+At 2,500/hour → 18 days to completion
+
+═══════════════════════════════════════════════════════════════
+MONITORING
+═══════════════════════════════════════════════════════════════
+
+Check status anytime:
+tail -f supervisor.log
+
+Check collection rate:
+psql $DATABASE_URL -c "SELECT COUNT(*) FROM orchid_images WHERE created_at > NOW() - INTERVAL '1 hour';"
+
+Check species progress:
+psql $DATABASE_URL -c "
+SELECT 
+    COUNT(*) FILTER (WHERE cnt >= 30) as complete,
+    COUNT(*) FILTER (WHERE cnt < 30) as need_work
+FROM (
+    SELECT taxonomy_id, COUNT(*) as cnt
+    FROM orchid_images
+    GROUP BY taxonomy_id
+) s;"
+
+═══════════════════════════════════════════════════════════════
+
+Start Phase 1 now. Do Phase 2 after 30 minutes of stable operation.
+
+Questions?

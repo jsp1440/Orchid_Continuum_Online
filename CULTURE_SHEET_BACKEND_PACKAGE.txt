@@ -1,0 +1,19 @@
+Backend Files for Culture Sheet Widget
+========================================
+
+These files are the complete backend for the culture sheet system.
+Famous AI: Use these to understand the API and data structures.
+
+Files included:
+1. location_based_culture_system.py - Core system (806 lines)
+2. aos_baker_culture_routes.py - API routes (158 lines)  
+3. baker_extrapolation_system.py - Data extrapolation (262 lines)
+
+API Base URL: https://workspace.fcospresident.repl.co
+
+Key Endpoints:
+- GET /culture/species - List available species
+- POST /culture/generate - Generate culture sheet
+- GET /culture/demo - Demo culture sheet
+
+All files are in the same directory as this file.

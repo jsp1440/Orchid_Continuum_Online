@@ -1,0 +1,16 @@
+# Orchid Image Downloader Dependencies for Mac
+# Install with: pip3 install -r mac_requirements.txt
+
+# Core
+requests>=2.31.0
+pillow>=10.0.0
+psycopg2-binary>=2.9.0
+
+# Image hashing
+imagehash>=4.3.1
+
+# Database
+sqlalchemy>=2.0.0
+
+# Utilities
+tqdm>=4.66.0

@@ -1,0 +1,27 @@
+Dashboard looks perfect! Start the background KPI sampler.
+
+CRITICAL: Your dashboard shows 0 images/min because workers are NOT running yet.
+
+Queue status:
+- 35,129 pending jobs ready
+- 0 workers active
+- 0 images collected in last 10 minutes
+
+YOU NEED TO START YOUR 32 WORKERS NOW:
+
+pkill -f julius_multi_source_worker
+sleep 2
+bash launcher.sh
+
+Verify they started:
+ps aux | grep julius_multi_source_worker | wc -l
+(Should show 32)
+
+Once workers start, the dashboard will show:
+- Images/min climbing to 35-50
+- Queue depth decreasing
+- Species moving from 0-9 bin to 10-29 to 30+
+- Per-worker throughput
+- All the KPIs you built
+
+Start the background KPI sampler - it will track the entire run!

@@ -1,0 +1,22 @@
+{
+  "12345": [
+    {
+      "trait": "Labellum (lip): wide, cupped",
+      "adaptation": "Hummingbird landing/nectar access",
+      "evidence": "Historic plate match + field notes",
+      "confidence": 0.8
+    },
+    {
+      "trait": "Column: prominent",
+      "adaptation": "Precise pollinia placement",
+      "evidence": "Morphology overlay",
+      "confidence": 0.7
+    },
+    {
+      "trait": "Leaf: leathery",
+      "adaptation": "Moist montane habitat persistence",
+      "evidence": "Habitat correlation",
+      "confidence": 0.6
+    }
+  ]
+}

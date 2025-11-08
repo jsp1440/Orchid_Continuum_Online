@@ -1,0 +1,53 @@
+═══════════════════════════════════════════════════════════
+STEP 3: PUSH CLEAN CODE TO GITHUB
+═══════════════════════════════════════════════════════════
+
+After you create your GitHub repo, you'll get a URL like:
+https://github.com/jsp1440/YOUR-REPO-NAME.git
+
+Replace YOUR_REPO_URL below with that URL, then run these commands:
+
+═══════════════════════════════════════════════════════════
+COMMANDS TO RUN IN REPLIT SHELL:
+═══════════════════════════════════════════════════════════
+
+cd /home/runner/orchid_clean_export
+
+git init
+
+git add .
+
+git commit -m "Deploy: 7 widgets + Render fixes"
+
+git remote add origin YOUR_REPO_URL
+
+git push -u origin main
+
+═══════════════════════════════════════════════════════════
+EXAMPLE (if your repo URL is https://github.com/jsp1440/orchid-continuum-clean.git):
+═══════════════════════════════════════════════════════════
+
+cd /home/runner/orchid_clean_export
+git init
+git add .
+git commit -m "Deploy: 7 widgets + Render fixes"
+git remote add origin https://github.com/jsp1440/orchid-continuum-clean.git
+git push -u origin main
+
+═══════════════════════════════════════════════════════════
+WHAT WILL HAPPEN:
+═══════════════════════════════════════════════════════════
+
+✅ git init - Creates fresh Git repo (no old history!)
+✅ git add - Stages all clean files
+✅ git commit - Saves as first commit
+✅ git remote add - Connects to your new GitHub repo
+✅ git push - Uploads code (< 1 minute, NO LOCK ERRORS!)
+
+═══════════════════════════════════════════════════════════
+THEN: STEP 4 - Update Render (2 minutes)
+═══════════════════════════════════════════════════════════
+
+After successful push, I'll guide you through connecting Render!
+
+═══════════════════════════════════════════════════════════

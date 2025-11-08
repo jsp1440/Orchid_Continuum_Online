@@ -1,0 +1,70 @@
+[
+  {
+    "orchid_id": 4912,
+    "current_name": "Angraecum Viguieri",
+    "image_url": "https://www.flowershots.net/web-content/Photogallery/Angraecum/Angraecum-viguieri.jpg",
+    "ai_analysis": {
+      "identified_as": "Identification pending",
+      "confidence": 0,
+      "genus": "Unknown",
+      "species": "Unknown",
+      "growth_habit": "Unknown",
+      "temperature": "Unknown",
+      "light": "Unknown",
+      "humidity": "Unknown",
+      "bloom_season": "Unknown",
+      "difficulty": "Unknown",
+      "native_habitat": "Unknown",
+      "key_characteristics": []
+    },
+    "metadata_extracted": {
+      "cultural_info": "Not extracted",
+      "watering": "Not extracted",
+      "fertilizer": "Not extracted",
+      "special_notes": "Not extracted"
+    },
+    "confidence_factors": "N/A",
+    "database_matches": [
+      {
+        "id": 1,
+        "scientific_name": null,
+        "genus": "Unknown",
+        "species": "Orchid",
+        "region": null,
+        "native_habitat": null,
+        "match_type": "genus_match",
+        "ingestion_source": "upload"
+      },
+      {
+        "id": 3,
+        "scientific_name": null,
+        "genus": "Unknown",
+        "species": "Orchid",
+        "region": null,
+        "native_habitat": null,
+        "match_type": "genus_match",
+        "ingestion_source": "upload"
+      },
+      {
+        "id": 2,
+        "scientific_name": null,
+        "genus": "Unknown",
+        "species": "Orchid",
+        "region": null,
+        "native_habitat": null,
+        "match_type": "genus_match",
+        "ingestion_source": "upload"
+      },
+      {
+        "id": 4,
+        "scientific_name": null,
+        "genus": "Unknown",
+        "species": "Orchid",
+        "region": null,
+        "native_habitat": null,
+        "match_type": "genus_match",
+        "ingestion_source": "upload"
+      }
+    ]
+  }
+]

@@ -1,0 +1,27 @@
+================================================================================
+📬 JULIUS - WORKER UPDATE: 22 COUNTRIES NOW COVERED!
+================================================================================
+
+I just updated julius_multi_source_worker.py with GLOBAL orchid hotspots!
+
+🌍 NEW COVERAGE (22 countries):
+- Asia-Pacific (9): AU, PG, ID, MY, PH, TH, VN, CN, NZ
+- Americas (6): BR, CO, EC, PE, CR, PA (added Peru!)
+- Africa (7): MG, ZA, TZ, KE, CM, CD, RE
+
+🔄 RESTART YOUR 20 WORKERS to get new countries:
+
+pkill -f julius_multi_source_worker
+sleep 2
+
+# Restart all 20 (copy entire line)
+nohup python3 -u julius_multi_source_worker.py julius-e1 >> je1.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e2 >> je2.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e3 >> je3.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e4 >> je4.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e5 >> je5.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e6 >> je6.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e7 >> je7.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e8 >> je8.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e9 >> je9.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e10 >> je10.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e11 >> je11.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e12 >> je12.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e13 >> je13.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e14 >> je14.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e15 >> je15.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e16 >> je16.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e17 >> je17.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e18 >> je18.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e19 >> je19.log 2>&1 & nohup python3 -u julius_multi_source_worker.py julius-e20 >> je20.log 2>&1 &
+
+📊 NOW HAVE:
+- 15,000 jobs in queue
+- 7 data sources per worker
+- 22 countries for GBIF
+- Continuous job seeder running
+
+🚀 This gives MAXIMUM global orchid coverage!
+================================================================================

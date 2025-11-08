@@ -1,0 +1,214 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Image Validation Review{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <h1 class="mb-4">🔍 Image Validation Review</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Validation Runs</h5>
+                </div>
+                <div class="card-body">
+                    <select id="run-select" class="form-select">
+                        <option value="">-- Select Validation Run --</option>
+                        {% for run in runs %}
+                        <option value="{{ run.run_id }}" {% if run.run_id == selected_run_id %}selected{% endif %}>
+                            Run #{{ run.run_id }} - {{ run.started_at.strftime('%Y-%m-%d %H:%M') }} ({{ run.images_scanned }} images)
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Filters</h5>
+                </div>
+                <div class="card-body">
+                    <select id="status-filter" class="form-select">
+                        <option value="all">All Statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="accepted">Accepted</option>
+                        <option value="flagged">Flagged</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="results-container" class="row g-4">
+        <div class="col-12 text-center text-muted py-5">
+            <i data-feather="image" style="width: 64px; height: 64px;"></i>
+            <p class="mt-3">Select a validation run to view results</p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('run-select').addEventListener('change', loadResults);
+document.getElementById('status-filter').addEventListener('change', loadResults);
+
+async function loadResults() {
+    const runId = document.getElementById('run-select').value;
+    const statusFilter = document.getElementById('status-filter').value;
+    
+    if (!runId) {
+        document.getElementById('results-container').innerHTML = `
+            <div class="col-12 text-center text-muted py-5">
+                <i data-feather="image" style="width: 64px; height: 64px;"></i>
+                <p class="mt-3">Select a validation run to view results</p>
+            </div>
+        `;
+        feather.replace();
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/admin/validation/api/results?run_id=${runId}&status=${statusFilter}`);
+        const data = await response.json();
+        
+        if (data.success && data.results.length > 0) {
+            displayResults(data.results);
+        } else {
+            document.getElementById('results-container').innerHTML = `
+                <div class="col-12 text-center text-muted py-5">
+                    <i data-feather="alert-circle" style="width: 64px; height: 64px;"></i>
+                    <p class="mt-3">No results found</p>
+                </div>
+            `;
+            feather.replace();
+        }
+    } catch (error) {
+        console.error('Error loading results:', error);
+    }
+}
+
+function displayResults(results) {
+    const container = document.getElementById('results-container');
+    container.innerHTML = '';
+    
+    results.forEach(result => {
+        const confidenceBadge = getConfidenceBadge(result.final_confidence);
+        const statusBadge = getStatusBadge(result.status);
+        
+        const card = document.createElement('div');
+        card.className = 'col-md-6 col-lg-4';
+        card.innerHTML = `
+            <div class="card h-100" data-result-id="${result.id}">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><strong>Orchid #${result.orchid_id}</strong></span>
+                    ${statusBadge}
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6>Current Name:</h6>
+                        <p class="text-muted mb-1">${result.current_scientific_name || 'Not set'}</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6>Predicted Name:</h6>
+                        <p class="mb-1">
+                            ${result.final_genus || '?'} ${result.final_species || ''}
+                            ${confidenceBadge}
+                        </p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6>Vision: ${result.predicted_genus || 'None'} ${result.predicted_species || ''} (${(result.vision_score * 100).toFixed(0)}%)</h6>
+                        <h6>OCR: ${result.ocr_text ? result.ocr_text.substring(0, 50) + '...' : 'None'}</h6>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <details>
+                            <summary>Reasons (${result.reasons.length})</summary>
+                            <ul class="small mt-2">
+                                ${result.reasons.map(r => `<li>${r}</li>`).join('')}
+                            </ul>
+                        </details>
+                    </div>
+                    
+                    <div class="btn-group w-100" role="group">
+                        <button class="btn btn-success" onclick="updateStatus(${result.id}, 'accepted')">
+                            <i data-feather="check" style="width: 16px; height: 16px;"></i> Accept
+                        </button>
+                        <button class="btn btn-danger" onclick="updateStatus(${result.id}, 'flagged')">
+                            <i data-feather="flag" style="width: 16px; height: 16px;"></i> Flag
+                        </button>
+                        <button class="btn btn-primary" onclick="applyCorrection(${result.id})">
+                            <i data-feather="edit" style="width: 16px; height: 16px;"></i> Apply
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+    
+    feather.replace();
+}
+
+function getConfidenceBadge(confidence) {
+    if (confidence >= 0.8) return '<span class="badge bg-success">High</span>';
+    if (confidence >= 0.5) return '<span class="badge bg-warning">Medium</span>';
+    return '<span class="badge bg-danger">Low</span>';
+}
+
+function getStatusBadge(status) {
+    const badges = {
+        'pending': '<span class="badge bg-secondary">Pending</span>',
+        'accepted': '<span class="badge bg-success">Accepted</span>',
+        'flagged': '<span class="badge bg-danger">Flagged</span>'
+    };
+    return badges[status] || '';
+}
+
+async function updateStatus(resultId, status) {
+    try {
+        const response = await fetch('/admin/validation/api/update-status', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({result_id: resultId, status: status})
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert('Status updated successfully');
+            loadResults();
+        }
+    } catch (error) {
+        alert('Error updating status: ' + error.message);
+    }
+}
+
+async function applyCorrection(resultId) {
+    if (!confirm('Apply this validation result to the orchid record?')) return;
+    
+    try {
+        const response = await fetch('/admin/validation/api/apply-correction', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({result_id: resultId})
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            alert('Correction applied successfully!');
+            loadResults();
+        }
+    } catch (error) {
+        alert('Error applying correction: ' + error.message);
+    }
+}
+
+// Auto-load if run_id is in URL
+{% if selected_run_id %}
+loadResults();
+{% endif %}
+</script>
+{% endblock %}

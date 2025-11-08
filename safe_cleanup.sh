@@ -1,0 +1,82 @@
+#!/bin/bash
+# Safe cleanup - moves inactive files to archive (doesn't delete)
+
+echo "🧹 Starting safe cleanup..."
+echo ""
+
+# List of files that are NOT imported in app.py (inactive)
+inactive_files=(
+  "chris_howard_reimport.py"
+  "issue_reports.py"
+  "orchid_memory_game.py"
+  "user_registration.py"
+  "orchid_atlas.py"
+  "rebus_puzzle_system.py"
+  "visitor_demo_system.py"
+  "visitor_teasers.py"
+  "member_authentication.py"
+  "member_feedback_system.py"
+  "system_monitor_dashboard.py"
+  "media_migration_system.py"
+  "ai_widget_builder.py"
+  "orchid_comparison_system.py"
+  "crossword_generator.py"
+  "admin_orchid_approval.py"
+  "new_orchid_gallery.py"
+  "simple_gallery.py"
+  "static_photo_test.py"
+  "final_working.py"
+  "photos_working.py"
+  "local_photos.py"
+  "presentation_ready.py"
+  "drive_importer.py"
+  "working_friday.py"
+  "friday_presentation.py"
+  "admin_control_center.py"
+  "emergency_main.py"
+  "advanced_photo_editor.py"
+  "botany_lab_stats.py"
+  "backup_app.py"
+  "simple_api.py"
+  "game_infrastructure.py"
+  "greek_mythology_orchids.py"
+  "research_writing_lab.py"
+  "photo_provenance_system.py"
+  "orchid_care_manager.py"
+  "research_literature_system.py"
+  "orchid_debugger_system.py"
+  "research_lab_core.py"
+  "bulk_orchid_analyzer.py"
+  "member_personalization.py"
+  "educational_games_integration.py"
+  "parallel_35_hypothesis_system.py"
+  "neon_one_integration.py"
+  "bug_report_system.py"
+  "gary_photo_demo.py"
+  "main_backup.py"
+  "minimal_main.py"
+  "data_progress_dashboard.py"
+  "member_privacy_system.py"
+  "team_feedback.py"
+  "orchid_book_club.py"
+  "autonomous_ai_director.py"
+  "system_health_dashboard.py"
+  "ai_research_director.py"
+  "mycorrhizal_network_monitor.py"
+)
+
+moved=0
+for file in "${inactive_files[@]}"; do
+  if [ -f "$file" ]; then
+    mv "$file" "archived_routes/"
+    echo "✅ Archived: $file"
+    ((moved++))
+  fi
+done
+
+echo ""
+echo "📊 Summary:"
+echo "   Moved to archive: $moved files"
+echo "   Archive location: archived_routes/"
+echo ""
+echo "✅ Cleanup complete! All files preserved safely."

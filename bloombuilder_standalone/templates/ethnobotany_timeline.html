@@ -1,0 +1,438 @@
+{% extends "base.html" %}
+
+{% block title %}Ethnobotany Timeline - The Orchid Continuum{% endblock %}
+
+{% block extra_css %}
+<style>
+    .timeline-container {
+        position: relative;
+        padding: 2rem 0;
+    }
+    
+    .timeline-line {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        transform: translateX(-50%);
+    }
+    
+    .timeline-period {
+        position: relative;
+        margin-bottom: 3rem;
+        opacity: 0;
+        animation: fadeInUp 0.6s forwards;
+    }
+    
+    .timeline-period:nth-child(1) { animation-delay: 0.1s; }
+    .timeline-period:nth-child(2) { animation-delay: 0.2s; }
+    .timeline-period:nth-child(3) { animation-delay: 0.3s; }
+    .timeline-period:nth-child(4) { animation-delay: 0.4s; }
+    .timeline-period:nth-child(5) { animation-delay: 0.5s; }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .timeline-period:nth-child(odd) .timeline-content {
+        margin-left: auto;
+        margin-right: 52%;
+    }
+    
+    .timeline-period:nth-child(even) .timeline-content {
+        margin-left: 52%;
+    }
+    
+    .timeline-icon {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: white;
+        border: 4px solid #667eea;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        z-index: 10;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    
+    .timeline-content {
+        background: white;
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s;
+        width: 45%;
+    }
+    
+    .timeline-content:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .period-header {
+        margin-bottom: 1rem;
+    }
+    
+    .period-name {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #667eea;
+        margin: 0;
+    }
+    
+    .period-range {
+        color: #764ba2;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    .period-description {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+    
+    .genus-pill {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        margin: 0.25rem;
+        font-size: 0.85rem;
+        font-style: italic;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .genus-pill:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    .genera-grid {
+        margin-top: 1rem;
+    }
+    
+    .stats-row {
+        margin-bottom: 2rem;
+    }
+    
+    .stats-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+    }
+    
+    .stats-card h3 {
+        font-size: 2.5rem;
+        margin: 0;
+        font-weight: bold;
+    }
+    
+    .stats-card p {
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
+        font-size: 0.9rem;
+    }
+    
+    .disclaimer-banner {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .disclaimer-banner h6 {
+        color: #856404;
+        margin: 0 0 0.5rem 0;
+        font-weight: bold;
+    }
+    
+    .disclaimer-banner p {
+        color: #856404;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+    
+    .genus-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.7);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .genus-modal.active {
+        display: flex;
+    }
+    
+    .genus-modal-content {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        position: relative;
+    }
+    
+    .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        cursor: pointer;
+        font-size: 1.5rem;
+        color: #666;
+    }
+    
+    .modal-genus {
+        font-size: 1.8rem;
+        font-style: italic;
+        color: #667eea;
+        margin-bottom: 1rem;
+    }
+    
+    .modal-section {
+        margin: 1rem 0;
+        padding: 1rem 0;
+        border-top: 1px solid #eee;
+    }
+    
+    .modal-section:first-child {
+        border-top: none;
+    }
+    
+    .modal-section h6 {
+        color: #764ba2;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    
+    .modal-section ul {
+        margin: 0;
+        padding-left: 1.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        .timeline-content {
+            width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        
+        .timeline-line {
+            left: 40px;
+        }
+        
+        .timeline-icon {
+            left: 40px;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+        
+        .timeline-period:nth-child(odd) .timeline-content,
+        .timeline-period:nth-child(even) .timeline-content {
+            margin-left: 100px !important;
+            margin-right: 0 !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h1 class="mb-2">
+                <i data-feather="clock"></i> Ethnobotany Timeline
+            </h1>
+            <p class="text-muted">
+                Journey through centuries of medicinal orchid knowledge · From ancient traditions to modern research
+            </p>
+        </div>
+    </div>
+    
+    <!-- Disclaimer Banner -->
+    <div class="disclaimer-banner">
+        <h6>⚠️ Important Disclaimer</h6>
+        <p>
+            This timeline displays traditional and medicinal knowledge for educational and historical purposes only. 
+            This information is NOT medical advice. Never harvest wild orchids. Always consult healthcare professionals 
+            before using any plant medicinally.
+        </p>
+    </div>
+    
+    <!-- Statistics Row -->
+    <div class="stats-row row">
+        <div class="col-md-4 mb-3">
+            <div class="stats-card">
+                <h3>{{ total_genera }}</h3>
+                <p>Medicinal Genera Documented</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="stats-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                <h3>{{ total_cultural_areas }}</h3>
+                <p>Cultural Regions</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="stats-card" style="background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);">
+                <h3>{{ total_uses }}</h3>
+                <p>Traditional Uses Recorded</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Timeline -->
+    <div class="timeline-container">
+        <div class="timeline-line"></div>
+        
+        {% for period in timeline_data %}
+        <div class="timeline-period">
+            <div class="timeline-icon">
+                {{ period.icon }}
+            </div>
+            <div class="timeline-content">
+                <div class="period-header">
+                    <h3 class="period-name">{{ period.period }}</h3>
+                    <div class="period-range">{{ period.range }}</div>
+                </div>
+                <p class="period-description">{{ period.description }}</p>
+                <div class="genera-grid">
+                    <strong>{{ period.count }} Genera:</strong><br>
+                    {% for genus in period.genera[:15] %}
+                    <span class="genus-pill" data-genus='{{ genus | tojson }}'>
+                        {{ genus.genus }}
+                    </span>
+                    {% endfor %}
+                    {% if period.count > 15 %}
+                    <span class="text-muted small">+{{ period.count - 15 }} more...</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Research Library Link -->
+    <div class="text-center mt-4">
+        <a href="/research-library" class="btn btn-lg" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <i data-feather="book-open"></i> Explore Full Research Library
+        </a>
+        <a href="/medicinal-orchid-map" class="btn btn-lg btn-outline-primary">
+            <i data-feather="map"></i> View Geographic Map
+        </a>
+    </div>
+</div>
+
+<!-- Genus Detail Modal -->
+<div class="genus-modal" id="genusModal">
+    <div class="genus-modal-content">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <div id="modalContent">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Initialize Feather Icons
+feather.replace();
+
+// Genus pill click handler
+document.querySelectorAll('.genus-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+        const genusData = JSON.parse(pill.getAttribute('data-genus'));
+        showGenusModal(genusData);
+    });
+});
+
+// Show genus detail modal
+function showGenusModal(data) {
+    let html = `<h2 class="modal-genus">${data.genus}</h2>`;
+    
+    if (data.traditional_uses && data.traditional_uses.length > 0) {
+        html += `<div class="modal-section">
+            <h6>📿 Traditional Uses:</h6>
+            <ul>${data.traditional_uses.map(use => `<li>${use}</li>`).join('')}</ul>
+        </div>`;
+    }
+    
+    if (data.medicinal_uses && data.medicinal_uses.length > 0) {
+        html += `<div class="modal-section">
+            <h6>💊 Medicinal Uses:</h6>
+            <ul>${data.medicinal_uses.map(use => `<li>${use}</li>`).join('')}</ul>
+        </div>`;
+    }
+    
+    if (data.cultural_areas && data.cultural_areas.length > 0) {
+        html += `<div class="modal-section">
+            <h6>🌏 Cultural Areas:</h6>
+            <p>${data.cultural_areas.join(', ')}</p>
+        </div>`;
+    }
+    
+    if (data.indigenous_names && data.indigenous_names.length > 0) {
+        html += `<div class="modal-section">
+            <h6>🗣️ Indigenous Names:</h6>
+            <ul>${data.indigenous_names.map(name => `<li>${name}</li>`).join('')}</ul>
+        </div>`;
+    }
+    
+    html += `<div class="modal-section">
+        <h6>📖 Source:</h6>
+        <p>${data.source}${data.page_reference ? ' (Page ' + data.page_reference + ')' : ''}</p>
+    </div>`;
+    
+    document.getElementById('modalContent').innerHTML = html;
+    document.getElementById('genusModal').classList.add('active');
+}
+
+// Close modal
+function closeModal() {
+    document.getElementById('genusModal').classList.remove('active');
+}
+
+// Close modal on outside click
+document.getElementById('genusModal').addEventListener('click', (e) => {
+    if (e.target.id === 'genusModal') {
+        closeModal();
+    }
+});
+
+// Close modal on escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModal();
+    }
+});
+</script>
+{% endblock %}

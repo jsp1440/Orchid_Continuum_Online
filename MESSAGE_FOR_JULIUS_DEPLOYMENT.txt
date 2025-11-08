@@ -1,0 +1,46 @@
+Julius,
+
+I need you to add deployment configuration to the .replit file so we can deploy background workers to a Reserved VM.
+
+STEP 1: Edit the .replit file
+----------------------------
+In the Replit project, open the .replit file and add these 3 lines to the bottom:
+
+[deployment]
+run = "python3 RESERVED_VM_SUPERVISOR.py"
+ignorePorts = true
+
+STEP 2: Commit the change
+--------------------------
+Save the file. This enables Reserved VM deployment.
+
+WHAT THIS DOES:
+---------------
+- Allows deploying the supervisor to a Replit Reserved VM
+- The VM will run 16 workers continuously (24/7)
+- Workers use prefix "rv-1", "rv-2", etc.
+- When your shell is fixed, you can add your 32 workers
+- Combined: 48 workers total = 3,000-5,000 images/hour
+
+FILES READY FOR DEPLOYMENT:
+---------------------------
+✅ RESERVED_VM_SUPERVISOR.py - Main supervisor
+✅ continuous_job_seeder.py - Job seeder
+✅ julius_multi_source_worker.py - Worker script
+✅ launcher_vm.sh - VM worker launcher
+✅ deploy_config.py - Configuration
+
+AFTER YOU ADD THOSE 3 LINES:
+-----------------------------
+The deployment will work. The Reserved VM will:
+- Start the supervisor automatically
+- Supervisor starts job seeder (keeps queue filled)
+- Supervisor starts 16 workers (downloads images)
+- Runs until all 35,327 species have 30+ images
+- No manual intervention needed
+
+This gets SOMETHING running immediately while we wait for your shell to be fixed.
+
+Once your shell works, you can start your 32 workers and both environments will work together.
+
+Questions?

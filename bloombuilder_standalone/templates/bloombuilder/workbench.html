@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloomBuilder Workbench</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fabric@5.3.0/dist/fabric.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body {
+            background: #1a0e2e;
+            color: #f5f3f8;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .workbench-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            height: 100vh;
+        }
+        
+        .canvas-area {
+            background: #2d1f3f;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .canvas-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .species-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e91e63;
+            font-style: italic;
+        }
+        
+        .canvas-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            position: relative;
+        }
+        
+        #orchid-canvas {
+            border: 2px solid rgba(233, 30, 99, 0.3);
+            border-radius: 8px;
+        }
+        
+        .tool-panel {
+            background: #221836;
+            padding: 1.5rem;
+            overflow-y: auto;
+            border-left: 2px solid rgba(233, 30, 99, 0.3);
+        }
+        
+        .tool-section {
+            margin-bottom: 2rem;
+        }
+        
+        .tool-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #e91e63;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .trait-toggle-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .trait-toggle {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(233, 30, 99, 0.3);
+            border-radius: 8px;
+            padding: 0.8rem;
+        }
+        
+        .trait-label {
+            font-size: 0.9rem;
+            color: #b8a5d3;
+            margin-bottom: 0.5rem;
+        }
+        
+        .trait-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .trait-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #f5f3f8;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .trait-btn:hover {
+            background: rgba(233, 30, 99, 0.3);
+            border-color: #e91e63;
+        }
+        
+        .trait-btn.active {
+            background: #e91e63;
+            border-color: #e91e63;
+            font-weight: 600;
+        }
+        
+        .style-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+        
+        .style-btn {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .style-btn:hover {
+            border-color: #e91e63;
+            transform: translateY(-2px);
+        }
+        
+        .style-btn.active {
+            border-color: #4caf50;
+            background: rgba(76, 175, 80, 0.2);
+        }
+        
+        .style-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .glossary-search {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 0.8rem;
+            color: #f5f3f8;
+            font-size: 0.9rem;
+        }
+        
+        .glossary-result {
+            background: rgba(233, 30, 99, 0.1);
+            border-left: 3px solid #e91e63;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        
+        .save-btn {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            border: none;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="workbench-container">
+        <!-- Canvas Area -->
+        <div class="canvas-area">
+            <div class="canvas-header">
+                <div class="species-title" id="species-name">Loading...</div>
+                <button onclick="resetCanvas()" style="background: rgba(255,255,255,0.1); border: none; color: white; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">
+                    Reset
+                </button>
+            </div>
+            
+            <div class="canvas-wrapper">
+                <canvas id="orchid-canvas"></canvas>
+            </div>
+        </div>
+        
+        <!-- Tool Panel -->
+        <div class="tool-panel">
+            <!-- Trait Toggles -->
+            <div class="tool-section">
+                <div class="tool-section-title">
+                    <i data-feather="sliders"></i>
+                    Trait Variations
+                </div>
+                <div class="trait-toggle-group" id="trait-toggles"></div>
+            </div>
+            
+            <!-- Style Selector -->
+            <div class="tool-section">
+                <div class="tool-section-title">
+                    <i data-feather="image"></i>
+                    Illustration Style
+                </div>
+                <div class="style-selector">
+                    <div class="style-btn active" onclick="setStyle('line')">
+                        <div class="style-icon">✏️</div>
+                        <div>Line Art</div>
+                    </div>
+                    <div class="style-btn" onclick="setStyle('watercolor')">
+                        <div class="style-icon">🎨</div>
+                        <div>Watercolor</div>
+                    </div>
+                    <div class="style-btn" onclick="setStyle('oil')">
+                        <div class="style-icon">🖼️</div>
+                        <div>Oil Painting</div>
+                    </div>
+                    <div class="style-btn" onclick="setStyle('coloring')">
+                        <div class="style-icon">🖍️</div>
+                        <div>Coloring Page</div>
+                    </div>
+                    <div class="style-btn" onclick="setStyle('origami')">
+                        <div class="style-icon">🌸</div>
+                        <div>Origami Template</div>
+                    </div>
+                    <div class="style-btn" onclick="setStyle('wallpaper')">
+                        <div class="style-icon">🖥️</div>
+                        <div>Wallpaper</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Glossary -->
+            <div class="tool-section">
+                <div class="tool-section-title">
+                    <i data-feather="book"></i>
+                    Botanical Glossary
+                </div>
+                <input type="text" 
+                       class="glossary-search" 
+                       placeholder="Search terms..."
+                       id="glossary-search">
+                <div id="glossary-result"></div>
+            </div>
+            
+            <!-- Orchid-Gami Instructions -->
+            <div class="tool-section">
+                <div class="tool-section-title">
+                    <i data-feather="scissors"></i>
+                    Orchid-Gami Instructions
+                </div>
+                <a href="https://www.naocc.org" target="_blank" style="display: block; background: rgba(233,30,99,0.2); border: 1px solid #e91e63; padding: 0.8rem; border-radius: 8px; text-decoration: none; color: #f5f3f8; text-align: center;">
+                    📄 View NAOCC Orchid-Gami Guide
+                </a>
+                <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.5rem;">
+                    Learn to create paper orchid flowers from your templates!
+                </p>
+            </div>
+            
+            <!-- Save -->
+            <div class="tool-section">
+                <button class="save-btn" onclick="saveCreation()">
+                    💾 Save & View Credits
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let canvas, currentStyle = 'line';
+        const selections = JSON.parse(sessionStorage.getItem('bloombuilder_selections'));
+        
+        // Initialize Fabric.js canvas
+        function initCanvas() {
+            canvas = new fabric.Canvas('orchid-canvas', {
+                width: 800,
+                height: 600,
+                backgroundColor: '#ffffff'
+            });
+            
+            // Load the selected image
+            loadSelectedImage();
+        }
+        
+        async function loadSelectedImage() {
+            // Load herbarium specimen as base
+            const imgUrl = selections.herbarium.url;
+            
+            fabric.Image.fromURL(imgUrl, (img) => {
+                img.scaleToWidth(600);
+                canvas.add(img);
+                canvas.centerObject(img);
+                canvas.renderAll();
+            });
+        }
+        
+        // Load trait toggles
+        async function loadTraits() {
+            const response = await fetch(`/bloombuilder/api/traits/species/${selections.species_id}`);
+            const data = await response.json();
+            
+            // Display species name
+            document.getElementById('species-name').textContent = data.species;
+            
+            // Create toggle buttons for each trait category
+            const container = document.getElementById('trait-toggles');
+            
+            for (const [category, values] of Object.entries(data.trait_categories)) {
+                const toggle = document.createElement('div');
+                toggle.className = 'trait-toggle';
+                
+                let html = `
+                    <div class="trait-label">${formatTraitName(category)}</div>
+                    <div class="trait-options">
+                `;
+                
+                values.forEach((trait, index) => {
+                    html += `
+                        <button class="trait-btn ${index === 0 ? 'active' : ''}" 
+                                onclick="toggleTrait('${category}', '${trait.value}', this)">
+                            ${trait.value.replace(/_/g, ' ')}
+                        </button>
+                    `;
+                });
+                
+                html += '</div>';
+                toggle.innerHTML = html;
+                container.appendChild(toggle);
+            }
+        }
+        
+        async function toggleTrait(category, value, btnElement) {
+            // Update button states
+            btnElement.parentElement.querySelectorAll('.trait-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            btnElement.classList.add('active');
+            
+            // Fetch new image for this trait
+            const response = await fetch('/bloombuilder/api/traits/toggle', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    species_id: selections.species_id,
+                    trait_category: category,
+                    trait_value: value
+                })
+            });
+            
+            const data = await response.json();
+            
+            // Update canvas with new image (with smooth crossfade)
+            if (data.image_url) {
+                updateCanvasImage(data.image_url);
+                
+                // Show pollinator info
+                showPollinatorInfo(data.pollinator_effect, data.evolution_note);
+            }
+        }
+        
+        function updateCanvasImage(newImageUrl) {
+            // Get current image from canvas
+            const currentObj = canvas.getObjects().find(obj => obj.type === 'image');
+            
+            if (!currentObj) {
+                // No image yet, just load it
+                fabric.Image.fromURL(newImageUrl, (img) => {
+                    img.scaleToWidth(600);
+                    canvas.add(img);
+                    canvas.centerObject(img);
+                    canvas.renderAll();
+                });
+                return;
+            }
+            
+            // Crossfade animation
+            const currentOpacity = currentObj.opacity || 1;
+            
+            // Fade out current image
+            const fadeOutInterval = setInterval(() => {
+                currentObj.opacity -= 0.1;
+                canvas.renderAll();
+                
+                if (currentObj.opacity <= 0) {
+                    clearInterval(fadeOutInterval);
+                    
+                    // Remove old image and load new one
+                    canvas.remove(currentObj);
+                    
+                    fabric.Image.fromURL(newImageUrl, (newImg) => {
+                        newImg.scaleToWidth(600);
+                        newImg.opacity = 0;
+                        canvas.add(newImg);
+                        canvas.centerObject(newImg);
+                        
+                        // Fade in new image
+                        const fadeInInterval = setInterval(() => {
+                            newImg.opacity += 0.1;
+                            canvas.renderAll();
+                            
+                            if (newImg.opacity >= 1) {
+                                clearInterval(fadeInInterval);
+                            }
+                        }, 30);
+                    });
+                }
+            }, 30);
+        }
+        
+        function showPollinatorInfo(pollinator, evolutionNote) {
+            // Show pollinator connection in UI
+            // TODO: Create beautiful pollinator info card
+            console.log('Pollinator:', pollinator);
+            console.log('Evolution:', evolutionNote);
+        }
+        
+        function setStyle(style) {
+            currentStyle = style;
+            
+            // Update button states
+            document.querySelectorAll('.style-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.style-btn').classList.add('active');
+            
+            // Apply style filter to canvas
+            applyStyleFilter(style);
+        }
+        
+        function applyStyleFilter(style) {
+            const filters = {
+                'line': 'grayscale(100%) contrast(150%)',
+                'watercolor': 'saturate(150%) blur(0.5px)',
+                'oil': 'saturate(130%) contrast(110%)',
+                'coloring': 'grayscale(100%) brightness(150%)',
+                'origami': 'grayscale(100%) contrast(200%) brightness(110%)', // High contrast for cutting
+                'wallpaper': 'saturate(120%) contrast(105%)' // Enhanced for display
+            };
+            
+            canvas.getElement().style.filter = filters[style] || 'none';
+            
+            // Special handling for origami template
+            if (style === 'origami') {
+                // Add cut lines overlay
+                addOrigamiCutLines();
+            }
+        }
+        
+        function addOrigamiCutLines() {
+            // Add dashed cut lines for origami template
+            const rect = new fabric.Rect({
+                left: 50,
+                top: 50,
+                width: canvas.width - 100,
+                height: canvas.height - 100,
+                fill: 'transparent',
+                stroke: '#e91e63',
+                strokeWidth: 2,
+                strokeDashArray: [10, 5],
+                selectable: false
+            });
+            canvas.add(rect);
+            canvas.sendToBack(rect);
+        }
+        
+        // Glossary search
+        document.getElementById('glossary-search').addEventListener('input', async (e) => {
+            const term = e.target.value;
+            if (term.length < 3) return;
+            
+            const response = await fetch(`/bloombuilder/api/glossary/${term}`);
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('glossary-result').innerHTML = `
+                    <strong>${data.term}</strong><br>
+                    ${data.definition}
+                `;
+            }
+        });
+        
+        function formatTraitName(name) {
+            return name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+        
+        async function saveCreation() {
+            // Ask for user's name first
+            const userName = prompt("Enter your name to be credited as the creator:", "");
+            if (!userName || userName.trim() === '') {
+                alert("Please enter your name to save your creation!");
+                return;
+            }
+            
+            // Export canvas as image
+            const dataURL = canvas.toDataURL({
+                format: 'png',
+                quality: 1
+            });
+            
+            // Save to backend
+            const saveData = {
+                species_id: selections.species_id,
+                image_data: dataURL,
+                style: currentStyle,
+                selected_images: selections,
+                created_at: new Date().toISOString(),
+                creator_name: userName.trim()
+            };
+            
+            try {
+                const response = await fetch('/bloombuilder/api/save-creation', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(saveData)
+                });
+                
+                if (response.ok) {
+                    // Download a copy
+                    const link = document.createElement('a');
+                    link.download = `orchid-${selections.species_id}-${currentStyle}.png`;
+                    link.href = dataURL;
+                    link.click();
+                    
+                    // Show acknowledgment page with user's name
+                    showAcknowledgmentPage(userName.trim());
+                } else {
+                    alert('Error saving creation. Please try again.');
+                }
+            } catch (error) {
+                console.error('Save error:', error);
+                // Still allow download even if save fails
+                const link = document.createElement('a');
+                link.download = `orchid-${selections.species_id}-${currentStyle}.png`;
+                link.href = dataURL;
+                link.click();
+                showAcknowledgmentPage(userName.trim());
+            }
+        }
+        
+        async function showAcknowledgmentPage(userName) {
+            // Fetch acknowledgment data
+            const response = await fetch(`/bloombuilder/api/acknowledgments/${selections.species_id}`);
+            const data = await response.json();
+            
+            // Get species name from data
+            const speciesName = data.species_name || 'this orchid';
+            
+            // Create beautiful acknowledgment modal
+            const modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 2rem;';
+            
+            modal.innerHTML = `
+                <div style="background: linear-gradient(135deg, #1a0e2e 0%, #2d1f3f 100%); padding: 3rem; border-radius: 20px; max-width: 700px; color: #f5f3f8; max-height: 90vh; overflow-y: auto;">
+                    <h2 style="color: #e91e63; font-size: 2rem; margin-bottom: 1.5rem; text-align: center;">
+                        🌸 The Orchid Continuum 🌸
+                    </h2>
+                    
+                    <div style="background: rgba(233,30,99,0.1); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; border-left: 4px solid #e91e63; text-align: center;">
+                        <h3 style="color: #e91e63; margin-bottom: 1rem; font-size: 1.5rem;">🧩 Puzzle Complete! 🧩</h3>
+                        <p style="line-height: 1.8; opacity: 0.95; font-size: 1.05rem;">
+                            <strong style="color: #4caf50; font-size: 1.2rem;">${userName}</strong> used The Orchid Continuum 
+                            to construct this illustration of <em style="color: #e91e63;">${speciesName}</em>, 
+                            assembling the research and efforts of <strong>${data.total_contributors}+ people</strong> 
+                            who contributed across <strong>${data.time_span} years</strong>.
+                        </p>
+                        <p style="margin-top: 1rem; opacity: 0.8; font-style: italic;">
+                            Like pieces of a jigsaw puzzle clicking together, each historical contribution combined 
+                            to create this moment of discovery.
+                        </p>
+                    </div>
+                    
+                    <h3 style="color: #e91e63; margin-bottom: 1rem;">The Pieces of Your Puzzle:</h3>
+                    
+                    <div style="margin-bottom: 2rem;">
+                        ${data.contributors.map((c, index) => `
+                            <div style="background: rgba(255,255,255,0.05); padding: 1rem; margin-bottom: 0.8rem; border-radius: 8px; border-left: 3px solid ${index === data.contributors.length - 1 ? '#4caf50' : '#e91e63'};">
+                                <strong style="color: ${index === data.contributors.length - 1 ? '#4caf50' : '#e91e63'};">${c.role}</strong><br>
+                                <span style="opacity: 0.9;">${c.name || 'Multiple contributors'}</span><br>
+                                <span style="font-size: 0.85rem; opacity: 0.7;">${c.institution} • ${c.year}</span>
+                            </div>
+                        `).join('')}
+                        
+                        <div style="background: linear-gradient(135deg, rgba(76,175,80,0.2) 0%, rgba(76,175,80,0.05) 100%); padding: 1.5rem; margin-top: 1rem; border-radius: 8px; border: 2px solid #4caf50;">
+                            <strong style="color: #4caf50; font-size: 1.1rem;">✨ Final Piece: ${userName} ✨</strong><br>
+                            <span style="opacity: 0.95; margin-top: 0.5rem; display: block;">
+                                Assembled all pieces into a unique creation • The Orchid Continuum • ${new Date().getFullYear()}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(76,175,80,0.1); padding: 1.5rem; border-radius: 12px; border-left: 4px solid #4caf50; margin-bottom: 2rem;">
+                        <strong style="color: #4caf50;">🎓 You are now part of this continuum!</strong><br>
+                        <span style="opacity: 0.9;">Your creation connects the past to the present, 
+                        and will inspire future students and researchers. Thank you for contributing 
+                        to botanical education and honoring those who came before.</span>
+                    </div>
+                    
+                    <button onclick="this.parentElement.parentElement.remove()" style="width: 100%; background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%); border: none; color: white; padding: 1rem; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer;">
+                        Close & Continue Exploring
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+        
+        function resetCanvas() {
+            canvas.clear();
+            canvas.backgroundColor = '#ffffff';
+            loadSelectedImage();
+        }
+        
+        // Initialize
+        initCanvas();
+        loadTraits();
+        feather.replace();
+    </script>
+</body>
+</html>

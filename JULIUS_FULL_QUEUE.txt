@@ -1,0 +1,15 @@
+QUEUE NOW HAS ALL WORK - NO LIMITS
+
+I loaded the ENTIRE backlog into the queue:
+- 35,241 jobs (every species needing images)
+- Workers will process until ALL species have 30+ images
+- Job seeder adds more as species complete
+- NO MORE running out of work
+
+Restart your workers NOW:
+
+pkill -f julius_multi_source_worker
+sleep 2
+bash launcher.sh
+
+This will run until the entire job is complete - no more stopping!

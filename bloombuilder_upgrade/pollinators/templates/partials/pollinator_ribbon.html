@@ -1,0 +1,53 @@
+{# Pollinator ribbon for Step 2 #}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pollinator_ribbon.css') }}">
+<div class="bb-pollinator-ribbon" data-plant="{{ plant_taxon_id or '' }}" data-species="{{ species_name or '' }}">
+  <div class="bb-pol-header">
+    <strong>Pollinators observed</strong> <span class="bb-pol-sub">(data-suggested)</span>
+  </div>
+  <div class="bb-pol-items" id="bb-pol-items"></div>
+  <div class="bb-pol-note">
+    <label for="bb-pol-note-input">Add an observation (optional):</label>
+    <textarea id="bb-pol-note-input" placeholder="What pollinator behavior or trait match do you notice?"></textarea>
+    <button id="bb-pol-insert">Insert pollinator credit</button>
+  </div>
+</div>
+
+<script>
+(async function() {
+  const wrap = document.querySelector('.bb-pollinator-ribbon');
+  if (!wrap) return;
+  const plantId = wrap.dataset.plant || "";
+  const species = wrap.dataset.species || "";
+  const qs = plantId ? `plant_taxon_id=${encodeURIComponent(plantId)}` :
+                       (species ? `species_name=${encodeURIComponent(species)}` : "");
+  try {
+    const res = await fetch(`/api/pollinators?${qs}`);
+    const data = await res.json();
+    const container = document.getElementById('bb-pol-items');
+    (data.pollinators || []).forEach(p => {
+      const el = document.createElement('div');
+      el.className = 'bb-pol-card';
+      el.innerHTML = `
+        <div class="bb-pol-img">
+          <img src="${p.media?.url || ''}" alt="${p.taxon.name}"/>
+        </div>
+        <div class="bb-pol-meta">
+          <div class="bb-pol-name">${p.taxon.name}</div>
+          <div class="bb-pol-lic">${p.media?.license || ''}</div>
+          <div class="bb-pol-attr">${p.media?.attribution || ''}</div>
+          <div class="bb-pol-conf">confidence: ${(p.interaction?.confidence ?? 0).toFixed(2)}</div>
+        </div>
+      `;
+      container.appendChild(el);
+    });
+
+    document.getElementById('bb-pol-insert')?.addEventListener('click', () => {
+      const note = document.getElementById('bb-pol-note-input')?.value || "";
+      const credit = (data.pollinators || []).map(p => `${p.taxon.name} — ${p.media?.attribution || ''} (${p.media?.license || ''})`).join('; ');
+      const full = note ? note + "\n" + credit : credit;
+      window.dispatchEvent(new CustomEvent('bb:pollinator-note', { detail: { text: full }}));
+      alert('Pollinator credit prepared. Listening page can append it to Notes.');
+    });
+  } catch (e) { console.error(e); }
+})();
+</script>

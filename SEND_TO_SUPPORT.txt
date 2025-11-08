@@ -1,0 +1,23 @@
+Project URL: https://replit.com/@fcospresident/workspace
+
+ISSUE 1: Cannot edit .replit file - Python version conflict
+- The .replit file has both python-3.11 and python3 in modules list causing package conflicts
+- Cannot open or edit the .replit file through the interface
+- All Python packages stuck in Python 3.11 directories but Python 3.12 is running
+- Getting import errors: cannot import name '_imaging' from 'PIL'
+- Tried your suggested fixes but neither worked
+
+Fix needed: Remove python-3.11 from line 2 of .replit file so it reads:
+modules = ["postgresql-16", "nodejs-20", "python3"]
+
+Then trigger package reinstallation for Python 3.12
+
+ISSUE 2: Copy/paste from files produces garbled URL-encoded text
+- When copying text from ANY file in Replit and pasting into external applications like email, the text becomes URL-encoded gibberish
+- Normal text becomes: Subject%3A%20Cannot%20edit%20.replit%20file etc.
+- This makes it impossible to share code, messages, or any text from Replit files
+- This is blocking normal workflow and costing significant time
+
+Both issues are blocking work on this project. Please fix urgently.
+
+Thank you

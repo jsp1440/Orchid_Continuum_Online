@@ -1,0 +1,50 @@
+═══════════════════════════════════════════════════════════
+REPLIT GIT LOCK FIX - OFFICIAL SOLUTION
+═══════════════════════════════════════════════════════════
+
+PROBLEM: .git/index.lock file exists (created at 18:53)
+CAUSE: Git operation was interrupted, left lock file behind
+STATUS: No git processes running - safe to delete
+
+═══════════════════════════════════════════════════════════
+SOLUTION (From Replit Docs):
+═══════════════════════════════════════════════════════════
+
+Open Replit Shell and run:
+
+rm .git/index.lock
+
+That's it! One simple command.
+
+═══════════════════════════════════════════════════════════
+THEN PUSH TO GITHUB:
+═══════════════════════════════════════════════════════════
+
+After deleting the lock, use Replit's Git UI:
+
+1. Click "Tools" → "Git" (or Version Control icon)
+2. Stage all changes
+3. Commit with message: "Deploy: 7 widgets + Render fixes"
+4. Click "Push" button
+
+Replit handles authentication automatically!
+
+═══════════════════════════════════════════════════════════
+OR USE SHELL:
+═══════════════════════════════════════════════════════════
+
+cd /home/runner/workspace
+git add .
+git commit -m "Deploy: 7 widgets + Render fixes"
+git push origin main
+
+═══════════════════════════════════════════════════════════
+VERIFIED:
+═══════════════════════════════════════════════════════════
+
+✅ Lock file exists at: /home/runner/workspace/.git/index.lock
+✅ No git processes running (checked with ps aux)
+✅ Safe to delete
+✅ Official Replit docs solution
+
+═══════════════════════════════════════════════════════════

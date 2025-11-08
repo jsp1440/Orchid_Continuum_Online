@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Support Message - Copy This</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .message-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        textarea {
+            width: 100%;
+            height: 400px;
+            padding: 15px;
+            font-size: 14px;
+            font-family: monospace;
+            border: 2px solid #4CAF50;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .success {
+            color: #4CAF50;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+        }
+        h1 {
+            color: #333;
+        }
+        .instructions {
+            background-color: #e7f3ff;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="message-box">
+        <h1>📧 Replit Support Message</h1>
+        
+        <div class="instructions">
+            <strong>Instructions:</strong>
+            <ol>
+                <li>Click the green "COPY TO CLIPBOARD" button below</li>
+                <li>Contact Replit Support by clicking the <strong>?</strong> button (top right corner) OR email <strong>support@replit.com</strong></li>
+                <li>Paste the message (Ctrl+V or Cmd+V)</li>
+            </ol>
+        </div>
+
+        <textarea id="supportMessage" readonly>Subject: Broken Python C Extensions - PIL and pydantic-core
+
+Issue Description:
+My Python environment has multiple broken C extensions preventing my Flask application from running:
+
+1. PIL/_imaging - ImportError: cannot import name '_imaging' from 'PIL'
+2. pydantic_core._pydantic_core - ModuleNotFoundError
+
+What I've tried:
+- Uninstalling and reinstalling packages via packager_tool 
+- Using 'kill 1' to restart the VM
+- Multiple reinstallation attempts
+
+Environment Details:
+- Python 3.11
+- Replit workspace
+- PostgreSQL database configured
+- 100+ Python packages installed
+
+Impact:
+Cannot start Flask application - crashes on startup due to broken imports.
+
+Request:
+Please fix the broken C extensions in my Python environment or provide guidance on how to rebuild the environment without losing my project files and database.
+
+Thank you for your help!</textarea>
+
+        <button onclick="copyToClipboard()">📋 COPY TO CLIPBOARD</button>
+        <div class="success" id="successMessage">✅ Copied! Now paste it to Replit Support.</div>
+    </div>
+
+    <script>
+        function copyToClipboard() {
+            var textarea = document.getElementById('supportMessage');
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); // For mobile devices
+            
+            try {
+                document.execCommand('copy');
+                document.getElementById('successMessage').style.display = 'block';
+                setTimeout(function() {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 3000);
+            } catch (err) {
+                alert('Please manually select the text and press Ctrl+C (or Cmd+C on Mac) to copy');
+            }
+        }
+        
+        // Auto-select text on click
+        document.getElementById('supportMessage').onclick = function() {
+            this.select();
+        };
+    </script>
+</body>
+</html>

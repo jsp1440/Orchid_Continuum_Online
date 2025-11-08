@@ -1,0 +1,410 @@
+###
+### Orchid Continuum API Examples
+### Runnable HTTP requests for testing and documentation
+### Use with REST Client extension in VS Code or similar tools
+###
+
+### Variables
+@baseUrl = http://localhost:5000
+# For production: https://orchid-continuum.onrender.com
+# For Replit: https://your-repl-name.replit.app
+
+### ==================================================
+### HEALTH & STATUS
+### ==================================================
+
+### Health Check (Static endpoint, <100ms, no DB/AI calls)
+### Citation: app.py:363-395
+GET {{baseUrl}}/healthz
+Accept: application/json
+
+### ==================================================
+### PUBLIC PAGES
+### ==================================================
+
+### Homepage
+GET {{baseUrl}}/
+Accept: text/html
+
+### Articles Listing
+### Citation: routes.py:253
+GET {{baseUrl}}/articles
+Accept: text/html
+
+### Individual Article
+### Citation: routes.py:318
+GET {{baseUrl}}/articles/greek-mythology-orchids
+Accept: text/html
+
+### ==================================================
+### ORCHID DATA API
+### ==================================================
+
+### Get All Orchid Coordinates (WARNING: Large dataset, 10,000+ records)
+### Citation: routes.py:548-600
+### RISK: High volume query, consider pagination
+GET {{baseUrl}}/api/orchid-coordinates-all
+Accept: application/json
+
+### Get Genus Statistics
+### Citation: routes.py:600
+GET {{baseUrl}}/api/orchid-genera
+Accept: application/json
+
+### Get Image Counts by Species
+### Citation: routes.py:631
+GET {{baseUrl}}/api/image-counts
+Accept: application/json
+
+### Get Ecosystem Data
+### Citation: routes.py:756
+GET {{baseUrl}}/api/orchid-ecosystem-data
+Accept: application/json
+
+### ==================================================
+### PARTNERSHIP - GARY DEMO
+### ==================================================
+
+### Gary Partnership Dashboard
+### Citation: routes.py:376
+GET {{baseUrl}}/partner/gary/dashboard
+Accept: text/html
+
+### Gary Photo Upload
+### Citation: routes.py:434
+POST {{baseUrl}}/api/gary-upload
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
+
+------WebKitFormBoundary
+Content-Disposition: form-data; name="photo"; filename="orchid.jpg"
+Content-Type: image/jpeg
+
+< ./test_orchid.jpg
+------WebKitFormBoundary
+Content-Disposition: form-data; name="caption"
+
+Beautiful Paphiopedilum from my collection
+------WebKitFormBoundary--
+
+### Gary AI Chat (PROTECTED by safe_ai_call, requires ORCHID_AI_ENABLED=true)
+### Citation: routes.py:1415
+POST {{baseUrl}}/partner/api/send-to-ai
+Content-Type: application/json
+
+{
+  "message": "What growing conditions does this orchid need?",
+  "context": {
+    "orchid_id": 123,
+    "genus": "Paphiopedilum"
+  }
+}
+
+###
+### Expected Response (AI enabled):
+# {
+#   "response": "Paphiopedilums generally prefer...",
+#   "confidence": 0.85
+# }
+###
+### Expected Response (AI disabled, ORCHID_AI_ENABLED=false):
+# {
+#   "status": "disabled",
+#   "reason": "AI temporarily paused"
+# }
+###
+
+### ==================================================
+### SATELLITE & GLOBE FEATURES
+### ==================================================
+
+### Global Satellite Map
+### Citation: routes.py:538
+GET {{baseUrl}}/global-satellite-map
+Accept: text/html
+
+### 3D Space-Earth Globe
+### Citation: routes.py:543
+GET {{baseUrl}}/space-earth-globe
+Accept: text/html
+
+### Global Weather Patterns
+### Citation: routes.py:882
+GET {{baseUrl}}/api/global-weather-patterns
+Accept: application/json
+
+### Satellite Monitoring Data
+### Citation: routes.py:961
+GET {{baseUrl}}/api/satellite-monitoring
+Accept: application/json
+
+### ==================================================
+### AI-POWERED ENDPOINTS (GUARDED)
+### ==================================================
+
+### Globe AI Chat (PROTECTED by safe_ai_call)
+### Citation: routes.py:1104
+POST {{baseUrl}}/api/earth-ai-chat
+Content-Type: application/json
+
+{
+  "message": "Tell me about orchids along the 35th parallel",
+  "location": {
+    "latitude": 35.0,
+    "longitude": -120.0
+  }
+}
+
+###
+### Response when AI enabled:
+# {
+#   "response": "The 35th parallel crosses through...",
+#   "sources": ["GBIF", "EOL"],
+#   "confidence": 0.9
+# }
+###
+### Response when AI disabled (ORCHID_AI_ENABLED=false):
+# {
+#   "status": "disabled",
+#   "reason": "AI temporarily paused"
+# }
+###
+
+### Search Assistant AI Chat (PROTECTED by safe_ai_call)
+### Citation: routes.py:1277
+POST {{baseUrl}}/api/chat-search-assist
+Content-Type: application/json
+
+{
+  "query": "Find orchids that bloom in winter",
+  "filters": {
+    "genus": null,
+    "climate": "intermediate"
+  }
+}
+
+### ==================================================
+### JUDGING SYSTEM
+### ==================================================
+
+### Judging Standards Home
+### Citation: routes.py:1661
+GET {{baseUrl}}/judging
+Accept: text/html
+
+### Analyze Orchid for Judging
+### Citation: routes.py:1683
+GET {{baseUrl}}/judging/analyze/123
+Accept: text/html
+
+### Quick Judging Score API
+### Citation: routes.py:1736
+GET {{baseUrl}}/api/judging/quick-score/123
+Accept: application/json
+
+### ==================================================
+### INTERGENERIC CROSSES
+### ==================================================
+
+### Intergeneric Crosses Page
+### Citation: routes.py:1654
+GET {{baseUrl}}/intergeneric-crosses
+Accept: text/html
+
+### Intergeneric Crosses API
+### Citation: routes.py:1756
+GET {{baseUrl}}/api/intergeneric-crosses
+Accept: application/json
+
+### ==================================================
+### ADMIN ENDPOINTS (Require Authentication)
+### ==================================================
+
+### Admin Diagnostic Status
+### Citation: routes.py:1229
+### Note: Requires admin authentication
+GET {{baseUrl}}/admin/diagnostic-status
+Accept: application/json
+
+### Restart Widgets
+### Citation: routes.py:1239
+### Note: Requires admin authentication
+POST {{baseUrl}}/admin/restart-widgets
+Content-Type: application/json
+
+{}
+
+### Restart Services
+### Citation: routes.py:1249
+### Note: Requires admin authentication
+POST {{baseUrl}}/admin/restart-services
+Content-Type: application/json
+
+{}
+
+### Run Sunset Valley Scraper
+### Citation: routes.py:1536
+### Note: Requires admin authentication
+POST {{baseUrl}}/admin/run-sunset-valley-scraper
+Content-Type: application/json
+
+{
+  "max_pages": 10,
+  "delay_seconds": 2
+}
+
+### ==================================================
+### GALLERY & THEMED COLLECTIONS
+### ==================================================
+
+### Gallery Hub
+GET {{baseUrl}}/gallery-hub
+Accept: text/html
+
+### Thailand Orchids Gallery
+GET {{baseUrl}}/gallery/thailand
+Accept: text/html
+
+### Madagascar Orchids Gallery
+GET {{baseUrl}}/gallery/madagascar
+Accept: text/html
+
+### Fragrant Orchids Gallery
+GET {{baseUrl}}/gallery/fragrant
+Accept: text/html
+
+### Night-Blooming Orchids Gallery
+GET {{baseUrl}}/gallery/night-blooming
+Accept: text/html
+
+### Regional Rotating Gallery
+### Citation: routes.py:523
+GET {{baseUrl}}/gallery/regional-rotating
+Accept: text/html
+
+### ==================================================
+### SEARCH
+### ==================================================
+
+### Search Orchids
+GET {{baseUrl}}/search?q=Paphiopedilum&genus=Paphiopedilum&region=Southeast%20Asia
+Accept: text/html
+
+### ==================================================
+### BUG REPORTING
+### ==================================================
+
+### Submit Bug Report
+POST {{baseUrl}}/api/bug-report
+Content-Type: application/json
+
+{
+  "item_type": "widget",
+  "item_id": "philosophy-quiz",
+  "item_name": "Philosophy Quiz Widget",
+  "issue_type": "widget_crash",
+  "description": "Quiz crashes when selecting 'Harmony' answer on Question 3",
+  "user_email": "tester@example.com"
+}
+
+###
+### Response:
+# {
+#   "status": "success",
+#   "bug_id": 42,
+#   "message": "Bug report submitted successfully"
+# }
+###
+
+### ==================================================
+### WIDGETS (Standalone Pages)
+### ==================================================
+
+### Philosophy Quiz Widget
+GET {{baseUrl}}/widgets/philosophy-quiz
+Accept: text/html
+
+### Hollywood Orchids Widget
+GET {{baseUrl}}/widgets/hollywood-orchids
+Accept: text/html
+
+### FCOS Judge Widget (PWA)
+GET {{baseUrl}}/fcos-judge/
+Accept: text/html
+
+### Orchid Mahjong Game
+GET {{baseUrl}}/mahjong
+Accept: text/html
+
+### Weather/Habitat Widget
+GET {{baseUrl}}/weather-habitat/widget
+Accept: text/html
+
+### ==================================================
+### EXAMPLE CURL COMMANDS
+### ==================================================
+
+### Health Check (curl)
+# curl -X GET http://localhost:5000/healthz
+
+### Gary AI Chat (curl, AI enabled)
+# curl -X POST http://localhost:5000/partner/api/send-to-ai \
+#   -H "Content-Type: application/json" \
+#   -d '{"message":"What are the best growing conditions for Phalaenopsis?"}'
+
+### Submit Bug Report (curl)
+# curl -X POST http://localhost:5000/api/bug-report \
+#   -H "Content-Type: application/json" \
+#   -d '{
+#     "item_type":"widget",
+#     "item_id":"philosophy-quiz",
+#     "item_name":"Philosophy Quiz",
+#     "issue_type":"broken_link",
+#     "description":"Result page link returns 404",
+#     "user_email":"tester@example.com"
+#   }'
+
+### ==================================================
+### PRODUCTION DEPLOYMENT EXAMPLES
+### ==================================================
+
+### Health Check (Render Production)
+# curl -X GET https://orchid-continuum.onrender.com/healthz
+
+### AI Status Check (Production)
+# curl -X GET https://orchid-continuum.onrender.com/api/ai/status
+# Expected: {"status":"disabled"} (default) or {"status":"ok"} (if enabled)
+
+### ==================================================
+### TESTING NOTES
+### ==================================================
+
+# 1. AI Features:
+#    - Set ORCHID_AI_ENABLED=true to test AI endpoints
+#    - Default is false, will return {"status":"disabled"}
+#    - Requires OPENAI_API_KEY in environment
+
+# 2. Admin Endpoints:
+#    - Require authentication (Flask-Login session)
+#    - Login first at /admin/login before testing
+
+# 3. Large Queries:
+#    - /api/orchid-coordinates-all returns 10,000+ records
+#    - Consider pagination for production use
+
+# 4. File Uploads:
+#    - Replace `< ./test_orchid.jpg` with actual file path
+#    - Supported formats: JPG, PNG, GIF
+
+# 5. Performance Testing:
+#    - Health endpoint should respond <100ms
+#    - AI endpoints may take 2-5 seconds (OpenAI latency)
+#    - Database queries typically <500ms
+
+# 6. Error Responses:
+#    - 404: Endpoint not found
+#    - 429: Rate limit exceeded (OpenAI)
+#    - 500: Server error (check logs)
+
+###
+### END OF API EXAMPLES
+###

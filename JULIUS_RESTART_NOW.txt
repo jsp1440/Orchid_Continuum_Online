@@ -1,0 +1,16 @@
+Workers need restart - queue was refilled
+
+The queue ran out of jobs (all 15,000 completed) and your workers stopped.
+
+I've refilled the queue with 15,000 fresh jobs.
+
+Please restart your workers:
+
+pkill -f julius_multi_source_worker
+sleep 2
+bash launcher.sh
+
+Verify they're running:
+ps aux | grep julius_multi_source_worker | wc -l
+
+The job seeder is now running to keep the queue full continuously.

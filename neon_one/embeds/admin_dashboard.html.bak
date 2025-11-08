@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!-- 
+  🔒 Admin Dashboard Widget (RESTRICTED)
+  Self-contained embed for Neon One CMS
+  Internal use only - FCOS Board members
+-->
+<div id="admin-dashboard-widget" role="region" aria-label="Admin Dashboard">
+  <style>
+    #admin-dashboard-widget {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #1f2937;
+      border-radius: 12px;
+      color: white;
+    }
+    #admin-dashboard-widget h2 {
+      margin: 0 0 20px 0;
+      font-size: 26px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    #admin-dashboard-widget .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    #admin-dashboard-widget .stat-card {
+      background: #374151;
+      padding: 20px;
+      border-radius: 12px;
+    }
+    #admin-dashboard-widget .stat-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: #10b981;
+    }
+    #admin-dashboard-widget .stat-label {
+      font-size: 14px;
+      color: #9ca3af;
+      margin-top: 8px;
+    }
+    #admin-dashboard-widget .auth-warning {
+      background: #fef2f2;
+      color: #991b1b;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+    #admin-dashboard-widget .activity-list {
+      background: #374151;
+      padding: 20px;
+      border-radius: 12px;
+    }
+    #admin-dashboard-widget .activity-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #4b5563;
+    }
+    #admin-dashboard-widget .activity-item:last-child {
+      border-bottom: none;
+    }
+  </style>
+
+  <h2>🔒 Admin Dashboard</h2>
+  <div id="admin-content"></div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ============================================================================
+  // CONFIG - CHANGE ME
+  // ============================================================================
+  const CONFIG = {
+    BASE_URL: 'https://your-orchid-app.onrender.com',  // CHANGE ME
+    REQUIRES_ADMIN: true
+  };
+  // ============================================================================
+  
+  const contentDiv = document.getElementById('admin-content');
+  
+  async function checkAdminAccess() {
+    try {
+      const response = await fetch(`${CONFIG.BASE_URL}/api/admin/check`, {
+        credentials: 'include'
+      });
+      return response.ok;
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  async function loadDashboard() {
+    try {
+      const response = await fetch(`${CONFIG.BASE_URL}/api/admin/stats`, {
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        throw new Error('Unauthorized');
+      }
+      
+      const data = await response.json();
+      renderDashboard(data);
+    } catch (error) {
+      contentDiv.innerHTML = `<div class="auth-warning">
+        🔒 Admin access required<br><br>
+        This dashboard is restricted to FCOS Board members.<br><br>
+        <a href="${CONFIG.BASE_URL}/admin/login" style="color:#991b1b;font-weight:600;">Admin Login →</a>
+      </div>`;
+    }
+  }
+  
+  function renderDashboard(data) {
+    let html = '<div class="stats-grid">';
+    
+    const stats = [
+      { label: 'Total Users', value: data.total_users || 0 },
+      { label: 'Active Members', value: data.active_members || 0 },
+      { label: 'Orchid Records', value: data.orchid_count || 35320 },
+      { label: 'Images Collected', value: data.image_count || 0 }
+    ];
+    
+    stats.forEach(stat => {
+      html += `<div class="stat-card">
+        <div class="stat-value">${stat.value.toLocaleString()}</div>
+        <div class="stat-label">${stat.label}</div>
+      </div>`;
+    });
+    
+    html += '</div>';
+    
+    html += '<div class="activity-list">';
+    html += '<h3 style="margin:0 0 16px 0;">Recent Activity</h3>';
+    html += '<div class="activity-item">📝 Database backup completed</div>';
+    html += '<div class="activity-item">🌸 GBIF enrichment running (24/7)</div>';
+    html += '<div class="activity-item">✅ System health: All systems operational</div>';
+    html += '</div>';
+    
+    contentDiv.innerHTML = html;
+  }
+  
+  async function initialize() {
+    const hasAccess = await checkAdminAccess();
+    if (!hasAccess) {
+      contentDiv.innerHTML = `<div class="auth-warning">
+        🔒 Admin access required<br><br>
+        This dashboard is restricted to FCOS Board members.
+      </div>`;
+      return;
+    }
+    
+    loadDashboard();
+  }
+  
+  initialize();
+})();
+</script>

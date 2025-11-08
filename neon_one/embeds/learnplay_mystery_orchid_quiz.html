@@ -1,0 +1,268 @@
+<!-- 
+  ORCHID Continuum — Licensed to FCOS (501(c)(3)) for nonprofit use.
+  FCOS branding (colors) applied via design tokens.
+-->
+<!DOCTYPE html>
+<!-- 
+  🔮 Mystery Orchid Quiz Widget
+  Self-contained embed for Neon One CMS
+  Guess the genus of a mystery orchid
+-->
+<div id="mystery-quiz-widget" role="region" aria-label="Mystery Orchid Quiz">
+  <style>
+    #mystery-quiz-widget {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 30px;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      border-radius: 16px;
+      color: white;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    #mystery-quiz-widget h2 {
+      margin: 0 0 12px 0;
+      font-size: 28px;
+      text-align: center;
+    }
+    #mystery-quiz-widget .subtitle {
+      text-align: center;
+      margin-bottom: 24px;
+      opacity: 0.9;
+    }
+    #mystery-quiz-widget .quiz-card {
+      background: white;
+      color: #2d3748;
+      padding: 24px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    #mystery-quiz-widget .question {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      text-align: center;
+      color: #1e293b;
+    }
+    #mystery-quiz-widget .species-hint {
+      text-align: center;
+      font-style: italic;
+      color: #64748b;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    #mystery-quiz-widget .image-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #mystery-quiz-widget .orchid-image {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    #mystery-quiz-widget .placeholder-image {
+      background: #f1f5f9;
+      padding: 60px 20px;
+      border-radius: 12px;
+      color: #94a3b8;
+      font-size: 48px;
+      text-align: center;
+    }
+    #mystery-quiz-widget .options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    #mystery-quiz-widget .option-btn {
+      padding: 16px;
+      background: #f7fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 16px;
+      text-align: center;
+      font-weight: 600;
+    }
+    #mystery-quiz-widget .option-btn:hover {
+      background: #edf2f7;
+      border-color: #f093fb;
+    }
+    #mystery-quiz-widget .option-btn.selected {
+      background: #fce7f3;
+      border-color: #f093fb;
+    }
+    #mystery-quiz-widget .option-btn.correct {
+      background: #d1fae5;
+      border-color: #10b981;
+      color: #065f46;
+    }
+    #mystery-quiz-widget .option-btn.wrong {
+      background: #fee2e2;
+      border-color: #ef4444;
+      color: #991b1b;
+    }
+    #mystery-quiz-widget .reveal-card {
+      background: #f0fdfa;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      color: #134e4a;
+    }
+    #mystery-quiz-widget .reveal-card h3 {
+      margin: 0 0 12px 0;
+      color: #065f46;
+    }
+    #mystery-quiz-widget .detail-line {
+      margin: 6px 0;
+      font-size: 14px;
+    }
+    #mystery-quiz-widget button {
+      background: white;
+      color: #f5576c;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 12px;
+    }
+    #mystery-quiz-widget button:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    #mystery-quiz-widget .banner {
+      background: rgba(255,255,255,0.2);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+  </style>
+
+  <h2>🔮 Mystery Orchid Quiz</h2>
+  <p class="subtitle">Can you guess the genus?</p>
+  
+  <div id="quiz-content"></div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ============================================================================
+  // CONFIG - CHANGE ME
+  // ============================================================================
+  const CONFIG = {
+    BASE_URL: 'https://your-orchid-app.onrender.com',  // CHANGE ME
+  };
+  // ============================================================================
+  
+  const contentDiv = document.getElementById('quiz-content');
+  let currentQuestion = null;
+  let selectedOption = null;
+  let revealed = false;
+  
+  async function loadQuestion() {
+    revealed = false;
+    selectedOption = null;
+    contentDiv.innerHTML = '<div class="banner">🌸 Loading mystery orchid...</div>';
+    
+    try {
+      const response = await fetch(`${CONFIG.BASE_URL}/api/taxonomy/quiz/mystery`);
+      if (!response.ok) throw new Error('API unavailable');
+      
+      currentQuestion = await response.json();
+      renderQuestion();
+    } catch (error) {
+      contentDiv.innerHTML = `<div class="banner" style="background:#fef2f2;color:#991b1b;">
+        ⚠️ Unable to load quiz. Please check API configuration.
+      </div>`;
+    }
+  }
+  
+  function renderQuestion() {
+    if (!currentQuestion) return;
+    
+    let html = '<div class="quiz-card">';
+    html += `<div class="question">${currentQuestion.question}</div>`;
+    
+    // Show image if available
+    if (revealed && currentQuestion.image_url) {
+      html += `<div class="image-container">
+        <img src="${currentQuestion.image_url}" alt="${currentQuestion.species}" class="orchid-image">
+      </div>`;
+    } else if (revealed) {
+      html += `<div class="placeholder-image">🌺</div>`;
+    }
+    
+    if (currentQuestion.species_hint && !revealed) {
+      html += `<div class="species-hint">Species: ${currentQuestion.species_hint}</div>`;
+    }
+    
+    html += '<div class="options-grid">';
+    currentQuestion.options.forEach((option, index) => {
+      let className = 'option-btn';
+      if (revealed) {
+        if (index === currentQuestion.correct_index) {
+          className += ' correct';
+        } else if (index === selectedOption) {
+          className += ' wrong';
+        }
+      } else if (index === selectedOption) {
+        className += ' selected';
+      }
+      
+      html += `<div class="${className}" onclick="window.selectGenus(${index})" role="button" tabindex="0">
+        ${option}
+      </div>`;
+    });
+    html += '</div>';
+    
+    if (revealed) {
+      const isCorrect = selectedOption === currentQuestion.correct_index;
+      html += `<div class="reveal-card">
+        <h3>${isCorrect ? '✓ Correct!' : '✗ Not quite!'} The answer is ${currentQuestion.genus}</h3>
+        <div class="detail-line"><strong>Full Name:</strong> <em>${currentQuestion.species}</em></div>
+        ${currentQuestion.author ? `<div class="detail-line"><strong>Author:</strong> ${currentQuestion.author}</div>` : ''}
+        ${currentQuestion.distribution ? `<div class="detail-line"><strong>Distribution:</strong> ${currentQuestion.distribution}</div>` : ''}
+      </div>`;
+    }
+    
+    html += '</div>';
+    
+    if (!revealed && selectedOption !== null) {
+      html += '<button onclick="window.revealAnswer()">🔍 Reveal Answer</button>';
+    }
+    if (revealed) {
+      html += '<button onclick="window.nextQuestion()">➡️ Next Mystery Orchid</button>';
+    }
+    
+    contentDiv.innerHTML = html;
+  }
+  
+  function selectGenus(index) {
+    if (revealed) return;
+    selectedOption = index;
+    renderQuestion();
+  }
+  
+  function revealAnswer() {
+    revealed = true;
+    renderQuestion();
+  }
+  
+  function nextQuestion() {
+    loadQuestion();
+  }
+  
+  window.selectGenus = selectGenus;
+  window.revealAnswer = revealAnswer;
+  window.nextQuestion = nextQuestion;
+  
+  // Initialize
+  loadQuestion();
+})();
+</script>

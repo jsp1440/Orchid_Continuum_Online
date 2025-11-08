@@ -1,0 +1,57 @@
+services:
+  # Main Flask Web Application
+  - type: web
+    name: orchid-continuum
+    env: python
+    buildCommand: pip install -r requirements.txt
+    preDeployCommand: bash render_init.sh && python create_database.py
+    startCommand: gunicorn --bind 0.0.0.0:$PORT main:app
+    # Production Stability Settings
+    healthCheckPath: /healthz  # Static endpoint, never calls OpenAI
+    autoDeploy: false  # Manual deploys only to prevent surprise quota burns
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: SESSION_SECRET
+        generateValue: true  # Auto-generate secure secret
+      - key: DATABASE_URL
+        sync: false  # Set manually or use Render's PostgreSQL add-on
+      - key: ORCHID_AI_ENABLED
+        value: "false"  # AI DISABLED by default - enable manually when quota available
+  
+  # GBIF Image Collection Worker - Runs 24/7 collecting FREE images
+  - type: worker
+    name: orchid-gbif-worker
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -u validation/enrich_gbif_stable.py
+    autoDeploy: true  # Auto-deploy worker for continuous data collection
+    envVars:
+      - key: DATABASE_URL
+        sync: false  # Same database as web app
+  
+  # Multi-Source Image Harvester - 16 workers across 7 image sources
+  - type: worker
+    name: orchid-harvester-supervisor
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 -u RESERVED_VM_SUPERVISOR.py
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: TROPICOS_API_KEY
+        sync: false
+      - key: BHL_API_KEY
+        sync: false
+  
+  # EOL DATA PROCESSING - Run manually after deployment
+  # The EOL worker has been replaced with a 3-step manual process:
+  # 1. Download TraitBank: bash render_init.sh (auto-runs on first deploy)
+  # 2. Process traits: python validation/process_eol_traits.py
+  # 3. Link images to traits: python validation/link_eol_data.py
+  # 4. Import to database: python validation/import_eol_to_db.py
+  #
+  # This approach matches 5.6M EOL images to 3M+ trait records using page_id
+  # before importing to database, ensuring data integrity and relationships.

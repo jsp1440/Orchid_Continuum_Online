@@ -1,0 +1,39 @@
+{
+  "name": "fcos",
+  "full_name": "Five Cities Orchid Society",
+  "visible_markings": false,
+  "license_notice": "ORCHID Continuum — Licensed to FCOS (501(c)(3)) for nonprofit use.",
+  "ownership": "ORCHID Continuum and all widgets remain property of the original creator. FCOS holds a license to use, not ownership.",
+  "ui_policy": "No visible organization name, logo, or watermark. FCOS branding (colors) applied via design tokens.",
+  "tokens": {
+    "bg": "#fafafa",
+    "surface": "#ffffff",
+    "text": "#1f2937",
+    "muted": "#6b7280",
+    "accent": "#3b82f6",
+    "accentContrast": "#ffffff",
+    "accentHover": "#2563eb",
+    "success": "#10b981",
+    "warning": "#f59e0b",
+    "error": "#ef4444",
+    "radius": "12px",
+    "radiusSm": "8px",
+    "radiusLg": "16px",
+    "shadow": "0 2px 10px rgba(0,0,0,.06)",
+    "shadowSm": "0 1px 3px rgba(0,0,0,.08)",
+    "shadowLg": "0 10px 40px rgba(0,0,0,.12)",
+    "fontSans": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif"
+  },
+  "voice": {
+    "framework": "BTROM",
+    "principles": [
+      "Behavioral - guide action with clear verbs",
+      "Transparent - plain language, show system status",
+      "Respectful - positive, inclusive, science-first",
+      "Outcome-oriented - one goal per widget",
+      "Minimalist - concise, scannable, 6th-8th grade level"
+    ],
+    "reading_level": "6th-8th grade for public widgets",
+    "tone": "friendly, educational, helpful"
+  }
+}

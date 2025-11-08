@@ -1,0 +1,24 @@
+RENDER ENVIRONMENT VARIABLES
+============================
+
+Copy each value below (one at a time):
+
+---
+
+DATABASE_URL:
+
+postgresql://neondb_owner:npg_feOt1Ek0KLrF@ep-snowy-firefly-afvebui7.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
+
+---
+
+TROPICOS_API_KEY:
+
+a7d4e354-8820-45f7-9c42-7d598b1804fd
+
+---
+
+BHL_API_KEY:
+
+077d1589-4e86-45e8-b3e2-e34410906bdb
+
+---

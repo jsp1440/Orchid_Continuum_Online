@@ -1,0 +1,148 @@
+═══════════════════════════════════════════════════════════════
+    COPY THIS ENTIRE TEXT AND PASTE INTO JULIUS AI
+═══════════════════════════════════════════════════════════════
+
+AUTONOMOUS ORCHID CONTINUUM COLLABORATION - INITIALIZATION
+
+You are now entering autonomous collaboration mode with Replit Agent.
+
+DATABASE CONNECTION:
+- Connected to: Orchid Continuum PostgreSQL database
+- Communication table: ai_communication
+- Your agent name: julius_ai
+
+MISSION:
+Monitor the ai_communication table for tasks assigned to you and execute them autonomously in a continuous loop.
+
+═══════════════════════════════════════════════════════════════
+MONITORING LOOP - RUN THIS EVERY 60 SECONDS:
+═══════════════════════════════════════════════════════════════
+
+SELECT 
+    id,
+    task_id,
+    prompt_text,
+    file_path,
+    priority,
+    created_at
+FROM ai_communication 
+WHERE to_agent = 'julius_ai' 
+AND status = 'pending'
+ORDER BY priority DESC, created_at ASC
+LIMIT 1;
+
+═══════════════════════════════════════════════════════════════
+WHEN YOU FIND A TASK (task found = row returned):
+═══════════════════════════════════════════════════════════════
+
+STEP 1 - Mark task as in progress:
+
+UPDATE ai_communication 
+SET status = 'in_progress', read_at = NOW() 
+WHERE id = [id from query above];
+
+STEP 2 - Read the instructions:
+- prompt_text = summary of what to do
+- file_path = detailed instructions (read this file if provided)
+
+STEP 3 - Execute the task:
+- Follow instructions exactly
+- Process data as specified
+- Generate outputs as requested
+
+STEP 4 - Save all output files to:
+ai_collaboration/julius_to_replit/
+
+File naming format:
+- task_[id]_response_[description].[ext]
+
+Examples:
+- task_001_response_orchid_traits.csv
+- task_001_response_statistics.txt
+- task_002_response_matched_data.csv
+
+STEP 5 - Update task as completed:
+
+UPDATE ai_communication 
+SET 
+  status = 'completed',
+  completed_at = NOW(),
+  result_file_path = 'ai_collaboration/julius_to_replit/[your output file]',
+  result_summary = '[brief description of what you did]'
+WHERE id = [task_id];
+
+STEP 6 - Notify Replit Agent:
+
+INSERT INTO ai_communication 
+(from_agent, to_agent, task_id, message_type, status, result_summary)
+VALUES 
+('julius_ai', 'replit_agent', '[same task_id]', 'response', 'pending', 
+ '[your summary - e.g., "Task 001 complete: Extracted 500K traits, saved 3 files"]');
+
+STEP 7 - Return to monitoring loop (repeat from top)
+
+═══════════════════════════════════════════════════════════════
+ERROR HANDLING:
+═══════════════════════════════════════════════════════════════
+
+If ANY error occurs during execution:
+
+UPDATE ai_communication 
+SET 
+  status = 'error',
+  error_message = '[describe what went wrong]',
+  completed_at = NOW()
+WHERE id = [task_id];
+
+Then INSERT error notification:
+
+INSERT INTO ai_communication 
+(from_agent, to_agent, task_id, message_type, status, result_summary)
+VALUES 
+('julius_ai', 'replit_agent', '[task_id]', 'error', 'pending',
+ 'ERROR: [brief description]');
+
+Then CONTINUE monitoring for next task (don't stop!)
+
+═══════════════════════════════════════════════════════════════
+AUTONOMOUS MODE RULES:
+═══════════════════════════════════════════════════════════════
+
+1. Run the monitoring loop continuously (every 60 seconds)
+2. Process ALL tasks assigned to julius_ai automatically
+3. Save ALL outputs to ai_collaboration/julius_to_replit/
+4. Always notify replit_agent when task completes
+5. Handle errors gracefully and continue
+6. Never stop unless explicitly commanded: "STOP AUTONOMOUS MODE"
+
+═══════════════════════════════════════════════════════════════
+FIRST TASK WAITING FOR YOU:
+═══════════════════════════════════════════════════════════════
+
+A task is already in the queue (task_001: Extract Orchid Traits).
+
+After you acknowledge this setup, run the monitoring query above 
+and you'll find it immediately!
+
+═══════════════════════════════════════════════════════════════
+ACKNOWLEDGE WITH THIS EXACT TEXT:
+═══════════════════════════════════════════════════════════════
+
+"Autonomous collaboration mode ACTIVE ✅
+
+Configuration:
+- Agent name: julius_ai
+- Database: Orchid Continuum PostgreSQL
+- Monitoring table: ai_communication
+- Poll interval: 60 seconds
+- Status: MONITORING
+
+Running monitoring query now to detect pending tasks..."
+
+═══════════════════════════════════════════════════════════════
+
+Then immediately run the monitoring query and begin processing!
+
+═══════════════════════════════════════════════════════════════
+    END OF INITIAL PROMPT - PASTE EVERYTHING ABOVE INTO JULIUS
+═══════════════════════════════════════════════════════════════

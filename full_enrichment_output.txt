@@ -1,0 +1,412 @@
+INFO:root:📊 Connecting to database: postgresql://neondb_owner:****@ep-snowy-firefly-afvebui7.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require
+INFO:root:Database tables created successfully
+INFO:root:✅ Replit Auth initialized successfully
+INFO:judging_standards:Initializing judging standards...
+INFO:judging_standards:Judging standards initialization complete
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+INFO:googleapiclient.discovery_cache:file_cache is only supported with oauth2client<4.0.0
+INFO:google_cloud_integration:✅ Google Cloud services initialized successfully
+INFO:google_cloud_integration:🌤️ Google Cloud Integration initialized
+INFO:root:🌤️ Google Cloud integration available for AI Breeder Pro
+INFO:svo_enhanced_scraper:🌤️ Using enhanced Google Cloud integration
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+DEBUG:google.auth.transport.requests:Making request: POST https://oauth2.googleapis.com/token
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): oauth2.googleapis.com:443
+DEBUG:urllib3.connectionpool:https://oauth2.googleapis.com:443 "POST /token HTTP/1.1" 400 None
+ERROR:svo_enhanced_scraper:❌ Failed to initialize Google Sheets: ('invalid_grant: Invalid JWT Signature.', {'error': 'invalid_grant', 'error_description': 'Invalid JWT Signature.'})
+INFO:svo_enhanced_scraper:🌅 Sunset Valley Orchids Enhanced Scraper initialized
+INFO:svo_enhanced_scraper:🧬 Retrieved 12 SVO breeding records for AI analysis
+INFO:root:✅ Loaded 12 real SVO breeding records
+INFO:root:🧬 AI Breeder Assistant Pro widget registered successfully
+INFO:root:✅ AOS Glossary system initialized successfully
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+DEBUG:urllib3.util.retry:Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+INFO:orchid_nursery_directory:🌱 Loaded 12 nurseries into directory
+INFO:orchid_nursery_directory:🌱 Orchid Nursery Directory initialized with 12 nurseries
+INFO:orchid_society_directory:🏛️ Loaded 15 societies into directory
+INFO:orchid_society_directory:🏛️ Orchid Society Directory initialized with 15 societies
+DEBUG:htmldate.validators:minimum date setting: 1995-01-01 00:00:00
+INFO:admin_system:✅ Admin authentication properly configured for Fcospresident@gmail.com
+DEBUG:urllib3.util.retry:Converted retries value: 3 -> Retry(total=3, connect=None, read=None, redirect=None, status=None)
+INFO:google_sheets_service:Google Sheets connection established successfully
+INFO:gbif_routes:🌍 GBIF Integration routes registered successfully
+INFO:ai_orchid_routes:🤖 AI Orchid Identification routes registered successfully
+INFO:simplified_orchid_mapping:🗺️ Simplified Orchid Geographic Mapping system initialized
+INFO:geographic_mapping_routes:🗺️ Geographic Mapping routes registered successfully
+INFO:simplified_analytics:📊 Simplified Analytics system initialized
+INFO:enhanced_mapping_routes:🔬 Enhanced Mapping routes registered successfully
+INFO:database_backup_system:🛡️ Database backup system initialized
+INFO:comprehensive_system_monitor:🚀 Comprehensive System Monitor initialized
+DEBUG:matplotlib:matplotlib data path: /home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/matplotlib/mpl-data
+DEBUG:matplotlib:CONFIGDIR=/home/runner/workspace/.config/matplotlib
+DEBUG:matplotlib:interactive is False
+DEBUG:matplotlib:platform is linux
+DEBUG:matplotlib:CACHEDIR=/home/runner/workspace/.cache/matplotlib
+DEBUG:matplotlib.font_manager:Using fontManager instance from /home/runner/workspace/.cache/matplotlib/fontlist-v390.json
+INFO:automated_repair_system:🔧 Automated Repair System initialized
+INFO:gbif_botanical_service:🌿✅ GBIF Botanical Service initialized and ready
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.gbif.org:443
+DEBUG:urllib3.connectionpool:https://api.gbif.org:443 "GET /v1/species/search?q=Orchidaceae&rank=FAMILY&limit=10 HTTP/1.1" 200 8354
+INFO:external_databases.gbif_integration:🌺 Found Orchidaceae family key: 201312665
+INFO:gbif_botanical_service:✅ GBIF Botanical Service initialized successfully
+INFO:trefle_admin_routes:🌿 Trefle Admin Routes registered successfully
+INFO:routes:✅ GBIF Botanical Service imported successfully
+INFO:report_routes:🔄 Started automatic cleanup scheduler
+INFO:routes:📊 Report generation system registered successfully
+INFO:routes:🛡️ Integrity guardian imported successfully
+WARNING:philosophy_quiz_system:Widget integration not available: Working outside of request context.
+
+This typically means that you attempted to use functionality that needed
+an active HTTP request. Consult the documentation on testing for
+information about how to avoid this problem.
+INFO:routes:✅ Philosophy Quiz system loaded successfully
+INFO:routes:🔇 Automatic image health monitoring disabled
+INFO:weather_habitat_routes:Weather/Habitat Comparison routes registered successfully
+INFO:mycorrhizal_research_system:🍄 Mycorrhizal Research System initialized
+INFO:climate_research_system:🌡️ Climate Research System initialized
+INFO:global_orchid_climate_analysis:🌍 Global Orchid Climate Analysis System initialized
+WARNING:unified_climate_command_center:Mycorrhizal research system not available
+WARNING:unified_climate_command_center:Climate research system not available
+INFO:ai_research_assistant:🤖 AI Research Assistant initialized
+INFO:research_data_manager:🗄️ Research database initialized
+INFO:research_data_manager:📊 Research Data Manager initialized
+INFO:unified_climate_command_center:🎯 Unified Climate Research Command Center initialized
+INFO:literature_search_system:📚 Literature Search Engine initialized
+INFO:historical_climate_system:🌡️ Historical Climate Analyzer initialized
+INFO:ai_research_director:🎯 PRIMARY MISSION INITIALIZED: Global Carbon Revolution: Autonomous Orchid-Fungal Climate Solution
+INFO:ai_research_director:🚀 ACTIVATED 5 AUTONOMOUS PROTOCOLS FOR WORLD SALVATION
+INFO:ai_research_director:🤖🌍 AUTONOMOUS AI CLIMATE COMMANDER ACTIVATED - MISSION: SAVE THE WORLD
+INFO:botany_lab_stats:🧪 Botany Lab Stats & Imports system registered successfully
+INFO:scheduler:🚫 DEMO MODE: Background scheduler disabled for stability
+INFO:scheduler:✅ Demo will run with existing data only
+INFO:routes:AI Widget Builder registered successfully
+INFO:routes:Orchid Debugger System registered successfully
+INFO:routes:Photo Provenance System registered successfully
+INFO:member_feedback_system:Member Feedback System registered successfully
+INFO:routes:Member Feedback System registered successfully
+WARNING:routes:Admin Monitoring Dashboard not available: cannot import name 'AnalyticsEntry' from 'models' (/home/runner/workspace/models.py)
+INFO:member_authentication:Member Authentication System registered successfully
+INFO:routes:Member Authentication System registered successfully
+INFO:visitor_demo_system:Visitor Demo System initialized successfully
+INFO:game_infrastructure:Game Infrastructure System initialized successfully
+INFO:orchid_memory_game:Orchid Memory Game System initialized successfully
+INFO:rebus_puzzle_system:Rebus Puzzle System initialized successfully
+INFO:visitor_teasers:Visitor Teasers System registered successfully
+INFO:visitor_teasers:Membership template filters added successfully
+INFO:member_personalization:Member Personalization System initialized successfully
+INFO:orchid_care_manager:Orchid Care Manager System initialized successfully
+INFO:routes:Visitor Teasers System registered successfully
+INFO:routes:Visitor Demo System registered successfully
+INFO:routes:Game Infrastructure registered successfully
+INFO:routes:Memory Game System registered successfully
+INFO:routes:Rebus Puzzle System registered successfully
+INFO:routes:Member Personalization System registered successfully
+INFO:routes:Orchid Care Manager registered successfully
+INFO:routes:Care Wheel Generator registered successfully
+INFO:routes:Media Migration System registered successfully
+INFO:aos_baker_culture_routes:AOS-Baker Culture Sheet routes registered successfully
+INFO:routes:AOS-Baker Culture Sheet system registered successfully
+INFO:routes:🔇 Automatic vigilant monitoring disabled
+INFO:ai_system_monitor:🔇 AI monitoring disabled
+INFO:routes:🤖 AI SYSTEM MONITOR: Auto-started intelligent functionality validation
+INFO:comprehensive_system_monitor:🔍 COMPREHENSIVE SYSTEM CHECK STARTING
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+INFO:comprehensive_system_monitor:🌺 STARTING ORCHID DATA COLLECTION CYCLE
+INFO:comprehensive_system_monitor:🚀 COMPREHENSIVE SYSTEM MONITORING STARTED
+INFO:comprehensive_system_monitor:📊 Full system checks every 30 minutes
+INFO:comprehensive_system_monitor:⚡ Quick checks every 5 minutes
+INFO:admin_control_center:🚀 Admin Control Center registered and monitoring started
+INFO:routes:📊 Admin Control Center registered successfully
+INFO:routes:🔬 Admin SVO Research Dashboard registered successfully
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+INFO:automated_repair_system:🔧 AUTOMATED REPAIR CYCLE STARTING
+INFO:automated_repair_system:🔗 Checking and fixing broken links...
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+INFO:automated_repair_system:🚀 AUTOMATED REPAIR SYSTEM STARTED
+INFO:automated_repair_system:🔧 Repairs every 30 minutes
+INFO:automated_repair_system:⏰ Reminders every 15 minutes
+INFO:routes:🔧 Automated Repair System started successfully
+INFO:routes:🚀 ORCHID CONTINUUM: Enhanced monitoring and auto-repair systems active!
+INFO:science_observation_widget:🔬 Science Observation Widget registered successfully
+INFO:science_observation_widget:🔬 Science Observation Widget already registered
+INFO:routes:🔬 Science Observation Widget registered successfully
+INFO:routes:✅ 35th Parallel Hypothesis Testing System registered
+INFO:routes:Orchid Trivia Challenge Widget registered successfully
+INFO:processing_pipeline_monitor:✅ Processing pipeline database tables initialized
+INFO:processing_pipeline_monitor:🔍 Processing Pipeline Monitor initialized
+INFO:processing_monitor_routes:🔍 Processing Monitor routes registered successfully
+INFO:routes:🔍 Processing Pipeline Monitor registered successfully
+INFO:ai_orchid_chat:🤖 AI Orchid Chat interface registered successfully
+INFO:routes:🤖 AI Orchid Chat interface registered successfully
+INFO:care_helper_widget:🌺 Care Helper widget registered successfully
+INFO:routes:🌺 Care Helper widget registered successfully
+INFO:guided_care_form:🌺 Guided Care Form registered successfully
+INFO:routes:🌺 Guided Care Form registered successfully
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /gallery HTTP/1.1" 200 363389
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+INFO:orchid_care_widget_package:🎨 Orchid Care Widget Package registered successfully
+INFO:routes:🎨 Orchid Care Widget Package registered successfully
+INFO:ai_collection_onboarding:🎯 AI Collection Onboarding registered successfully
+INFO:routes:🎯 AI Collection Onboarding registered successfully
+INFO:source_adapter_system:📋 Registered 2 source adapters
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/database-stats HTTP/1.1" 200 94
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET / HTTP/1.1" 200 44351
+INFO:comprehensive_system_monitor:🔍 Collecting Gary Yong Gee data...
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "POST /admin/run-gary-scraper HTTP/1.1" 400 117
+INFO:comprehensive_system_monitor:🌍 Collecting GBIF data...
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "POST /admin/run-gbif-collection HTTP/1.1" 400 117
+INFO:comprehensive_system_monitor:📸 Syncing Google Drive photos...
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "POST /admin/sync-google-drive HTTP/1.1" 400 117
+INFO:comprehensive_system_monitor:🌺 Collection progress: 5915/10000
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET / HTTP/1.1" 200 44351
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /search HTTP/1.1" 200 219263
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/recent-orchids HTTP/1.1" 200 3931
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /upload HTTP/1.1" 200 40757
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /gallery HTTP/1.1" 200 363389
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+INFO:enhanced_system_integration:🚀 Enhanced systems registered successfully
+INFO:enhanced_system_integration:📱 Mobile field research system available at /field/
+INFO:enhanced_system_integration:🌍 International scraping admin at /admin/international/
+INFO:routes:🚀 Enhanced international scraping and mobile field research systems registered
+INFO:routes:📱 Mobile field research available at: /field/
+INFO:routes:🌍 International scraping admin at: /admin/international/
+INFO:routes:🌱 Orchid Nursery Directory API routes registered successfully
+INFO:routes:🏛️ Orchid Society Directory API routes registered successfully
+INFO:routes:🧠 Knowledge Base routes registered successfully
+INFO:routes:🌺 FCOS Import System routes registered successfully
+INFO:routes:🌿 GBIF Ecosystem API Integration routes registered successfully
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /admin HTTP/1.1" 200 83856
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/orchid-of-day HTTP/1.1" 200 334
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /orchid-explorer HTTP/1.1" 200 21019
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /search HTTP/1.1" 200 219263
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /upload HTTP/1.1" 200 40757
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /compare HTTP/1.1" 200 38238
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /admin HTTP/1.1" 200 83856
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /widgets/climate HTTP/1.1" 200 44079
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /35th-parallel-globe HTTP/1.1" 200 93160
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /orchid-explorer HTTP/1.1" 200 21019
+INFO:automated_repair_system:🧩 Repairing widget connectivity...
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/recent-orchids HTTP/1.1" 200 3931
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+INFO:orchid_ai_research_hub:✅ OpenAI client initialized successfully
+INFO:routes:🤖 OrchidAI Research Hub imported successfully
+INFO:routes:🏥 AI Orchid Health Diagnostic imported successfully
+INFO:routes:🏥 AI Orchid Health Diagnostic API endpoint registered at /api/orchid-health-diagnostic
+INFO:routes:🌱 Personalized Growing Condition Matcher imported successfully
+INFO:routes:🌱 Personalized Growing Condition Matcher API endpoint registered at /api/growing-condition-matcher
+INFO:routes:🌟 AI Breeder Assistant Pro available via /widgets/ai-breeder-pro
+INFO:routes:🗓️ Adaptive Care Calendar Generator imported successfully
+INFO:routes:🗓️ Adaptive Care Calendar API endpoints registered at /api/care-calendar and /api/care-calendar-templates
+INFO:routes:🔍 Orchid Authentication Detector imported successfully
+INFO:routes:🔍 Orchid Authentication API endpoints registered at /api/orchid-authentication and /api/orchid-authentication-capabilities
+INFO:master_ai_widget_manager:✅ OpenAI client initialized for AI Widget Manager
+INFO:master_ai_widget_manager:✅ AI Widget Manager database initialized
+INFO:master_ai_widget_manager:🚀 AI Widget Manager monitoring systems started
+INFO:master_ai_widget_manager:🧠 Master AI Widget Manager initialized successfully
+INFO:master_ai_widget_manager:🧠 Master AI Widget Manager routes registered successfully
+INFO:routes:🧠 Master AI Widget Manager registered successfully at /ai-widget-manager
+INFO:routes:🧠 Master AI Orchid Widget Manager - Autonomous monitoring and optimization system active
+INFO:routes:🏠 Master Grower Dashboard and widget routes registered
+INFO:routes:🌺 EOL Orchid Explorer API endpoint registered at /api/eol-orchid-explorer
+INFO:routes:🤖 AI Research API endpoints registered successfully at /api/ai-research/*
+INFO:routes:🔍 Admin Name Validation routes registered at /admin/name-validation
+INFO:powo_integration:🌿 POWO (Kew Gardens) Integration initialized
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.gbif.org:443
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/orchid-of-day HTTP/1.1" 200 334
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /compare HTTP/1.1" 200 38238
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/featured-orchids HTTP/1.1" 200 1676
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /widgets/climate HTTP/1.1" 200 44079
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/database-stats HTTP/1.1" 200 94
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /35th-parallel-globe HTTP/1.1" 200 93160
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:https://api.gbif.org:443 "GET /v1/species/search?q=Orchidaceae&rank=FAMILY&limit=10 HTTP/1.1" 200 8354
+INFO:external_databases.gbif_integration:🌺 Found Orchidaceae family key: 201312665
+INFO:complete_species_collector:🌍 Complete Species Collector initialized - Goal: Image every orchid species worldwide
+INFO:image_collection_routes:🖼️ Image Collection routes registered successfully
+INFO:routes:🖼️ Image Collection System registered successfully
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/recent-orchids HTTP/1.1" 200 3931
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /widgets/climate-data HTTP/1.1" 200 949
+INFO:automated_repair_system:🖼️ Fixing image loading issues...
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+INFO:orchestrator_health_system:🏥 Health Validator initialized - Strict Mode: ON
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/drive-photo/test HTTP/1.1" 302 261
+DEBUG:urllib3.connectionpool:Resetting dropped connection: localhost
+INFO:breeder_pro_orchestrator:✅ SVO Scraper imported successfully
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /static/images/orchid_placeholder.svg HTTP/1.1" 200 308
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/drive-photo/test HTTP/1.1" 302 261
+DEBUG:urllib3.connectionpool:Resetting dropped connection: localhost
+INFO:gdrive_manager:🔑 Using service account JSON credentials
+INFO:googleapiclient.discovery_cache:file_cache is only supported with oauth2client<4.0.0
+INFO:gdrive_manager:✅ Google Drive service initialized successfully
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:googleapiclient.discovery:URL being requested: GET https://www.googleapis.com/drive/v3/files?q=name%3D%27OrchidContinuum_Central%27+and+mimeType%3D%27application%2Fvnd.google-apps.folder%27&alt=json
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /static/images/orchid_placeholder.svg HTTP/1.1" 200 308
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:google_auth_httplib2:Making request: POST https://oauth2.googleapis.com/token
+DEBUG:urllib3.connectionpool:http://localhost:5000 "POST /admin/clear-image-cache HTTP/1.1" 400 117
+INFO:automated_repair_system:✅ Cleared image cache
+INFO:automated_repair_system:🔄 Restarting failed services...
+INFO:automated_repair_system:🌺 Continuing orchid data collection...
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+ERROR:gdrive_manager:❌ Failed to get/create folder OrchidContinuum_Central: ('invalid_grant: Invalid JWT Signature.', {'error': 'invalid_grant', 'error_description': 'Invalid JWT Signature.'})
+ERROR:gdrive_manager:❌ Failed to create main folder
+INFO:gdrive_manager:🌤️ GDrive Manager initialized
+INFO:breeder_pro_orchestrator:✅ Google Drive Manager imported successfully
+INFO:sheets_manager:✅ Sheets Manager connected to Google Cloud
+INFO:sheets_manager:📊 Sheets Manager initialized
+INFO:breeder_pro_orchestrator:✅ Sheets Manager imported successfully
+INFO:breeder_pro_orchestrator:✅ AI Trait Analyzer imported successfully
+ERROR:breeder_pro_orchestrator:CRITICAL: Report Generator not available: cannot import name 'ReportGenerator' from 'report_generator' (/home/runner/workspace/report_generator.py)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.gbif.org:443
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /mapping/api/coordinates HTTP/1.1" 200 52657
+DEBUG:urllib3.connectionpool:http://localhost:5000 "POST /admin/run-gary-scraper HTTP/1.1" 400 117
+INFO:automated_repair_system:✅ Gary Yong Gee collection triggered
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "POST /admin/run-gbif-collection HTTP/1.1" 400 117
+INFO:automated_repair_system:✅ GBIF collection triggered
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "POST /admin/sync-google-drive HTTP/1.1" 400 117
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+INFO:automated_repair_system:✅ Google Drive sync triggered
+INFO:automated_repair_system:✅ REPAIR CYCLE COMPLETED: 1 fixes applied
+INFO:automated_repair_system:📊 Links: 0, Widgets: 0, Images: 1, Services: 0
+DEBUG:urllib3.connectionpool:https://api.gbif.org:443 "GET /v1/species/search?q=Orchidaceae&rank=FAMILY&limit=10 HTTP/1.1" 200 8354
+INFO:external_databases.gbif_integration:🌺 Found Orchidaceae family key: 201312665
+INFO:orchid_data_enrichment:✅ GBIF integration initialized
+INFO:orchid_data_enrichment:✅ EOL integration initialized
+INFO:orchid_data_enrichment:✅ OpenAI client initialized for fallback enrichment
+INFO:orchid_data_enrichment:🌺 Orchid Data Enrichment System initialized
+INFO:ai_orchid_identification:✅ OpenAI client initialized successfully for orchid identification
+INFO:ai_orchid_identification:🤖 AI Orchid Identification system initialized - ready for expert analysis
+INFO:master_comprehensive_enrichment:✅ AI Vision Analyzer initialized (GPT-4o-mini)
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): api.gbif.org:443
+DEBUG:urllib3.connectionpool:https://api.gbif.org:443 "GET /v1/species/search?q=Orchidaceae&rank=FAMILY&limit=10 HTTP/1.1" 200 8354
+INFO:external_databases.gbif_integration:🌺 Found Orchidaceae family key: 201312665
+INFO:master_comprehensive_enrichment:✅ GBIF integration initialized
+INFO:master_comprehensive_enrichment:✅ EOL integration initialized
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/weather?lat=35&lon=-120 HTTP/1.1" 200 296
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/search HTTP/1.1" 200 4520
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/orchid-of-day HTTP/1.1" 200 334
+INFO:master_comprehensive_enrichment:🚀 Starting comprehensive enrichment of 3019 orchids
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+INFO:master_comprehensive_enrichment:💰 Estimated cost: $9.06 (AI vision only, GBIF/EOL are free)
+INFO:master_comprehensive_enrichment:
+============================================================
+INFO:master_comprehensive_enrichment:📊 Progress: 1/3019
+INFO:master_comprehensive_enrichment:🌺 Enriching: Matsuri Zygopetalum
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): lh3.googleusercontent.com:443
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/featured-orchids HTTP/1.1" 200 1676
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:https://lh3.googleusercontent.com:443 "GET /d/1RYmYYlxeFokrzoCysWYo0ndsZozZYQwx HTTP/1.1" 302 273
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): work.fife.usercontent.google.com:443
+DEBUG:urllib3.connectionpool:https://work.fife.usercontent.google.com:443 "GET /d/1RYmYYlxeFokrzoCysWYo0ndsZozZYQwx HTTP/1.1" 302 333
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): accounts.google.com:443
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /api/database-stats HTTP/1.1" 200 94
+DEBUG:urllib3.connectionpool:https://accounts.google.com:443 "GET /ServiceLogin?continue=https://work.fife.usercontent.google.com/d/1RYmYYlxeFokrzoCysWYo0ndsZozZYQwx&hl=en HTTP/1.1" 302 0
+DEBUG:urllib3.connectionpool:https://accounts.google.com:443 "GET /InteractiveLogin?continue=https://work.fife.usercontent.google.com/d/1RYmYYlxeFokrzoCysWYo0ndsZozZYQwx&hl=en&dsh=S-785440425:1760169154606626&ifkv=AfYwgwUo1s74aVRE3TPcM_WFyBGtdgjDkMrmoWM_QfCGwgRf4OLjaBnoM640AAfRyo6QzR-1r_zzdw HTTP/1.1" 302 544
+DEBUG:urllib3.connectionpool:Starting new HTTP connection (1): localhost:5000
+DEBUG:urllib3.connectionpool:https://accounts.google.com:443 "GET /v3/signin/identifier?continue=https%3A%2F%2Fwork.fife.usercontent.google.com%2Fd%2F1RYmYYlxeFokrzoCysWYo0ndsZozZYQwx&dsh=S-785440425%3A1760169154606626&hl=en&ifkv=AfYwgwUjgHr4uL5mQ4LupVZv3BnUXo9oV5Hj2i4JTJMT_BkewpBJP243XkHw-T2VFov9jGTdcUkxQA&flowName=WebLiteSignIn&flowEntry=ServiceLogin HTTP/1.1" 200 None
+DEBUG:PIL.Image:Importing AvifImagePlugin
+DEBUG:PIL.Image:Importing BlpImagePlugin
+DEBUG:PIL.Image:Importing BmpImagePlugin
+DEBUG:PIL.Image:Importing BufrStubImagePlugin
+DEBUG:PIL.Image:Importing CurImagePlugin
+DEBUG:PIL.Image:Importing DcxImagePlugin
+DEBUG:PIL.Image:Importing DdsImagePlugin
+DEBUG:PIL.Image:Importing EpsImagePlugin
+DEBUG:PIL.Image:Importing FitsImagePlugin
+DEBUG:PIL.Image:Importing FliImagePlugin
+DEBUG:PIL.Image:Importing FpxImagePlugin
+DEBUG:PIL.Image:Image: failed to import FpxImagePlugin: No module named 'olefile'
+DEBUG:PIL.Image:Importing FtexImagePlugin
+DEBUG:PIL.Image:Importing GbrImagePlugin
+DEBUG:PIL.Image:Importing GifImagePlugin
+DEBUG:PIL.Image:Importing GribStubImagePlugin
+DEBUG:PIL.Image:Importing Hdf5StubImagePlugin
+DEBUG:PIL.Image:Importing IcnsImagePlugin
+DEBUG:urllib3.connectionpool:http://localhost:5000 "GET /widgets/climate-data HTTP/1.1" 200 949
+DEBUG:PIL.Image:Importing IcoImagePlugin
+DEBUG:PIL.Image:Importing ImImagePlugin
+DEBUG:PIL.Image:Importing ImtImagePlugin
+DEBUG:PIL.Image:Importing IptcImagePlugin
+DEBUG:PIL.Image:Importing JpegImagePlugin
+DEBUG:PIL.Image:Importing Jpeg2KImagePlugin
+DEBUG:PIL.Image:Importing McIdasImagePlugin
+DEBUG:PIL.Image:Importing MicImagePlugin
+DEBUG:PIL.Image:Image: failed to import MicImagePlugin: No module named 'olefile'
+DEBUG:PIL.Image:Importing MpegImagePlugin
+DEBUG:PIL.Image:Importing MpoImagePlugin
+INFO:comprehensive_system_monitor:📊 System Health: 100.0% (18/18)
+INFO:comprehensive_system_monitor:🔧 Automated repairs: 0/0 successful
+DEBUG:PIL.Image:Importing MspImagePlugin
+DEBUG:PIL.Image:Importing PalmImagePlugin
+DEBUG:PIL.Image:Importing PcdImagePlugin
+DEBUG:PIL.Image:Importing PcxImagePlugin
+DEBUG:PIL.Image:Importing PdfImagePlugin
+DEBUG:PIL.Image:Importing PixarImagePlugin
+DEBUG:PIL.Image:Importing PngImagePlugin
+DEBUG:PIL.Image:Importing PpmImagePlugin
+DEBUG:PIL.Image:Importing PsdImagePlugin
+DEBUG:PIL.Image:Importing QoiImagePlugin
+DEBUG:PIL.Image:Importing SgiImagePlugin
+DEBUG:PIL.Image:Importing SpiderImagePlugin
+INFO:comprehensive_system_monitor:✅ COMPREHENSIVE SYSTEM CHECK COMPLETED
+DEBUG:PIL.Image:Importing SunImagePlugin
+DEBUG:PIL.Image:Importing TgaImagePlugin
+DEBUG:PIL.Image:Importing TiffImagePlugin
+DEBUG:PIL.Image:Importing WebPImagePlugin
+DEBUG:PIL.Image:Importing WmfImagePlugin
+DEBUG:PIL.Image:Importing XbmImagePlugin
+DEBUG:PIL.Image:Importing XpmImagePlugin
+DEBUG:PIL.Image:Importing XVThumbImagePlugin
+ERROR:master_comprehensive_enrichment:❌ Failed to download image: cannot identify image file <_io.BytesIO object at 0x7f255aae2430>
+INFO:external_databases.gbif_integration:🔍 Searching GBIF species for: Matsuri Zygopetalum
+DEBUG:urllib3.connectionpool:https://api.gbif.org:443 "GET /v1/species/search?q=Matsuri+Zygopetalum&rank=SPECIES&rank=SUBSPECIES&rank=VARIETY&highertaxon=Orchidaceae&limit=20 HTTP/1.1" 200 78
+WARNING:external_databases.gbif_integration:⚠️ No orchid species found for 'Matsuri Zygopetalum'
+INFO:eol_integration:🔍 Searching EOL for: Matsuri Zygopetalum
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): eol.org:443
+ERROR:eol_integration:❌ EOL search failed for Matsuri Zygopetalum: HTTPSConnectionPool(host='eol.org', port=443): Max retries exceeded with url: /api/search/1.0.json?q=Matsuri+Zygopetalum&page=1&exact=True (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)')))
+INFO:master_comprehensive_enrichment:
+============================================================
+INFO:master_comprehensive_enrichment:📊 Progress: 2/3019
+INFO:master_comprehensive_enrichment:🌺 Enriching: Brassavola "Little Stars"
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): lh3.googleusercontent.com:443
+DEBUG:urllib3.connectionpool:https://lh3.googleusercontent.com:443 "GET /d/1cTq62JnK2LNjqxsh3BkeOYAoUZCSeQ13 HTTP/1.1" 302 273
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): work.fife.usercontent.google.com:443
+DEBUG:urllib3.connectionpool:https://work.fife.usercontent.google.com:443 "GET /d/1cTq62JnK2LNjqxsh3BkeOYAoUZCSeQ13 HTTP/1.1" 302 333
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): accounts.google.com:443
+DEBUG:urllib3.connectionpool:https://accounts.google.com:443 "GET /ServiceLogin?continue=https://work.fife.usercontent.google.com/d/1cTq62JnK2LNjqxsh3BkeOYAoUZCSeQ13&hl=en HTTP/1.1" 302 0
+DEBUG:urllib3.connectionpool:https://accounts.google.com:443 "GET /InteractiveLogin?continue=https://work.fife.usercontent.google.com/d/1cTq62JnK2LNjqxsh3BkeOYAoUZCSeQ13&hl=en&dsh=S70929205:1760169155452062&ifkv=AfYwgwXqKQ6syd3dzAw45p5Pa5RX8Yd1wcbpClIGW-Q9M2fqbIzAMzO_ABqBy4ypHt2T7Xi7spGbSQ HTTP/1.1" 302 542
+DEBUG:urllib3.connectionpool:https://accounts.google.com:443 "GET /v3/signin/identifier?continue=https%3A%2F%2Fwork.fife.usercontent.google.com%2Fd%2F1cTq62JnK2LNjqxsh3BkeOYAoUZCSeQ13&dsh=S70929205%3A1760169155452062&hl=en&ifkv=AfYwgwWsnL29wgYZZczp7IPzXSo6FsxGl37O8YndMKR4ZVqbRwz2E7k8Xo84NJ8Fjp4czDZhgux_mg&flowName=WebLiteSignIn&flowEntry=ServiceLogin HTTP/1.1" 200 None
+ERROR:master_comprehensive_enrichment:❌ Failed to download image: cannot identify image file <_io.BytesIO object at 0x7f255960c590>
+INFO:external_databases.gbif_integration:🔍 Searching GBIF species for: Brassavola "Little Stars"
+DEBUG:urllib3.connectionpool:https://api.gbif.org:443 "GET /v1/species/search?q=Brassavola+%22Little+Stars%22&rank=SPECIES&rank=SUBSPECIES&rank=VARIETY&highertaxon=Orchidaceae&limit=20 HTTP/1.1" 200 78
+WARNING:external_databases.gbif_integration:⚠️ No orchid species found for 'Brassavola "Little Stars"'
+INFO:eol_integration:🔍 Searching EOL for: Brassavola "Little Stars"
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (2): eol.org:443

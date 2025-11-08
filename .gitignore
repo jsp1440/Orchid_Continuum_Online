@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.env
+.venv
+
+# Flask
+instance/
+.webassets-cache
+
+# Database
+*.db
+*.sqlite
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Replit
+.replit
+.config/
+.upm/
+.cache/
+replit.nix
+poetry.lock
+pyproject.toml
+
+# Sensitive
+.env.local
+*.pem
+*.key
+service-account*.json
+
+# Large files
+attached_assets/
+static/botanical_illustrations/
+static/images/
+static/uploads/
+downloads/
+external_databases/
+validation/
+.cache/
+.pythonlibs/
+*.zip
+*.tgz
+*.tar.gz
+*.log
+logs/
+*.csv.gz
+*.jsonl
+occurrences_manual
+media_manifest_*

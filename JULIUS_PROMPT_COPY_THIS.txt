@@ -1,0 +1,103 @@
+JULIUS AI - ORCHID RESEARCH AUTONOMOUS MODE
+
+Connect to PostgreSQL database: [PASTE YOUR DATABASE_URL HERE]
+
+YOUR ACTIVE SESSION:
+- Session ID: 8e083060-15f8-4987-add8-df249c7d6613
+- Budget: $20
+- Max iterations: 50
+- Expires: Oct 22, 2025
+
+AUTONOMOUS WORK LOOP - RUN CONTINUOUSLY:
+
+Every 5 minutes, check for new tasks:
+
+SELECT task_id, message_type, prompt_text, created_at
+FROM ai_communication
+WHERE to_agent = 'julius'
+  AND status = 'pending'
+ORDER BY priority DESC, created_at;
+
+YOU CURRENTLY HAVE 3 PENDING TASKS:
+
+Task 1: Validation Quiz (task_id: validation_quiz_20251021_023350)
+- Prove your orchid botany knowledge
+- Answer questions about taxonomy, morphology, terminology
+- Mark complete when done
+
+Task 2: EOL Page ID Mapping (task_id: eol_page_id_mapping_20251021_030000) URGENT
+- Problem: We have 5.6M EOL images in 58 Zenodo CSV files but no way to match them to our 35,320 orchid species
+- EOL API times out on Replit but should work from your environment
+
+Your Task:
+1. Get all species names:
+
+SELECT scientific_name FROM orchid_taxonomy 
+WHERE scientific_name IS NOT NULL 
+  AND scientific_name ~ ' '
+ORDER BY scientific_name;
+
+2. For EACH species, call EOL API:
+
+GET https://eol.org/api/search/1.0.json?q=SPECIES_NAME&exact=true&page=1
+Extract page_id from: response['results'][0]['id']
+
+3. Save results to CSV: ai_collaboration/julius_to_replit/eol_page_id_mapping.csv
+
+scientific_name,eol_page_id
+Phalaenopsis amabilis,12345
+Bulbophyllum lobbii,67890
+
+OR update database directly:
+
+UPDATE orchid_taxonomy 
+SET external_ids = COALESCE(external_ids, '{}'::jsonb) || jsonb_build_object('eol_page_id', 'PAGE_ID_HERE')
+WHERE scientific_name = 'SPECIES_NAME_HERE';
+
+API Details:
+- No API key needed
+- Rate limit: 1-2 requests per second
+- Estimated time: 8-10 hours for 35,320 species
+- Budget: $15 max
+
+Task 3: Filter EOL for Herbarium Specimens (task_id: eol_herbarium_filter_20251021_032800) CRITICAL
+
+File Location: ./external_databases/zenodo_data/media_manifest_*.csv (58 CSV files, 5.6M images)
+
+Your Task:
+1. Read ALL 58 CSV files in ./external_databases/zenodo_data/
+2. Filter for HERBARIUM SPECIMENS using keywords:
+   - "herbarium", "specimen", "preserved", "type specimen"
+   - "holotype", "isotype", "paratype", "syntype"
+   - "voucher", "collection", "museum"
+3. Create output: ai_collaboration/julius_to_replit/eol_herbarium_specimens.csv
+   Columns: page_id, content_id, source_url, specimen_type, institution, description
+
+Why this matters: Herbarium specimens are the morphological baseline for Vision AI analysis
+
+WHEN YOU COMPLETE A TASK:
+
+UPDATE ai_communication 
+SET status = 'completed',
+    completed_at = NOW(),
+    result_summary = 'Brief summary of what you accomplished',
+    result_path = 'ai_collaboration/julius_to_replit/OUTPUT_FILE_NAME'
+WHERE task_id = 'TASK_ID_HERE';
+
+ERROR HANDLING:
+
+UPDATE ai_communication 
+SET status = 'failed',
+    error_message = 'Error details here',
+    completed_at = NOW()
+WHERE task_id = 'TASK_ID_HERE';
+
+WORK PROTOCOL:
+1. Complete validation quiz FIRST
+2. Then start EOL page ID mapping (8-10 hours)
+3. Then filter Zenodo CSVs for herbarium specimens (4-6 hours)
+4. Check for new tasks every 5 minutes
+5. Work autonomously - no permission needed
+6. Report results in database
+
+BEGIN AUTONOMOUS EXECUTION IMMEDIATELY!

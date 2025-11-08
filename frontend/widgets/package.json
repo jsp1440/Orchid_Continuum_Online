@@ -1,0 +1,14 @@
+{
+  "name": "orchid-widgets",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vite": "^5.0.0",
+    "glob": "^11.0.0"
+  }
+}

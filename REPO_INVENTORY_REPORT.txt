@@ -1,0 +1,154 @@
+================================================================================
+REPOSITORY INVENTORY REPORT
+Repository: Orchid_Continuum_Online
+================================================================================
+
+📱 WIDGETS
+--------------------------------------------------------------------------------
+  Templates: 75 files
+    - templates/mahjong_game.html
+    - templates/widget-demo.html
+    - templates/widget_demo.html
+    - templates/quantum_care_widget.html
+    - templates/widget_testing_dashboard.html
+    - templates/geo_explorer_hub.html
+    - templates/orchid_widget_demo.html
+    - templates/ethnobotany_widget.html
+    - templates/complete_widget_directory.html
+    - templates/widget_directory.html
+    - templates/workshop_widget.html
+    - templates/mahjong_lobby.html
+    - templates/platform_template.html
+    - templates/trivia_widget.html
+    - templates/photo_studio_widget.html
+    - templates/journal_widget.html
+    - templates/lore_widget.html
+    - templates/mahjong_widget.html
+    - templates/landing_widget.html
+    - templates/admin/ai_widget_dashboard.html
+    - templates/admin/ai_widget_create.html
+    - templates/admin/ai_widget_modify.html
+    - templates/admin/ai_widget_result.html
+    - templates/widgets/featured_widget.html
+    - templates/widgets/weather_widget.html
+    - templates/widgets/enhanced_globe_widget.html
+    - templates/widgets/philosophy_quiz_mini.html
+    - templates/widgets/orchid_trivia.html
+    - templates/widgets/orchid_mahjong.html
+    - templates/widgets/orchid_trivia_challenge.html
+    - templates/widgets/discovery_center_widget.html
+    - templates/widgets/research_hub_widget.html
+    - templates/widgets/orchid_explorer_pro_widget.html
+    - templates/widgets/learning_games_widget.html
+    - templates/widgets/discovery_widget.html
+    - templates/widgets/search_widget.html
+    - templates/widgets/climate_widget.html
+    - templates/widgets/map_widget.html
+    - templates/widgets/mahjong_widget.html
+    - templates/widgets/trivia_widget.html
+    - templates/widgets/enhanced_philosophy_quiz.html
+    - templates/widgets/philosophy_quiz_widget.html
+    - templates/widgets/philosophy_quiz_widget_result.html
+    - templates/widgets/philosophy_quiz_lead_result.html
+    - templates/widgets/philosophy_quiz_lead_landing.html
+    - templates/widgets/philosophy_quiz.html
+    - templates/widgets/philosophy_quiz_result.html
+    - templates/widgets/widget_gallery.html
+    - templates/widgets/mission_widget.html
+    - templates/widgets/ecosystem_explorer_widget.html
+    - templates/widgets/eol_orchid_explorer.html
+    - templates/widgets/featured_articles_widget.html
+    - templates/widgets/admin_dashboard_widget.html
+    - templates/widgets/article_submission_widget.html
+    - templates/widgets/leaderboard_widget.html
+    - templates/widgets/upload_validation_widget.html
+    - templates/widgets/gallery_widget.html
+    - templates/games/orchid_quiz.html
+    - templates/games/quiz_game.html
+    - templates/weather_habitat/widget.html
+    - templates/components/photo_actions.html
+    - templates/components/photo_flagging_interface.html
+    - templates/teasers/widget_overlay.html
+    - templates/social/quiz_share_page.html
+    - templates/standalone/orchid-mahjong-demo-fixed.html
+    - templates/standalone/orchid-mahjong-demo.html
+    - templates/ai_breeder_pro/widget_home.html
+    - templates/citizen_science/platform_home.html
+    - templates/care_helper/widget.html
+    - templates/care_helper/widget_embed.html
+    - templates/games/widgets/quiz_widget.html
+    - templates/games/widgets/memory_widget.html
+    - templates/games/widgets/trivia_widget.html
+    - templates/games/widgets/guess_widget.html
+    - templates/games/widgets/crossword_widget.html
+  Routes: 10 files
+    - routes_autonomous_agent.py
+    - routes_autonomous_dashboard.py
+    - routes_ethnobotany_timeline.py
+    - routes_ethnobotany_widget.py
+    - routes_fcos_judge.py
+    - routes_founder_access.py
+    - routes_julius_monitor.py
+    - routes_medicinal_map.py
+    - routes_research_library.py
+    - routes_platform.py
+
+🔄 ENRICHMENT SYSTEMS
+--------------------------------------------------------------------------------
+  GBIF: 7 files
+    - validation/gbif_image_downloader_async.py
+    - validation/enrich_taxonomy_gbif.py
+    - validation/enrich_taxonomy_gbif_enhanced.py
+    - validation/gbif_metadata_fields.py
+    - validation/enrich_gbif_simple.py
+    ... and 2 more
+  EOL: 14 files
+    - validation/enrich_eol_page_ids.py
+    - validation/enrich_eol_images.py
+    - validation/enrich_eol_from_csv.py
+    - validation/map_eol_page_ids.py
+    - validation/enrich_eol_from_zenodo.py
+    ... and 9 more
+  TROPICOS: 2 files
+    - validation/enrich_tropicos.py
+    - validation/fast_tropicos_collector.py
+  PERENUAL: 1 files
+    - validation/enrich_perenual.py
+  OTHER: 8 files
+    - validation/enrich_taxonomy_comprehensive.py
+    - validation/test_image_collection.py
+    - validation/enrich_multi_image_continuous.py
+    - validation/enrich_images_simple.py
+    - validation/enrich_images_robust.py
+    ... and 3 more
+
+🤖 AI SYSTEMS
+--------------------------------------------------------------------------------
+  Julius Communication: 6 files
+  Vision AI: 23 files
+  Workers: 4 files
+
+📊 CODE STATISTICS
+--------------------------------------------------------------------------------
+  Total Python files: 11525
+  Total lines of code: 4,466,009
+  Large files (>500 lines): 2377
+  Medium files (200-500): 2634
+  Small files (<200): 6513
+
+📚 DOCUMENTATION
+--------------------------------------------------------------------------------
+  Guides: 28 files
+  Deployment docs: 15 files
+  Other markdown: 98 files
+
+================================================================================
+CRITICAL FEATURES TO PRESERVE:
+================================================================================
+✅ 7+ Platform widgets (trivia, photo studio, journal, etc.)
+✅ GBIF enrichment system (11,717 images)
+✅ EOL, Tropicos, Perenual integrations
+✅ Julius AI communication system
+✅ Vision AI quiz system
+✅ Database schemas and migrations
+================================================================================

@@ -1,0 +1,91 @@
+🌺 EOL URL EXTRACTION FOR ORCHID CONTINUUM
+======================================================================
+📄 Loading orchid page IDs from orchid_eol_page_ids.txt...
+✅ Loaded 13,429 orchid page IDs
+
+📊 Loading EOL → Taxonomy mapping...
+✅ Loaded 1,543 taxonomy mappings
+
+📦 Found 58 manifest files
+
+🔍 Processing manifests...
+----------------------------------------------------------------------
+📖 [ 1/58] media_manifest_1.csv... ✓ Found 95,162 orchid URLs
+📖 [ 2/58] media_manifest_10.csv... ✓ Found 0 orchid URLs
+📖 [ 3/58] media_manifest_11.csv... ✓ Found 0 orchid URLs
+📖 [ 4/58] media_manifest_12.csv... ✓ Found 0 orchid URLs
+📖 [ 5/58] media_manifest_13.csv... ✓ Found 0 orchid URLs
+📖 [ 6/58] media_manifest_14.csv... ✓ Found 0 orchid URLs
+📖 [ 7/58] media_manifest_15.csv... ✓ Found 0 orchid URLs
+📖 [ 8/58] media_manifest_16.csv... ✓ Found 0 orchid URLs
+📖 [ 9/58] media_manifest_17.csv... ✓ Found 0 orchid URLs
+📖 [10/58] media_manifest_18.csv... ✓ Found 0 orchid URLs
+📖 [11/58] media_manifest_19.csv... ✓ Found 0 orchid URLs
+📖 [12/58] media_manifest_2.csv... ✓ Found 0 orchid URLs
+📖 [13/58] media_manifest_20.csv... ✓ Found 0 orchid URLs
+📖 [14/58] media_manifest_21.csv... ✓ Found 0 orchid URLs
+📖 [15/58] media_manifest_22.csv... ✓ Found 0 orchid URLs
+📖 [16/58] media_manifest_23.csv... ✓ Found 0 orchid URLs
+📖 [17/58] media_manifest_24.csv... ✓ Found 0 orchid URLs
+📖 [18/58] media_manifest_25.csv... ✓ Found 0 orchid URLs
+📖 [19/58] media_manifest_26.csv... ✓ Found 0 orchid URLs
+📖 [20/58] media_manifest_27.csv... ✓ Found 0 orchid URLs
+📖 [21/58] media_manifest_28.csv... ✓ Found 0 orchid URLs
+📖 [22/58] media_manifest_29.csv... ✓ Found 0 orchid URLs
+📖 [23/58] media_manifest_3.csv... ✓ Found 0 orchid URLs
+📖 [24/58] media_manifest_30.csv... ✓ Found 0 orchid URLs
+📖 [25/58] media_manifest_31.csv... ✓ Found 0 orchid URLs
+📖 [26/58] media_manifest_32.csv... ✓ Found 0 orchid URLs
+📖 [27/58] media_manifest_33.csv... ✓ Found 0 orchid URLs
+📖 [28/58] media_manifest_34.csv... ✓ Found 0 orchid URLs
+📖 [29/58] media_manifest_35.csv... ✓ Found 0 orchid URLs
+📖 [30/58] media_manifest_36.csv... ✓ Found 0 orchid URLs
+📖 [31/58] media_manifest_37.csv... ✓ Found 0 orchid URLs
+📖 [32/58] media_manifest_38.csv... ✓ Found 0 orchid URLs
+📖 [33/58] media_manifest_39.csv... ✓ Found 0 orchid URLs
+📖 [34/58] media_manifest_4.csv... ✓ Found 0 orchid URLs
+📖 [35/58] media_manifest_40.csv... ✓ Found 0 orchid URLs
+📖 [36/58] media_manifest_41.csv... ✓ Found 0 orchid URLs
+📖 [37/58] media_manifest_42.csv... ✓ Found 0 orchid URLs
+📖 [38/58] media_manifest_43.csv... ✓ Found 0 orchid URLs
+📖 [39/58] media_manifest_44.csv... ✓ Found 0 orchid URLs
+📖 [40/58] media_manifest_45.csv... ✓ Found 0 orchid URLs
+📖 [41/58] media_manifest_46.csv... ✓ Found 0 orchid URLs
+📖 [42/58] media_manifest_47.csv... ✓ Found 0 orchid URLs
+📖 [43/58] media_manifest_48.csv... ✓ Found 0 orchid URLs
+📖 [44/58] media_manifest_49.csv... ✓ Found 0 orchid URLs
+📖 [45/58] media_manifest_5.csv... ✓ Found 0 orchid URLs
+📖 [46/58] media_manifest_50.csv... ✓ Found 0 orchid URLs
+📖 [47/58] media_manifest_51.csv... ✓ Found 0 orchid URLs
+📖 [48/58] media_manifest_52.csv... ✓ Found 0 orchid URLs
+📖 [49/58] media_manifest_53.csv... ✓ Found 0 orchid URLs
+📖 [50/58] media_manifest_54.csv... ✓ Found 0 orchid URLs
+📖 [51/58] media_manifest_55.csv... ✓ Found 0 orchid URLs
+📖 [52/58] media_manifest_56.csv... ✓ Found 0 orchid URLs
+📖 [53/58] media_manifest_57.csv... ✓ Found 0 orchid URLs
+📖 [54/58] media_manifest_58.csv... ✓ Found 0 orchid URLs
+📖 [55/58] media_manifest_6.csv... ✓ Found 0 orchid URLs
+📖 [56/58] media_manifest_7.csv... ✓ Found 0 orchid URLs
+📖 [57/58] media_manifest_8.csv... ✓ Found 0 orchid URLs
+📖 [58/58] media_manifest_9.csv... ✓ Found 0 orchid URLs
+----------------------------------------------------------------------
+
+✅ EXTRACTION COMPLETE!
+   📊 Total rows scanned: 5,619,197
+   🌺 Orchid URLs found: 95,162
+   🔢 Unique orchid species: 13,429
+   📁 Output file: orchid_eol_urls.csv
+
+📈 Top 10 species by image count:
+   EOL 45509079: 4,479 images
+   EOL 45511195: 3,484 images
+   EOL 45510963: 2,540 images
+   EOL 45511159: 1,642 images
+   EOL 47044692: 1,515 images
+   EOL 45511162: 1,439 images
+   EOL 1052079: 1,072 images
+   EOL 45510257: 978 images
+   EOL 45511218: 972 images
+   EOL 47379524: 964 images
+
+🚀 Ready to import 95,162 URLs into database!

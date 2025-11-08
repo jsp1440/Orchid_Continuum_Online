@@ -1,0 +1,17 @@
+🌺 BULK IMPORTING EOL URLs TO DATABASE
+======================================================================
+📊 Loaded 95,162 URLs from CSV
+
+✅ 75 URLs ready to import
+⚠️  95,087 URLs skipped (no taxonomy mapping)
+
+💾 Inserting into database...
+❌ Error during import: there is no unique or exclusion constraint matching the ON CONFLICT specification
+
+Traceback (most recent call last):
+  File "/home/runner/workspace/import_eol_urls_bulk.py", line 77, in <module>
+    execute_batch(cur, insert_query, batch, page_size=batch_size)
+  File "/home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/psycopg2/extras.py", line 1216, in execute_batch
+    cur.execute(b";".join(sqls))
+psycopg2.errors.InvalidColumnReference: there is no unique or exclusion constraint matching the ON CONFLICT specification
+

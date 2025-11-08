@@ -1,0 +1,62 @@
+JULIUS - EOL IMAGE ACQUISITION AND GOOGLE DRIVE UPLOAD TASK
+
+STOP working on the culture methodology. Focus on this task instead:
+
+YOUR MISSION:
+Download EOL images for orchid species and upload them to Google Drive with proper metadata alignment.
+
+STEP 1: Find EOL Page IDs for Species Missing Them
+Run this query to get priority species (those with local GBIF images but missing EOL):
+
+SELECT 
+    ot.id as taxonomy_id,
+    ot.genus,
+    ot.species,
+    ot.scientific_name,
+    ot.eol_page_id,
+    COUNT(DISTINCT oi.id) as gbif_image_count
+FROM orchid_taxonomy ot
+INNER JOIN orchid_images oi ON ot.id = oi.taxonomy_id
+WHERE ot.eol_page_id IS NULL
+GROUP BY ot.id, ot.genus, ot.species, ot.scientific_name, ot.eol_page_id
+ORDER BY gbif_image_count DESC
+LIMIT 100;
+
+For each species WITHOUT an eol_page_id:
+- Call EOL Search API: https://eol.org/api/search/1.0.json?q={scientific_name}
+- Extract page_id from response
+- UPDATE orchid_taxonomy SET eol_page_id = {found_id} WHERE id = {taxonomy_id}
+
+STEP 2: Download EOL Images
+For species that now have eol_page_id (or already had one):
+
+Use EOL Pages API: https://eol.org/api/pages/1.0/{page_id}.json?images_per_page=10&images_page=1&details=true
+
+For each image in the response:
+- Download the image file
+- Extract metadata: photographer, license, description, traits
+- Keep scientific name, genus, species aligned with the image
+
+STEP 3: Upload to Google Drive
+For each downloaded image:
+- Upload to Google Drive folder (you'll need Drive API credentials)
+- Name file: {genus}_{species}_{eol_page_id}_{image_number}.jpg
+- Store metadata in a JSON sidecar file or spreadsheet
+
+STEP 4: Update Database
+Create records linking:
+- taxonomy_id (from orchid_taxonomy)
+- eol_page_id 
+- google_drive_file_id (from upload)
+- Image metadata (photographer, license, traits)
+- Scientific name verification
+
+DELIVERABLES I NEED:
+1. SQL export showing how many eol_page_ids you found and added
+2. List of images downloaded (species name, EOL page ID, image count)
+3. Google Drive folder link with uploaded images
+4. CSV/JSON file mapping: scientific_name, eol_page_id, google_drive_id, traits, metadata
+
+TARGET: Complete 50-100 species with their EOL images uploaded to Drive
+
+START WITH STEP 1 NOW. Show me results after each step before moving to the next.

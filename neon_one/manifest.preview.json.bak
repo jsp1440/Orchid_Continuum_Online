@@ -1,0 +1,148 @@
+{
+  "source": "manifest",
+  "generated": "2025-10-20",
+  "total_widgets": 14,
+  "pages": [
+    {
+      "page": "Home",
+      "widgets": [
+        {
+          "name": "Orchid of the Day",
+          "file": "neon_one/embeds/home_orchid_of_the_day.html",
+          "delivery": "cdn",
+          "status": "active",
+          "ai": false,
+          "db": true,
+          "external_apis": [],
+          "notes": "Primary visual hook on homepage. Fetches random orchid from database."
+        },
+        {
+          "name": "Themed Gallery",
+          "file": "neon_one/embeds/home_themed_gallery.html",
+          "delivery": "cdn",
+          "status": "active",
+          "ai": false,
+          "db": true,
+          "external_apis": [],
+          "notes": "Rotating theme galleries: Fragrant, Night-Blooming, Madagascar, Thailand"
+        }
+      ]
+    },
+    {
+      "page": "Explore Orchids",
+      "widgets": [
+        {
+          "name": "Taxonomy Browser",
+          "file": "neon_one/embeds/explore_taxonomy_browser.html",
+          "delivery": "cdn",
+          "status": "active",
+          "ai": false,
+          "db": true,
+          "external_apis": [],
+          "notes": "Browse 35,000 orchid taxonomy records with search and filtering"
+        },
+        {
+          "name": "GBIF Data Explorer",
+          "file": "neon_one/embeds/explore_gbif_explorer.html",
+          "delivery": "cdn",
+          "status": "active",
+          "ai": false,
+          "db": false,
+          "external_apis": ["GBIF API (FREE)"],
+          "notes": "Display occurrence and distribution data from Global Biodiversity Information Facility"
+        }
+      ]
+    },
+    {
+      "page": "Learn & Play",
+      "widgets": [
+        {
+          "name": "Bingo",
+          "file": "neon_one/embeds/learnplay_bingo.html",
+          "delivery": "cdn",
+          "status": "active",
+          "ai": false,
+          "db": false,
+          "external_apis": [],
+          "notes": "Fully client-side educational game. No backend required."
+        },
+        {
+          "name": "Philosophy Quiz",
+          "file": "neon_one/embeds/learnplay_philosophy_quiz.html",
+          "delivery": "cdn",
+          "status": "active",
+          "ai": false,
+          "db": false,
+          "external_apis": [],
+          "notes": "Personality quiz for newsletter lead generation. Fully client-side."
+        }
+      ]
+    },
+    {
+      "page": "Member Tools",
+      "widgets": [
+        {
+          "name": "My Collection",
+          "file": "neon_one/embeds/member_my_collection.html",
+          "delivery": "backend",
+          "status": "active",
+          "ai": false,
+          "db": true,
+          "external_apis": [],
+          "notes": "Member-linked orchid collection. Requires authentication. Uses localStorage fallback."
+        },
+        {
+          "name": "Habitat/Weather",
+          "file": "neon_one/embeds/member_habitat_weather.html",
+          "delivery": "backend",
+          "status": "active",
+          "ai": false,
+          "db": true,
+          "external_apis": ["OpenWeather API (FREE tier)"],
+          "notes": "Compares local climate data with orchid native habitat"
+        }
+      ]
+    },
+    {
+      "page": "FCOS Board (Admin)",
+      "widgets": [
+        {
+          "name": "Admin Dashboard",
+          "file": "neon_one/embeds/admin_dashboard.html",
+          "delivery": "backend",
+          "status": "restricted",
+          "ai": false,
+          "db": true,
+          "external_apis": [],
+          "notes": "Internal use only. Requires admin authentication."
+        },
+        {
+          "name": "Widget Health Monitor",
+          "file": "neon_one/embeds/admin_widget_health.html",
+          "delivery": "backend",
+          "status": "restricted",
+          "ai": false,
+          "db": true,
+          "external_apis": [],
+          "notes": "Tracks uptime and performance. Admin access only."
+        }
+      ]
+    }
+  ],
+  "cost_summary": {
+    "ai_widgets": 0,
+    "ai_cost_per_month_estimate": "$0",
+    "db_widgets": 8,
+    "free_client_side_widgets": 2,
+    "external_free_apis": ["GBIF API", "OpenWeather API (free tier)"],
+    "hosting_cost_estimate": "$5-20/month (Render + CDN)"
+  },
+  "deployment_notes": {
+    "cdn_widgets": 6,
+    "backend_widgets": 4,
+    "public_widgets": 8,
+    "restricted_widgets": 2,
+    "ai_kill_switch": "All AI features disabled by default (ORCHID_AI_ENABLED=false)",
+    "graceful_degradation": "All widgets include fallback UI when APIs unavailable"
+  }
+}

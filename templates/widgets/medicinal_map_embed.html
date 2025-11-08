@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicinal Orchid Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .widget-container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .disclaimer { background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        .disclaimer h4 { color: #856404; margin: 0 0 10px 0; font-size: 14px; }
+        .disclaimer p { color: #856404; margin: 0; font-size: 13px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; text-align: center; }
+        .stat-card h3 { font-size: 32px; margin: 0; }
+        .stat-card p { margin: 5px 0 0 0; font-size: 14px; opacity: 0.9; }
+        #map { height: 500px; border-radius: 8px; margin-bottom: 20px; }
+        .controls { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; width: 100%; max-width: 300px; }
+        .footer { text-align: center; padding: 15px; color: #666; font-size: 13px; }
+        .footer a { color: #667eea; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="widget-container">
+        <div class="disclaimer">
+            <h4>⚠️ Important Disclaimer</h4>
+            <p>This information is for educational purposes only. NOT medical advice. Never harvest wild orchids. Consult healthcare professionals before using any plant medicinally.</p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <h3>{{ total_genera }}</h3>
+                <p>Medicinal Genera</p>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                <h3>{{ total_cards }}</h3>
+                <p>Knowledge Cards</p>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);">
+                <h3>{{ total_documents }}</h3>
+                <p>Research Documents</p>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <label for="genus-filter" style="margin-right: 10px; font-weight: 600;">Filter by Genus:</label>
+            <select id="genus-filter">
+                <option value="">All Genera</option>
+                {% for genus in genera_list %}
+                <option value="{{ genus }}">{{ genus }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div id="map"></div>
+        
+        <div class="footer">
+            Powered by <a href="https://orchidcontinuum.org" target="_blank">The Orchid Continuum</a> Research Library
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script>
+        const genusColors = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#43e97b', '#fa709a', '#fee140', '#30cfd0'];
+        const genusColorMap = {};
+        let map, markerCluster;
+        
+        function initMap() {
+            map = L.map('map').setView([20, 0], 2);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            
+            markerCluster = L.markerClusterGroup();
+            map.addLayer(markerCluster);
+            loadMapData();
+        }
+        
+        async function loadMapData(genus = '') {
+            const url = genus ? `/widgets/ethnobotany/api/map-data?genus=${encodeURIComponent(genus)}` : '/widgets/ethnobotany/api/map-data';
+            const response = await fetch(url);
+            const data = await response.json();
+            if (data.success) updateMap(data.locations);
+        }
+        
+        function updateMap(locations) {
+            markerCluster.clearLayers();
+            locations.forEach(loc => {
+                if (!genusColorMap[loc.genus]) {
+                    genusColorMap[loc.genus] = genusColors[Object.keys(genusColorMap).length % genusColors.length];
+                }
+                const icon = L.divIcon({
+                    html: `<div style="background:${genusColorMap[loc.genus]};width:12px;height:12px;border-radius:50%;border:2px solid white;"></div>`,
+                    iconSize: [12, 12]
+                });
+                const marker = L.marker([loc.lat, loc.lng], { icon }).bindPopup(createPopup(loc.data));
+                markerCluster.addLayer(marker);
+            });
+        }
+        
+        function createPopup(data) {
+            let html = `<div style="min-width:250px"><strong style="font-size:1.1em;font-style:italic;color:#667eea">${data.genus} ${data.species}</strong><br>`;
+            html += `<small>📍 ${data.location}</small>`;
+            if (data.traditional_uses?.length) html += `<div style="margin-top:10px"><strong>Traditional Uses:</strong><ul style="margin:5px 0;padding-left:20px;font-size:0.9em">${data.traditional_uses.slice(0,3).map(u => `<li>${u}</li>`).join('')}</ul></div>`;
+            if (data.medicinal_uses?.length) html += `<div style="margin-top:10px"><strong>Medicinal Uses:</strong><ul style="margin:5px 0;padding-left:20px;font-size:0.9em">${data.medicinal_uses.slice(0,3).map(u => `<li>${u}</li>`).join('')}</ul></div>`;
+            html += `<div style="margin-top:10px;padding-top:10px;border-top:1px solid #eee;font-size:0.85em;color:#666">📖 ${data.source}</div></div>`;
+            return html;
+        }
+        
+        document.getElementById('genus-filter').addEventListener('change', e => loadMapData(e.target.value));
+        document.addEventListener('DOMContentLoaded', initMap);
+    </script>
+</body>
+</html>

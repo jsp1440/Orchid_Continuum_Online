@@ -1,0 +1,26 @@
+🌺 BULK IMPORTING EOL URLs TO DATABASE
+======================================================================
+📊 Loaded 95,162 URLs from CSV
+
+✅ 75 URLs ready to import
+⚠️  95,087 URLs skipped (no taxonomy mapping)
+
+💾 Inserting into database...
+
+✅ Successfully inserted 0 new image URLs!
+⚠️  Skipped 75 duplicate URLs
+
+📊 Verifying import...
+
+🎉 DATABASE TOTALS:
+   Total images: 107,016
+   Unique species: 422
+
+📈 Images by source:
+   EOL - Botanical Illustration: 95,000
+   GBIF: 10,674
+   Tropicos - Missouri Botanical Garden: 1,183
+   Lindenia - Iconographie des Orchidées: 147
+   Reichenbachia - Orchids Illustrated and Described: 12
+
+✅ IMPORT COMPLETE!

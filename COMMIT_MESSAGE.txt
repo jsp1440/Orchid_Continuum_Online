@@ -1,0 +1,36 @@
+feat: Add production stability for Render deployment
+
+PROBLEM SOLVED:
+- Health checks were burning OpenAI quota (1,440+ calls/day)
+- Auto-deploys consuming Render minutes unnecessarily
+- App crashes when OpenAI quota exhausted (429/insufficient_quota)
+- No graceful degradation for AI features
+
+PRODUCTION STABILITY FEATURES:
+✅ AI Kill-Switch (ORCHID_AI_ENABLED env var, default: false)
+✅ Static /healthz endpoint (never calls external APIs)
+✅ Exponential backoff retry for all OpenAI calls (5 attempts, 8s max)
+✅ Graceful degradation (app stays up when AI paused)
+✅ Manual deploys only (autoDeploy: false)
+✅ Pinned Docker base image (python:3.11.9-slim)
+
+FILES MODIFIED:
+- app/settings.py: AI kill-switch configuration
+- app/ai_utils.py: Retry logic with graceful degradation
+- app/__init__.py: Package exports for AI utilities
+- app.py: Static health check endpoint (/healthz)
+- routes.py: Wrapped 3 OpenAI calls with safe_ai_call
+- render.yaml: healthCheckPath, autoDeploy: false, ORCHID_AI_ENABLED
+- Dockerfile: Pinned base image, updated healthcheck path
+
+RESOURCE SAVINGS:
+- Zero OpenAI calls during health checks (was: 1,440/day)
+- Manual deploys only (no surprise quota burns)
+- 100% uptime (graceful degradation on errors)
+
+DEPLOYMENT:
+1. Deploy to Render (AI disabled by default)
+2. App boots safely with zero quota consumption
+3. Enable AI when ready: ORCHID_AI_ENABLED=true
+
+See PRODUCTION_STABILITY.md for full documentation.

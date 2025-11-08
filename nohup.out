@@ -1,0 +1,71 @@
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+Usage: flask run [OPTIONS]
+Try 'flask run --help' for help.
+
+Error: While importing 'app', an ImportError was raised:
+
+Traceback (most recent call last):
+  File "/nix/store/k92gfxzw5hh08p2xynhifvwrj8y45g0n-python3.9-Flask-2.0.1/lib/python3.9/site-packages/flask/cli.py", line 256, in locate_app
+    __import__(module_name)
+  File "/home/runner/workspace/app.py", line 4, in <module>
+    from flask_sqlalchemy import SQLAlchemy
+ModuleNotFoundError: No module named 'flask_sqlalchemy'
+
+2025-10-21 07:26:02,220 [INFO] ================================================================================
+2025-10-21 07:26:02,221 [INFO] 🚀 STABLE GBIF IMAGE COLLECTOR - LONG-RUNNING MODE
+2025-10-21 07:26:02,221 [INFO] ================================================================================
+2025-10-21 07:26:02,221 [INFO] Creating database connection pool (min=1, max=5)
+2025-10-21 07:26:04,786 [INFO] Starting with 10,200 images from 393 species
+2025-10-21 07:26:14,520 [INFO] ✅ Dendrobium atjehense J. J. Sm.                     |   1 imgs | Total: 10,201 (6.2/min)
+2025-10-21 07:26:28,314 [INFO] ✅ Dendrobium polytrichum Ames                        |  35 imgs | Total: 10,236 (91.8/min)
+2025-10-21 07:26:42,888 [INFO] ✅ Bulbophyllum calliferum J. J. Verm. &amp; A. Lamb  |   3 imgs | Total: 10,239 (61.4/min)
+2025-10-21 07:26:52,753 [INFO] ✅ Epidendrum cuatrecasasii Garay                     |  10 imgs | Total: 10,249 (61.3/min)
+2025-10-21 07:27:03,520 [INFO] ⏭️  Epidendrum heterobracteatum H&aacute;gsater &amp;  | No images found, marked as processed
+2025-10-21 07:27:15,542 [INFO] ✅ Bulbophyllum conspectum J. J. Sm.                  |  29 imgs | Total: 10,278 (66.1/min)
+2025-10-21 07:27:31,269 [INFO] ✅ Epidendrum subnutans Ames &amp; C. Schweinf.       |  65 imgs | Total: 10,343 (99.2/min)
+2025-10-21 07:27:41,159 [ERROR] Error saving individual image: value too long for type character varying(255)
+
+2025-10-21 07:27:41,172 [ERROR] Error saving individual image: current transaction is aborted, commands ignored until end of transaction block
+
+2025-10-21 07:27:41,185 [ERROR] Error saving individual image: current transaction is aborted, commands ignored until end of transaction block
+
+2025-10-21 07:27:41,186 [ERROR] Failed to save any of 3 images for taxonomy 19384
+2025-10-21 07:27:41,199 [ERROR] Database operation failed (attempt 1/3): Failed to save any images for taxonomy 19384
+2025-10-21 07:27:43,237 [ERROR] Error saving individual image: value too long for type character varying(255)
+
+2025-10-21 07:27:43,250 [ERROR] Error saving individual image: current transaction is aborted, commands ignored until end of transaction block
+
+2025-10-21 07:27:43,263 [ERROR] Error saving individual image: current transaction is aborted, commands ignored until end of transaction block
+
+2025-10-21 07:27:43,263 [ERROR] Failed to save any of 3 images for taxonomy 19384
+2025-10-21 07:27:43,276 [ERROR] Database operation failed (attempt 2/3): Failed to save any images for taxonomy 19384
+2025-10-21 07:27:47,315 [ERROR] Error saving individual image: value too long for type character varying(255)
+
+2025-10-21 07:27:47,328 [ERROR] Error saving individual image: current transaction is aborted, commands ignored until end of transaction block
+
+2025-10-21 07:27:47,342 [ERROR] Error saving individual image: current transaction is aborted, commands ignored until end of transaction block
+
+2025-10-21 07:27:47,342 [ERROR] Failed to save any of 3 images for taxonomy 19384
+2025-10-21 07:27:47,355 [ERROR] Database operation failed (attempt 3/3): Failed to save any images for taxonomy 19384
+2025-10-21 07:27:47,355 [ERROR] Failed to save images after retries: Failed to save any images for taxonomy 19384
+2025-10-21 07:27:47,355 [ERROR] ❌ Failed to save images for Bulbophyllum invisum Ames - will retry later
+2025-10-21 07:28:01,193 [INFO] ⏭️  Epidendrum fujimorianum D. E. Benn. &amp; Christen | No images found, marked as processed
+2025-10-21 07:28:15,883 [INFO] ✅ Dendrobium bicaudatum Reinw. ex Lindl.             |  42 imgs | Total: 10,385 (84.7/min)
+2025-10-21 07:28:42,737 [INFO] ✅ Epidendrum diothonaeoides Schltr.                  |  25 imgs | Total: 10,410 (79.8/min)
+2025-10-21 07:28:53,994 [INFO] ✅ Dendrobium latipetalum (J. J. Sm.) Schuit.         |   2 imgs | Total: 10,412 (75.2/min)
+2025-10-21 07:29:03,170 [INFO] ✅ Bulbophyllum quadrisetum Lindl.                    |   5 imgs | Total: 10,417 (73.0/min)
+2025-10-21 07:29:12,103 [INFO] ✅ Dendrobium sandsii J. J. Wood &amp; C. L. Chan     |   1 imgs | Total: 10,418 (69.8/min)
+2025-10-21 07:29:21,769 [INFO] ✅ Maxillaria pinoides (H. R. Sweet) Molinari         |   9 imgs | Total: 10,427 (69.1/min)
+2025-10-21 07:29:31,581 [INFO] ✅ Pleurothallis cutucuensis Luer                     |   1 imgs | Total: 10,428 (66.2/min)
+2025-10-21 07:29:43,077 [INFO] ✅ Epidendrum envigadoense H&aacute;gsater            |  14 imgs | Total: 10,442 (66.5/min)
+2025-10-21 07:29:52,195 [INFO] ✅ Bulbophyllum perpusillum H. Wendl. &amp; Kraenzl.  |   1 imgs | Total: 10,443 (64.1/min)
+2025-10-21 07:30:04,461 [INFO] ✅ Dendrobium ovatipetalum J. J. Sm.                  |   1 imgs | Total: 10,444 (61.1/min)
+2025-10-21 07:30:15,431 [INFO] ✅ Dendrobium strepsiceros J. J. Sm.                  |   7 imgs | Total: 10,451 (60.1/min)
+2025-10-21 07:30:27,846 [INFO] ✅ Bulbophyllum kaniense Schltr.                      |   4 imgs | Total: 10,455 (58.2/min)
+2025-10-21 07:30:38,510 [INFO] ⏭️  Epidendrum manta-birostris Karremans               | No images found, marked as processed
+2025-10-21 07:30:47,795 [INFO] ✅ Epidendrum ariasii H&aacute;gsater &amp; Dodson    |   4 imgs | Total: 10,459 (54.9/min)
+2025-10-21 07:31:39,041 [WARNING] Timeout fetching images at offset 0
+2025-10-21 07:31:48,373 [INFO] ✅ Oncidium leleui R. Jim&eacute;nez &amp; Soto Arena |  75 imgs | Total: 10,534 (58.3/min)

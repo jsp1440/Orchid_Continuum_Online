@@ -1,0 +1,1 @@
+CREATE TABLE medicinal_genera ( id SERIAL PRIMARY KEY, genus VARCHAR(128) NOT NULL, page_start INT, medicinal_uses_excerpt TEXT, source_title VARCHAR(256) DEFAULT 'Medicinal Orchids of Asia', source_author VARCHAR(256) DEFAULT 'Eng Soon Teoh, M.D.', source_year VARCHAR(32) DEFAULT '2016/2017', tags VARCHAR(512) DEFAULT 'ethnobotany; medicinal; TCM; Ayurveda; pharmacology');

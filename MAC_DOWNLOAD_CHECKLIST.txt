@@ -1,0 +1,67 @@
+🌺 ORCHID IMAGE DOWNLOADER - QUICK CHECKLIST
+================================================
+
+STEP 1: DOWNLOAD THESE 5 FILES FROM REPLIT
+-------------------------------------------
+[ ] download_to_static.py
+[ ] download_eol_images.py
+[ ] mac_requirements.txt
+[ ] EOL_IMAGES_COMPLETE_95000.csv
+[ ] MAC_DOWNLOAD_INSTRUCTIONS.md
+
+How: Click file → three dots menu (⋮) → Download
+
+
+STEP 2: SETUP ON MAC
+--------------------
+[ ] Put all files in one folder (e.g., ~/orchid_downloads/)
+[ ] Open Terminal and navigate there: cd ~/orchid_downloads/
+[ ] Install dependencies: pip3 install -r mac_requirements.txt
+[ ] Create image folders: mkdir -p static/images/orchid static/images/eol
+[ ] Get DATABASE_URL from Replit (Tools → Secrets → DATABASE_URL)
+[ ] Export it: export DATABASE_URL="postgresql://..."
+
+
+STEP 3: RUN DOWNLOADS
+---------------------
+[ ] Terminal 1: python3 download_to_static.py
+[ ] Terminal 2: python3 download_eol_images.py (optional simultaneous)
+[ ] Let run 8-40 hours (can run overnight)
+[ ] Keep Mac awake or use: caffeinate -i python3 download_to_static.py
+
+
+STEP 4: VERIFY COMPLETION
+--------------------------
+[ ] Check GBIF: ls static/images/orchid/ | wc -l (should be 10,534)
+[ ] Check EOL: ls static/images/eol/ | wc -l (should be 95,000)
+[ ] Check disk usage: du -sh static/images/ (should be ~100-200 GB)
+[ ] Scripts say "DOWNLOAD COMPLETE!"
+
+
+STEP 5: UPLOAD BACK TO REPLIT
+------------------------------
+[ ] Use Replit file upload in batches
+[ ] Or use rsync/rclone for bulk transfer
+[ ] Or deploy directly from Mac to Render
+
+
+WHAT YOU GET
+------------
+✅ 105,534 orchid images preserved
+✅ GBIF: 10,534 wild photos with GPS
+✅ EOL: 95,000 specimens with taxonomy & traits
+✅ All images hashed and verified
+✅ Database fully populated
+✅ Protected from government deletion
+✅ Ready for Render deployment!
+
+
+YOUR DATABASE URL (from Replit Secrets)
+----------------------------------------
+postgresql://neondb_owner:npg_feOt1Ek0KLrF@ep-snow...
+(Copy full URL from Replit → Tools → Secrets → DATABASE_URL)
+
+
+HELP
+----
+See MAC_DOWNLOAD_INSTRUCTIONS.md for detailed guide

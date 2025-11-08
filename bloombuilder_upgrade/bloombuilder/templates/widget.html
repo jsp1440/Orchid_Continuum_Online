@@ -1,0 +1,73 @@
+{% set page_title = "BloomBuilder" %}
+<link rel="stylesheet" href="{{ url_for('bloombuilder.static', filename='css/widget.css') }}">
+
+<section class="hero">
+  <h1 class="title">BloomBuilder</h1>
+  <p class="tag">Practice real orchid taxonomy — learn, validate, and contribute.</p>
+  <p class="sub">
+    Built on <strong>The Orchid Continuum</strong>, BloomBuilder guides you from authentic herbarium sheets to verified identifications.
+    Use dichotomous keys and glossary terms, compare with historical plates, explore phenotypic traits, and add your observations.
+  </p>
+  <div class="btns">
+    <a class="btn primary" href="#start">Start a Session</a>
+    <a class="btn ghost" href="#how">How it Works</a>
+  </div>
+</section>
+
+<section id="start" class="section">
+  <div class="grid">
+    <div class="card">
+      <h3>1) Select & Compare</h3>
+      <p class="small">Studying: <strong>{{ species_name }}</strong>. Review herbarium images and plates side-by-side.</p>
+      {% include "partials/pollinator_ribbon.html" %}
+    </div>
+    <div class="card">
+      <h3>2) Identify & Label</h3>
+      <p class="small">Use dichotomous keys and glossary terms to label floral parts.</p>
+    </div>
+    <div class="card">
+      <h3>3) Verify Through Traits</h3>
+      <p class="small">Cross-check with diagnostic features from the Trait Databank.</p>
+      <div id="trait-cards" class="traits"></div>
+    </div>
+  </div>
+
+  <div class="card notes">
+    <h3>Notes & Observations</h3>
+    <textarea id="bb-notes" placeholder="Describe features, adaptation cues, or uncertainties..."></textarea>
+  </div>
+</section>
+
+<section id="how" class="section workflow">
+  <h2>How BloomBuilder Works</h2>
+  <div class="step"><strong>Select a species</strong> → authentic herbarium sheets anchor your study.</div>
+  <div class="step"><strong>Observe & compare</strong> → inspect high-resolution images against historical plates.</div>
+  <div class="step"><strong>Identify & label</strong> → apply dichotomous keys and orchid terminology.</div>
+  <div class="step"><strong>Verify through traits</strong> → consult the Trait Databank for diagnostic matches.</div>
+  <div class="step"><strong>Add notes</strong> → record insights, hypotheses, and pollinator-linked observations.</div>
+  <div class="step"><strong>Explore adaptation</strong> → relate structures to pollination, habitat, and survival.</div>
+  <div class="step"><strong>Create & contribute</strong> → generate a final composite and add it to the Continuum.</div>
+</section>
+
+<script>
+// Pull traits for the selected species (demo: plant_taxon_id from context)
+(async function(){
+  const res = await fetch(`/api/traits/{{ plant_taxon_id }}`);
+  const data = await res.json();
+  const box = document.getElementById('trait-cards');
+  (data.traits || []).forEach(t => {
+    const el = document.createElement('div');
+    el.className = 'trait';
+    el.innerHTML = `<div><strong>${t.trait}</strong></div>
+                    <div>${t.adaptation}</div>
+                    <div class="conf">confidence: ${(t.confidence||0).toFixed(2)}</div>`;
+    box.appendChild(el);
+  });
+})();
+
+// Listen for pollinator credit insertion and append to notes
+window.addEventListener('bb:pollinator-note', e => {
+  const ta = document.getElementById('bb-notes');
+  if (ta) ta.value = (ta.value ? ta.value + "\n" : "") + e.detail.text;
+});
+</script>

@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Orchid Data Enrichment Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-4">
+                <i data-feather="database" class="me-2"></i>
+                Orchid Data Enrichment Dashboard
+            </h1>
+            <p class="lead text-muted">AI-powered system to populate missing cultural information, blooming seasons, and growing requirements</p>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Orchids</h5>
+                    <h2 class="display-4">{{ stats.total|default(0) }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Has Habitat Info</h5>
+                    <h2 class="display-4">{{ stats.has_habitat|default(0) }}</h2>
+                    <p class="mb-0">{{ ((stats.has_habitat / stats.total * 100)|round(1)) if stats.total else 0 }}%</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Has Bloom Season</h5>
+                    <h2 class="display-4">{{ stats.has_bloom|default(0) }}</h2>
+                    <p class="mb-0">{{ ((stats.has_bloom / stats.total * 100)|round(1)) if stats.total else 0 }}%</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark">
+                <div class="card-body">
+                    <h5 class="card-title">Has Light/Temp</h5>
+                    <h2 class="display-4">{{ stats.has_light|default(0) }}</h2>
+                    <p class="mb-0">{{ ((stats.has_light / stats.total * 100)|round(1)) if stats.total else 0 }}%</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enrichment Controls -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h4 class="mb-0">
+                        <i data-feather="zap" class="me-2"></i>
+                        Enrichment Controls
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form id="enrichment-form">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="batch-size" class="form-label">Batch Size</label>
+                                <input type="number" class="form-control" id="batch-size" value="50" min="1" max="200">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="genus-filter" class="form-label">Genus Filter (Optional)</label>
+                                <select class="form-control" id="genus-filter">
+                                    <option value="">All Genera</option>
+                                    {% for genus_stat in genus_stats %}
+                                    <option value="{{ genus_stat.genus }}">{{ genus_stat.genus }} ({{ genus_stat.count }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Options</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="missing-only" checked>
+                                    <label class="form-check-label" for="missing-only">
+                                        Missing Data Only
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i data-feather="play" class="me-2"></i>
+                                    Start Enrichment
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Display -->
+    <div class="row mb-4" id="progress-section" style="display: none;">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">Enrichment Progress</h4>
+                </div>
+                <div class="card-body">
+                    <div class="progress mb-3" style="height: 30px;">
+                        <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                    </div>
+                    <div id="progress-stats" class="row text-center">
+                        <div class="col-md-3">
+                            <h5>Processed</h5>
+                            <p id="stat-processed" class="display-6">0</p>
+                        </div>
+                        <div class="col-md-3">
+                            <h5>Successful</h5>
+                            <p id="stat-successful" class="display-6 text-success">0</p>
+                        </div>
+                        <div class="col-md-3">
+                            <h5>Already Enriched</h5>
+                            <p id="stat-already" class="display-6 text-info">0</p>
+                        </div>
+                        <div class="col-md-3">
+                            <h5>Failed</h5>
+                            <p id="stat-failed" class="display-6 text-danger">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Display -->
+    <div class="row" id="results-section" style="display: none;">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Enrichment Results</h4>
+                </div>
+                <div class="card-body">
+                    <div id="results-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('enrichment-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const batchSize = document.getElementById('batch-size').value;
+    const genusFilter = document.getElementById('genus-filter').value;
+    const missingOnly = document.getElementById('missing-only').checked;
+    
+    // Show progress section
+    document.getElementById('progress-section').style.display = 'block';
+    document.getElementById('results-section').style.display = 'none';
+    
+    try {
+        const response = await fetch('/admin/enrichment/api/enrich-batch', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                limit: parseInt(batchSize),
+                genus: genusFilter || null,
+                missing_only: missingOnly
+            })
+        });
+        
+        const data = await response.json();
+        
+        // Update progress
+        const total = data.total_processed;
+        document.getElementById('stat-processed').textContent = total;
+        document.getElementById('stat-successful').textContent = data.successful;
+        document.getElementById('stat-already').textContent = data.already_enriched;
+        document.getElementById('stat-failed').textContent = data.failed;
+        
+        // Update progress bar
+        document.getElementById('progress-bar').style.width = '100%';
+        document.getElementById('progress-bar').textContent = '100% Complete';
+        
+        // Show results
+        document.getElementById('results-section').style.display = 'block';
+        
+        let resultsHTML = '<div class="alert alert-success"><h5>Enrichment Complete!</h5></div>';
+        resultsHTML += '<div class="table-responsive"><table class="table table-striped">';
+        resultsHTML += '<thead><tr><th>ID</th><th>Genus</th><th>Species</th><th>Status</th><th>Fields Updated</th></tr></thead><tbody>';
+        
+        data.details.forEach(detail => {
+            const statusClass = detail.status === 'success' ? 'success' : (detail.status === 'already_enriched' ? 'info' : 'danger');
+            resultsHTML += `<tr class="table-${statusClass}">
+                <td>${detail.orchid_id || 'N/A'}</td>
+                <td>${detail.genus || 'N/A'}</td>
+                <td>${detail.species || 'N/A'}</td>
+                <td>${detail.status || 'error'}</td>
+                <td>${detail.fields_updated || 0}</td>
+            </tr>`;
+        });
+        
+        resultsHTML += '</tbody></table></div>';
+        document.getElementById('results-content').innerHTML = resultsHTML;
+        
+        // Reload page after 3 seconds to show updated stats
+        setTimeout(() => location.reload(), 3000);
+        
+    } catch (error) {
+        alert('Enrichment failed: ' + error.message);
+    }
+});
+
+// Load stats on page load
+async function loadStats() {
+    try {
+        const response = await fetch('/admin/enrichment/api/stats');
+        const data = await response.json();
+        console.log('Enrichment stats:', data);
+    } catch (error) {
+        console.error('Failed to load stats:', error);
+    }
+}
+
+loadStats();
+</script>
+
+<script>
+feather.replace();
+</script>
+{% endblock %}

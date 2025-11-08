@@ -1,0 +1,37 @@
+🌺 ORCHID IMAGE DOWNLOADER - COMPLETE PACKAGE
+=====================================================
+
+This zip file contains everything you need to download all 105,534 orchid images to your Mac.
+
+📦 WHAT'S INSIDE:
+-----------------
+✅ download_to_static.py - GBIF image downloader (10,534 images)
+✅ download_eol_images.py - EOL image downloader (95,000 images)
+✅ mac_requirements.txt - Python dependencies
+✅ EOL_IMAGES_COMPLETE_95000.csv - List of all EOL images
+✅ MAC_DOWNLOAD_INSTRUCTIONS.md - Complete setup guide
+✅ MAC_DOWNLOAD_CHECKLIST.txt - Quick reference checklist
+✅ DOWNLOAD_PACKAGE_README.md - Quick start guide
+
+⚡ QUICK START:
+--------------
+1. Extract this zip file to a folder on your Mac (e.g., ~/orchid_downloads/)
+2. Open Terminal and navigate to that folder: cd ~/orchid_downloads/
+3. Install dependencies: pip3 install -r mac_requirements.txt
+4. Set your DATABASE_URL (from Replit Secrets)
+5. Run: python3 download_to_static.py
+6. Let it run overnight!
+
+📖 FULL INSTRUCTIONS:
+--------------------
+Open MAC_DOWNLOAD_INSTRUCTIONS.md for complete step-by-step guide
+
+🎯 RESULT:
+----------
+After 8-40 hours, you'll have all 105,534 orchid images downloaded with:
+✅ Full species names
+✅ Complete metadata
+✅ SHA256 hashes
+✅ All organized and ready to deploy
+
+Questions? Check MAC_DOWNLOAD_INSTRUCTIONS.md or MAC_DOWNLOAD_CHECKLIST.txt

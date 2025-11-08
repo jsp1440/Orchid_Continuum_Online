@@ -1,0 +1,38 @@
+{
+  "name": "neutral",
+  "full_name": "Neutral Theme (Generic Orchid Society)",
+  "visible_markings": false,
+  "license_notice": "Licensed under ORCHID Continuum.",
+  "ui_policy": "No visible organization name, logo, or watermark. Brand expressed via design tokens only.",
+  "tokens": {
+    "bg": "#f8f9fa",
+    "surface": "#ffffff",
+    "text": "#212529",
+    "muted": "#6c757d",
+    "accent": "#0d6efd",
+    "accentContrast": "#ffffff",
+    "accentHover": "#0b5ed7",
+    "success": "#198754",
+    "warning": "#ffc107",
+    "error": "#dc3545",
+    "radius": "8px",
+    "radiusSm": "4px",
+    "radiusLg": "12px",
+    "shadow": "0 2px 8px rgba(0,0,0,.08)",
+    "shadowSm": "0 1px 2px rgba(0,0,0,.06)",
+    "shadowLg": "0 8px 32px rgba(0,0,0,.15)",
+    "fontSans": "system-ui, -apple-system, sans-serif"
+  },
+  "voice": {
+    "framework": "BTROM",
+    "principles": [
+      "Behavioral - guide action with clear verbs",
+      "Transparent - plain language, show system status",
+      "Respectful - positive, inclusive, science-first",
+      "Outcome-oriented - one goal per widget",
+      "Minimalist - concise, scannable, accessible"
+    ],
+    "reading_level": "6th-8th grade",
+    "tone": "neutral, professional, helpful"
+  }
+}

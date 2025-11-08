@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} - Orchid Continuum{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Print mode styles */
+    @media print {
+        .navbar, .footer, .print-hide, .share-actions {
+            display: none !important;
+        }
+        article {
+            max-width: 100% !important;
+        }
+    }
+    
+    /* Article styles */
+    .article-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+    
+    .article-hero {
+        width: 100%;
+        max-height: 500px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+    }
+    
+    .article-header {
+        margin-bottom: 2rem;
+    }
+    
+    .article-title {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #2c3e50;
+    }
+    
+    .article-subtitle {
+        font-size: 1.5rem;
+        color: #7f8c8d;
+        margin-bottom: 1rem;
+    }
+    
+    .article-meta {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: #6c757d;
+        font-size: 0.95rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+    
+    .article-author {
+        font-weight: 600;
+    }
+    
+    .article-date {
+        color: #95a5a6;
+    }
+    
+    .article-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+    
+    .article-tag {
+        background: #6f42c1;
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+    }
+    
+    .article-content {
+        line-height: 1.8;
+        font-size: 1.1rem;
+        color: #2c3e50;
+        margin: 2rem 0;
+    }
+    
+    .article-content h1,
+    .article-content h2,
+    .article-content h3,
+    .article-content h4,
+    .article-content h5 {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: #2c3e50;
+    }
+    
+    .article-content h1 {
+        font-size: 2rem;
+        border-bottom: 2px solid #6f42c1;
+        padding-bottom: 0.5rem;
+    }
+    
+    .article-content h2 {
+        font-size: 1.75rem;
+    }
+    
+    .article-content h3 {
+        font-size: 1.5rem;
+    }
+    
+    .article-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+    }
+    
+    .article-content figure {
+        margin: 2rem 0;
+        text-align: center;
+    }
+    
+    .article-content figcaption {
+        font-style: italic;
+        color: #7f8c8d;
+        margin-top: 0.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .article-content blockquote {
+        border-left: 4px solid #6f42c1;
+        padding-left: 1.5rem;
+        margin: 1.5rem 0;
+        font-style: italic;
+        color: #555;
+    }
+    
+    .article-content pre {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 4px;
+        overflow-x: auto;
+    }
+    
+    .article-content code {
+        background: #f8f9fa;
+        padding: 0.2rem 0.4rem;
+        border-radius: 3px;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .article-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+    }
+    
+    .article-content th,
+    .article-content td {
+        border: 1px solid #dee2e6;
+        padding: 0.75rem;
+        text-align: left;
+    }
+    
+    .article-content th {
+        background: #f8f9fa;
+        font-weight: 600;
+    }
+    
+    .article-actions {
+        display: flex;
+        gap: 1rem;
+        margin: 2rem 0;
+        padding: 1rem 0;
+        border-top: 2px solid #e9ecef;
+    }
+    
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border: 2px solid #6f42c1;
+        background: transparent;
+        color: #6f42c1;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+    
+    .action-btn:hover {
+        background: #6f42c1;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="article-container">
+    <article>
+        {% if article.hero_image %}
+        <img src="{{ article.hero_image.storage_url }}" 
+             alt="{{ article.hero_image.alt_text or article.title }}" 
+             class="article-hero"
+             loading="lazy">
+        {% endif %}
+        
+        <header class="article-header">
+            <h1 class="article-title">{{ article.title }}</h1>
+            
+            {% if article.subtitle %}
+            <p class="article-subtitle">{{ article.subtitle }}</p>
+            {% endif %}
+            
+            <div class="article-meta">
+                <span class="article-author">By {{ article.author.display_name }}</span>
+                <span>•</span>
+                <span class="article-date">{{ article.published_at.strftime('%B %d, %Y') if article.published_at else article.created_at.strftime('%B %d, %Y') }}</span>
+            </div>
+            
+            {% if article.tags and article.tags|length > 0 %}
+            <div class="article-tags">
+                {% for tag in article.tags %}
+                <span class="article-tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </header>
+        
+        {% if article.youtube_url %}
+        <div class="article-video" style="margin: 2rem 0;">
+            <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; border-radius: 8px;">
+                <iframe 
+                    src="https://www.youtube.com/embed/{{ article.youtube_url.split('/')[-1].replace('watch?v=', '') }}" 
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="article-content">
+            {{ article.content_html|safe }}
+        </div>
+        
+        <div class="article-actions print-hide">
+            <button onclick="window.print()" class="action-btn">
+                <i data-feather="printer"></i>
+                Print
+            </button>
+            <button onclick="shareArticle()" class="action-btn" id="shareBtn">
+                <i data-feather="share-2"></i>
+                Share
+            </button>
+        </div>
+    </article>
+</div>
+
+<script>
+    // Initialize Feather icons
+    if (typeof feather !== 'undefined') {
+        feather.replace();
+    }
+    
+    // Share functionality
+    function shareArticle() {
+        const articleData = {
+            title: {{ article.title|tojson }},
+            text: {{ article.excerpt|tojson }},
+            url: window.location.href
+        };
+        
+        // Try native share API
+        if (navigator.share) {
+            navigator.share(articleData)
+                .catch(err => console.log('Share cancelled'));
+        } else {
+            // Fallback: copy to clipboard
+            navigator.clipboard.writeText(window.location.href)
+                .then(() => {
+                    alert('Link copied to clipboard!');
+                })
+                .catch(() => {
+                    // Ultimate fallback: show share options
+                    const shareUrl = encodeURIComponent(window.location.href);
+                    const shareTitle = encodeURIComponent(articleData.title);
+                    window.open(`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`, '_blank');
+                });
+        }
+    }
+</script>
+{% endblock %}

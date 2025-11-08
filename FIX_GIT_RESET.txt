@@ -1,0 +1,42 @@
+═══════════════════════════════════════════════════════════
+FIX: RESET GIT AND REMOVE LARGE FILE PROPERLY
+═══════════════════════════════════════════════════════════
+
+The file is still in Git's staging area from the first commit.
+We need to reset and start fresh.
+
+═══════════════════════════════════════════════════════════
+RUN THESE COMMANDS:
+═══════════════════════════════════════════════════════════
+
+cd /home/runner/orchid_clean_export
+
+# Reset Git completely (removes all commits and staging)
+rm -rf .git
+
+# Make sure large file is gone
+rm -f validation/eol_extracted_images.json
+
+# Start fresh
+git init
+
+# Stage everything (large file now excluded)
+git add .
+
+# Commit
+git commit -m "Deploy: 7 widgets + Render fixes"
+
+# Connect to GitHub
+git remote add origin https://github.com/jsp1440/Orchid-continuum-clean.git
+
+# Push
+git push -u origin main
+
+═══════════════════════════════════════════════════════════
+THIS WILL WORK!
+═══════════════════════════════════════════════════════════
+
+By removing .git and starting fresh, the large file won't be in 
+the history at all!
+
+═══════════════════════════════════════════════════════════

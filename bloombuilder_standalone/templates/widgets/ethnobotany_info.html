@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethnobotany Widget Package - Embedding Instructions</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f8f9fa; padding: 40px 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { color: #667eea; margin-bottom: 10px; }
+        .subtitle { color: #666; margin-bottom: 30px; }
+        .widget-card { background: white; border-radius: 12px; padding: 30px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: #667eea; margin-bottom: 15px; font-size: 24px; }
+        h3 { color: #764ba2; margin: 20px 0 10px 0; font-size: 18px; }
+        p { color: #333; line-height: 1.6; margin-bottom: 15px; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 8px; overflow-x: auto; border-left: 4px solid #667eea; margin: 15px 0; }
+        code { font-family: 'Courier New', monospace; font-size: 14px; }
+        .feature-list { list-style: none; padding: 0; }
+        .feature-list li { padding: 10px 0; padding-left: 30px; position: relative; }
+        .feature-list li:before { content: "✓"; position: absolute; left: 0; color: #667eea; font-weight: bold; font-size: 18px; }
+        .preview-link { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; margin: 10px 10px 10px 0; transition: transform 0.2s; }
+        .preview-link:hover { transform: translateY(-2px); }
+        .warning { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 4px; margin: 15px 0; }
+        .warning strong { color: #856404; }
+        .note { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; border-radius: 4px; margin: 15px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌿 Ethnobotany Widget Package</h1>
+        <p class="subtitle">Embeddable research widgets for Neon One CMS and other platforms</p>
+        
+        <div class="widget-card">
+            <h2>📦 Available Widgets</h2>
+            
+            <h3>1. Medicinal Orchid Interactive Map</h3>
+            <p>Interactive global map showing medicinal orchids by region with research data from academic sources.</p>
+            <ul class="feature-list">
+                <li>Interactive Leaflet map with clustering</li>
+                <li>Filter by genus</li>
+                <li>Click markers to see traditional uses, medicinal applications, and active compounds</li>
+                <li>110+ genera with research data</li>
+                <li>Mobile responsive</li>
+            </ul>
+            <a href="/widgets/ethnobotany/medicinal-map-embed" class="preview-link" target="_blank">Preview Map Widget</a>
+            
+            <h3>2. Ethnobotany Timeline</h3>
+            <p>Visual timeline showing orchid ethnobotanical knowledge through history from ancient to contemporary periods.</p>
+            <ul class="feature-list">
+                <li>5 historical periods with animated timeline</li>
+                <li>110+ genera organized by cultural/historical context</li>
+                <li>Interactive genus pills with hover effects</li>
+                <li>Beautiful gradient design</li>
+                <li>Mobile responsive</li>
+            </ul>
+            <a href="/widgets/ethnobotany/timeline-embed" class="preview-link" target="_blank">Preview Timeline Widget</a>
+        </div>
+        
+        <div class="widget-card">
+            <h2>🔗 Embedding Instructions</h2>
+            
+            <h3>For Neon One CMS</h3>
+            <p>Use these iframe codes to embed the widgets in your Neon One website:</p>
+            
+            <p><strong>Medicinal Orchid Map:</strong></p>
+            <pre><code>&lt;iframe 
+  src="https://your-render-url.onrender.com/widgets/ethnobotany/medicinal-map-embed" 
+  width="100%" 
+  height="800" 
+  frameborder="0" 
+  style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <p><strong>Ethnobotany Timeline:</strong></p>
+            <pre><code>&lt;iframe 
+  src="https://your-render-url.onrender.com/widgets/ethnobotany/timeline-embed" 
+  width="100%" 
+  height="1000" 
+  frameborder="0" 
+  style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);"
+&gt;&lt;/iframe&gt;</code></pre>
+            
+            <div class="note">
+                <strong>📝 Note:</strong> Replace <code>your-render-url.onrender.com</code> with your actual Render deployment URL after pushing to GitHub and deploying.
+            </div>
+            
+            <h3>For Other Platforms (WordPress, Squarespace, etc.)</h3>
+            <p>These widgets work on any platform that supports iframe embeds. Simply paste the iframe code into your HTML/embed block.</p>
+        </div>
+        
+        <div class="widget-card">
+            <h2>🚀 Deployment Steps</h2>
+            
+            <ol style="padding-left: 25px; line-height: 2;">
+                <li><strong>Commit to GitHub:</strong> Push all widget files to your repository</li>
+                <li><strong>Deploy on Render:</strong> Render will auto-deploy from your GitHub repo</li>
+                <li><strong>Update URLs:</strong> Replace the placeholder URLs in the iframe codes with your actual Render URL</li>
+                <li><strong>Embed in Neon One:</strong> Paste the updated iframe codes into your Neon One CMS pages</li>
+                <li><strong>Test:</strong> Verify the widgets display correctly and are responsive</li>
+            </ol>
+        </div>
+        
+        <div class="widget-card">
+            <h2>⚙️ API Endpoints</h2>
+            <p>These endpoints power the widgets and can be used for custom integrations:</p>
+            
+            <pre><code>GET /widgets/ethnobotany/api/map-data
+GET /widgets/ethnobotany/api/map-data?genus=Dendrobium</code></pre>
+            
+            <p><strong>Response format:</strong></p>
+            <pre><code>{
+  "success": true,
+  "locations": [
+    {
+      "genus": "Dendrobium",
+      "lat": 15.0,
+      "lng": 100.0,
+      "data": {
+        "genus": "Dendrobium",
+        "species": "nobile",
+        "location": "Thailand",
+        "traditional_uses": [...],
+        "medicinal_uses": [...],
+        "active_compounds": [...],
+        "cultural_areas": [...],
+        "source": "Medicinal Orchids of Asia (Teoh, 2016)"
+      }
+    }
+  ],
+  "count": 25
+}</code></pre>
+        </div>
+        
+        <div class="widget-card">
+            <h2>📋 Files Included in Package</h2>
+            <ul class="feature-list">
+                <li><code>ethnobotany_widget_package.py</code> - Flask blueprint with routes and API</li>
+                <li><code>templates/widgets/medicinal_map_embed.html</code> - Standalone map widget</li>
+                <li><code>templates/widgets/timeline_embed.html</code> - Standalone timeline widget</li>
+                <li><code>templates/widgets/ethnobotany_info.html</code> - This documentation page</li>
+            </ul>
+        </div>
+        
+        <div class="warning">
+            <strong>⚠️ Important Legal Disclaimer</strong><br>
+            All widgets include medical disclaimers stating: "This information is for educational purposes only. NOT medical advice. Never harvest wild orchids. Always consult healthcare professionals before using any plant medicinally."
+        </div>
+        
+        <div class="widget-card">
+            <h2>📊 Data Source</h2>
+            <p>All ethnobotanical data is sourced from academic research including:</p>
+            <ul class="feature-list">
+                <li><em>Medicinal Orchids of Asia</em> by Eng Soon Teoh (2016)</li>
+                <li>110+ genera with documented traditional and medicinal uses</li>
+                <li>Active compound research from scientific literature</li>
+                <li>Cultural and indigenous knowledge from peer-reviewed sources</li>
+            </ul>
+        </div>
+        
+        <div style="text-align: center; padding: 40px 0; color: #666;">
+            <p>🌺 Powered by <strong style="color: #667eea;">The Orchid Continuum</strong> Research Library</p>
+            <p style="font-size: 14px; margin-top: 10px;">Research-grade botanical data for education and conservation</p>
+        </div>
+    </div>
+</body>
+</html>

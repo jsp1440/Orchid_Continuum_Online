@@ -1,0 +1,75 @@
+==================================================================
+FAMOUS AI: BUILD CULTURE SHEET WIDGET
+==================================================================
+
+TASK: Build frontend widget for Custom Orchid Culture Sheet Generator
+
+BACKEND: 100% Complete - All files in this workspace
+
+==================================================================
+FILES YOU NEED TO READ:
+==================================================================
+
+1. FOR_FAMOUS_AI_CULTURE_SHEET_WIDGET.md
+   → Complete instructions and requirements
+
+2. aos_baker_culture_routes.py
+   → API routes (what endpoints to call)
+
+3. location_based_culture_system.py
+   → Core system (understand data structures)
+
+4. baker_extrapolation_system.py
+   → Data extrapolation logic
+
+All files are in the root directory of this workspace.
+
+==================================================================
+WHAT TO BUILD:
+==================================================================
+
+Create these files:
+1. culture_sheet_widget.html - Main widget
+2. culture_sheet_widget.css - Purple theme styles
+3. culture_sheet_widget.js - API calls and logic
+4. culture_sheet_embed.html - Iframe embed code
+
+==================================================================
+APIS (already working):
+==================================================================
+
+Base URL: https://workspace.fcospresident.repl.co
+
+GET /culture/species
+→ Returns list of available orchid species
+
+POST /culture/generate
+→ Input: {"species": "Phalaenopsis", "location": {"city": "San Luis Obispo", "state": "CA", "lat": 35.28, "lon": -120.66}}
+→ Output: Complete culture sheet
+
+GET /culture/demo
+→ Demo culture sheet for testing
+
+==================================================================
+DESIGN:
+==================================================================
+
+Colors (FCOS Purple):
+- Primary: #7B2CBF
+- Secondary: #9D4EDD
+- Accent: #E0AAFF
+- Background: #F8F7FF
+- Text: #2D1B4E
+
+Features:
+- 3-step wizard (select orchid → enter location → show results)
+- Auto-detect location
+- Toggle Baker vs AOS view
+- Download PDF
+- Mobile responsive
+
+==================================================================
+READ FOR_FAMOUS_AI_CULTURE_SHEET_WIDGET.md FOR FULL DETAILS
+==================================================================
+
+Backend is ready. Build the frontend! 🌺

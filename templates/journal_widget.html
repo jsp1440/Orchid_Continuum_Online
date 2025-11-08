@@ -1,0 +1,429 @@
+<!-- My Orchid Collection Journal Widget - Migrated from Famous AI -->
+<!-- Track orchids, log blooms, care schedules -->
+
+<style>
+    .journal-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .journal-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .journal-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .journal-tabs {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .journal-tab {
+        padding: 1rem 2rem;
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        font-weight: 600;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s ease;
+    }
+    
+    .journal-tab.active {
+        color: #a78bfa;
+        border-bottom-color: #a78bfa;
+    }
+    
+    .journal-tab:hover {
+        color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    
+    /* Collection Grid */
+    .collection-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .orchid-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .orchid-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(139, 92, 246, 0.5);
+        box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);
+    }
+    
+    .orchid-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+    }
+    
+    .orchid-info {
+        padding: 1rem;
+    }
+    
+    .orchid-name {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #a78bfa;
+    }
+    
+    .orchid-species {
+        font-style: italic;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .orchid-status {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+    }
+    
+    .status-blooming {
+        background: rgba(236, 72, 153, 0.2);
+        color: #ec4899;
+    }
+    
+    .status-growing {
+        background: rgba(34, 197, 94, 0.2);
+        color: #22c55e;
+    }
+    
+    .status-resting {
+        background: rgba(168, 85, 247, 0.2);
+        color: #a855f7;
+    }
+    
+    /* Add New Button */
+    .add-card {
+        background: rgba(139, 92, 246, 0.1);
+        border: 2px dashed rgba(139, 92, 246, 0.3);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 280px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .add-card:hover {
+        border-color: rgba(139, 92, 246, 0.6);
+        background: rgba(139, 92, 246, 0.15);
+    }
+    
+    .add-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* Care Log */
+    .care-timeline {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .care-entry {
+        background: rgba(255, 255, 255, 0.05);
+        border-left: 4px solid #a78bfa;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+    }
+    
+    .care-date {
+        color: #a78bfa;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .care-action {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        background: rgba(139, 92, 246, 0.2);
+        border-radius: 12px;
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .care-note {
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.6;
+    }
+    
+    /* Stats Cards */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+    }
+    
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #a78bfa;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+        .journal-tabs {
+            overflow-x: auto;
+        }
+        .collection-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="journal-container">
+    <div class="journal-header">
+        <h1>🌸 My Orchid Collection</h1>
+        <p style="color: rgba(255, 255, 255, 0.7);">Track your orchids, log care activities, and celebrate blooms!</p>
+    </div>
+    
+    <!-- Tabs -->
+    <div class="journal-tabs">
+        <button class="journal-tab active" onclick="switchTab('collection')">🌺 My Orchids</button>
+        <button class="journal-tab" onclick="switchTab('care')">💧 Care Log</button>
+        <button class="journal-tab" onclick="switchTab('stats')">📊 Statistics</button>
+    </div>
+    
+    <!-- Collection Tab -->
+    <div id="collectionTab" class="tab-content active">
+        <div class="collection-grid" id="orchidGrid">
+            <!-- Sample orchids will be loaded here -->
+        </div>
+    </div>
+    
+    <!-- Care Log Tab -->
+    <div id="careTab" class="tab-content">
+        <div class="care-timeline" id="careTimeline">
+            <!-- Care entries will be loaded here -->
+        </div>
+    </div>
+    
+    <!-- Stats Tab -->
+    <div id="statsTab" class="tab-content">
+        <div class="stats-grid" id="statsGrid">
+            <!-- Stats will be loaded here -->
+        </div>
+        
+        <div style="text-align: center; margin-top: 3rem;">
+            <h3 style="margin-bottom: 1rem;">🌟 Collection Milestones</h3>
+            <div style="color: rgba(255, 255, 255, 0.7);">
+                <p>🎯 Next milestone: Reach 10 orchids</p>
+                <p>🏆 Achievement unlocked: First bloom!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Sample orchid data
+const myOrchids = [
+    {
+        name: "Purple Beauty",
+        species: "Phalaenopsis amabilis",
+        emoji: "🌺",
+        status: "blooming",
+        acquired: "2024-01-15"
+    },
+    {
+        name: "Golden Sunrise",
+        species: "Dendrobium nobile",
+        emoji: "🌼",
+        status: "growing",
+        acquired: "2024-03-20"
+    },
+    {
+        name: "Lady Slipper",
+        species: "Paphiopedilum",
+        emoji: "🥿",
+        status: "resting",
+        acquired: "2023-11-10"
+    },
+    {
+        name: "Vanilla Dream",
+        species: "Vanilla planifolia",
+        emoji: "🌿",
+        status: "growing",
+        acquired: "2024-05-01"
+    }
+];
+
+// Sample care log
+const careLog = [
+    {
+        date: "October 21, 2025",
+        orchid: "Purple Beauty",
+        action: "Watered",
+        note: "Watered thoroughly. Roots looking healthy and green!"
+    },
+    {
+        date: "October 20, 2025",
+        orchid: "Golden Sunrise",
+        action: "Fertilized",
+        note: "Applied diluted orchid fertilizer (20-20-20). New growth visible!"
+    },
+    {
+        date: "October 18, 2025",
+        orchid: "Lady Slipper",
+        action: "Repotted",
+        note: "Repotted in fresh orchid bark mix. Roots were getting crowded."
+    },
+    {
+        date: "October 15, 2025",
+        orchid: "Vanilla Dream",
+        action: "Checked",
+        note: "Aerial roots developing nicely. Climbing support added."
+    }
+];
+
+// Initialize tabs
+function switchTab(tabName) {
+    // Update tab buttons
+    document.querySelectorAll('.journal-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Update tab content
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    document.getElementById(tabName + 'Tab').classList.add('active');
+}
+
+// Load orchid collection
+function loadCollection() {
+    const grid = document.getElementById('orchidGrid');
+    
+    // Add "Add New" card
+    grid.innerHTML = `
+        <div class="orchid-card add-card" onclick="addOrchid()">
+            <div class="add-icon">➕</div>
+            <div style="color: #a78bfa; font-weight: 600;">Add New Orchid</div>
+        </div>
+    `;
+    
+    // Add orchid cards
+    myOrchids.forEach(orchid => {
+        grid.innerHTML += `
+            <div class="orchid-card">
+                <div class="orchid-image">${orchid.emoji}</div>
+                <div class="orchid-info">
+                    <div class="orchid-name">${orchid.name}</div>
+                    <div class="orchid-species">${orchid.species}</div>
+                    <div>Acquired: ${new Date(orchid.acquired).toLocaleDateString()}</div>
+                    <span class="orchid-status status-${orchid.status}">
+                        ${orchid.status === 'blooming' ? '🌸' : orchid.status === 'growing' ? '🌱' : '😴'} 
+                        ${orchid.status.charAt(0).toUpperCase() + orchid.status.slice(1)}
+                    </span>
+                </div>
+            </div>
+        `;
+    });
+}
+
+// Load care log
+function loadCareLog() {
+    const timeline = document.getElementById('careTimeline');
+    timeline.innerHTML = '';
+    
+    careLog.forEach(entry => {
+        timeline.innerHTML += `
+            <div class="care-entry">
+                <div class="care-date">${entry.date}</div>
+                <div style="margin-bottom: 0.5rem;">
+                    <strong>${entry.orchid}</strong>
+                    <span class="care-action">${entry.action}</span>
+                </div>
+                <div class="care-note">${entry.note}</div>
+            </div>
+        `;
+    });
+}
+
+// Load stats
+function loadStats() {
+    const statsGrid = document.getElementById('statsGrid');
+    statsGrid.innerHTML = `
+        <div class="stat-card">
+            <div class="stat-value">${myOrchids.length}</div>
+            <div class="stat-label">Total Orchids</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">${myOrchids.filter(o => o.status === 'blooming').length}</div>
+            <div class="stat-label">Currently Blooming</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">${careLog.length}</div>
+            <div class="stat-label">Care Activities</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">87%</div>
+            <div class="stat-label">Survival Rate</div>
+        </div>
+    `;
+}
+
+// Add new orchid
+function addOrchid() {
+    alert('🌸 Add New Orchid feature coming soon! This will let you:\n\n• Upload photos\n• Record species & care notes\n• Set watering reminders\n• Track bloom cycles');
+}
+
+// Initialize
+loadCollection();
+loadCareLog();
+loadStats();
+</script>

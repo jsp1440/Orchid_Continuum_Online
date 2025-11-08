@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard Widget</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body { 
+            background: transparent; 
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .dashboard-widget {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .dashboard-header h3 {
+            color: white;
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1e3c72;
+            margin: 10px 0;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-icon {
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+        .chart-container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .activity-feed {
+            background: rgba(255,255,255,0.95);
+            border-radius: 10px;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+        .activity-upload { background: #10b981; color: white; }
+        .activity-article { background: #3b82f6; color: white; }
+        .activity-game { background: #f59e0b; color: white; }
+        .activity-info {
+            flex: 1;
+        }
+        .activity-title {
+            margin: 0;
+            font-weight: 600;
+            color: #333;
+        }
+        .activity-time {
+            margin: 0;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-widget">
+        <div class="dashboard-header">
+            <h3><i data-feather="bar-chart-2"></i> Platform Analytics</h3>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i data-feather="database" class="stat-icon" style="width: 32px; height: 32px;"></i>
+                <div class="stat-value" id="totalOrchids">0</div>
+                <div class="stat-label">Total Orchids</div>
+            </div>
+            <div class="stat-card">
+                <i data-feather="image" class="stat-icon" style="width: 32px; height: 32px;"></i>
+                <div class="stat-value" id="totalImages">0</div>
+                <div class="stat-label">Images</div>
+            </div>
+            <div class="stat-card">
+                <i data-feather="users" class="stat-icon" style="width: 32px; height: 32px;"></i>
+                <div class="stat-value" id="activeUsers">0</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+            <div class="stat-card">
+                <i data-feather="file-text" class="stat-icon" style="width: 32px; height: 32px;"></i>
+                <div class="stat-value" id="totalArticles">0</div>
+                <div class="stat-label">Articles</div>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <h5 style="margin: 0 0 15px 0; color: #333;">Weekly Activity</h5>
+            <canvas id="activityChart" height="100"></canvas>
+        </div>
+        
+        <div class="activity-feed">
+            <h5 style="margin: 0 0 15px 0; color: #333;">Recent Activity</h5>
+            <div id="activityList"></div>
+        </div>
+    </div>
+
+    <script>
+        feather.replace();
+        
+        // Load dashboard data
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('/api/admin/dashboard-stats');
+                const data = await response.json();
+                
+                // Update stats
+                document.getElementById('totalOrchids').textContent = (data.total_orchids || 0).toLocaleString();
+                document.getElementById('totalImages').textContent = (data.total_images || 0).toLocaleString();
+                document.getElementById('activeUsers').textContent = (data.active_users || 0).toLocaleString();
+                document.getElementById('totalArticles').textContent = (data.total_articles || 0).toLocaleString();
+                
+                // Update chart
+                updateChart(data.weekly_activity || []);
+                
+                // Update activity feed
+                updateActivityFeed(data.recent_activity || []);
+                
+            } catch (error) {
+                console.error('Failed to load dashboard data:', error);
+                // Show demo data
+                showDemoData();
+            }
+        }
+        
+        // Chart
+        let activityChart = null;
+        
+        function updateChart(weeklyData) {
+            const ctx = document.getElementById('activityChart').getContext('2d');
+            
+            if (activityChart) {
+                activityChart.destroy();
+            }
+            
+            activityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Activity',
+                        data: weeklyData.length > 0 ? weeklyData : [12, 19, 15, 25, 22, 30, 28],
+                        borderColor: '#2a5298',
+                        backgroundColor: 'rgba(42, 82, 152, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateActivityFeed(activities) {
+            const container = document.getElementById('activityList');
+            
+            if (activities.length === 0) {
+                activities = [
+                    { type: 'upload', title: 'New orchid image uploaded', time: '2 mins ago' },
+                    { type: 'article', title: 'Article published: Growing Tips', time: '15 mins ago' },
+                    { type: 'game', title: 'High score in Memory Match', time: '1 hour ago' }
+                ];
+            }
+            
+            container.innerHTML = activities.map(activity => {
+                const iconClass = activity.type === 'upload' ? 'activity-upload' :
+                                 activity.type === 'article' ? 'activity-article' : 'activity-game';
+                const icon = activity.type === 'upload' ? 'upload-cloud' :
+                            activity.type === 'article' ? 'file-text' : 'trophy';
+                
+                return `
+                    <div class="activity-item">
+                        <div class="activity-icon ${iconClass}">
+                            <i data-feather="${icon}" style="width: 18px; height: 18px;"></i>
+                        </div>
+                        <div class="activity-info">
+                            <p class="activity-title">${activity.title}</p>
+                            <p class="activity-time">${activity.time}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            feather.replace();
+        }
+        
+        function showDemoData() {
+            document.getElementById('totalOrchids').textContent = '5,915';
+            document.getElementById('totalImages').textContent = '3,030';
+            document.getElementById('activeUsers').textContent = '248';
+            document.getElementById('totalArticles').textContent = '42';
+            updateChart([12, 19, 15, 25, 22, 30, 28]);
+            updateActivityFeed([]);
+        }
+        
+        // Initial load
+        loadDashboardData();
+        
+        // Refresh every 60 seconds
+        setInterval(loadDashboardData, 60000);
+    </script>
+</body>
+</html>

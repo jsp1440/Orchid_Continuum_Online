@@ -1,0 +1,618 @@
+{
+  "meta": {
+    "generated": "2025-10-19",
+    "codebase": "orchid-continuum",
+    "total_files": "2000+",
+    "core_python_loc": 19789,
+    "analysis_mode": "read-only"
+  },
+  "widgets": [
+    {
+      "name": "FCOS Orchid Judge",
+      "paths": [
+        {"file": "templates/fcos_judge_index.html", "lineStart": 1, "lineEnd": null},
+        {"file": "routes_fcos_judge.py", "lineStart": 1, "lineEnd": null}
+      ],
+      "routes": ["/fcos-judge/", "/api/fcos-judge/analyze"],
+      "envFlags": ["ORCHID_AI_ENABLED"],
+      "usesAI": true,
+      "dbTables": [],
+      "description": "Educational scoring tool with OCR and AI flower analysis"
+    },
+    {
+      "name": "Philosophy Quiz",
+      "paths": [
+        {"file": "templates/widgets/philosophy_quiz.html", "lineStart": 1, "lineEnd": null}
+      ],
+      "routes": ["/widgets/philosophy-quiz"],
+      "envFlags": [],
+      "usesAI": false,
+      "dbTables": ["badges", "user_badges"],
+      "description": "Badge-awarding personality quiz for engagement"
+    },
+    {
+      "name": "Hollywood Orchids",
+      "paths": [
+        {"file": "templates/widgets/hollywood_orchids.html", "lineStart": 1, "lineEnd": null},
+        {"file": "hollywood_orchids_widget.py", "lineStart": 1, "lineEnd": null}
+      ],
+      "routes": ["/widgets/hollywood-orchids"],
+      "envFlags": [],
+      "usesAI": false,
+      "dbTables": [],
+      "description": "Movie-orchid association widget for pop culture engagement"
+    },
+    {
+      "name": "Gallery Hub",
+      "paths": [
+        {"file": "templates/gallery_hub.html", "lineStart": 1, "lineEnd": null}
+      ],
+      "routes": ["/gallery-hub", "/gallery/thailand", "/gallery/madagascar", "/gallery/fragrant", "/gallery/night-blooming"],
+      "envFlags": [],
+      "usesAI": false,
+      "dbTables": ["orchid_record"],
+      "description": "Themed orchid collections (Thailand, Madagascar, Fragrant, Night-Blooming)"
+    },
+    {
+      "name": "3D Globe (35th Parallel)",
+      "paths": [
+        {"file": "templates/space_earth_globe.html", "lineStart": 1, "lineEnd": null}
+      ],
+      "routes": ["/space-earth-globe", "/api/orchid-coordinates-all"],
+      "envFlags": [],
+      "usesAI": false,
+      "dbTables": ["orchid_record"],
+      "description": "Interactive educational globe with orchid hotspots"
+    },
+    {
+      "name": "Weather/Habitat Comparison",
+      "paths": [
+        {"file": "templates/weather_habitat/widget.html", "lineStart": 1, "lineEnd": null},
+        {"file": "weather_habitat_comparison_widget.py", "lineStart": 1, "lineEnd": null}
+      ],
+      "routes": ["/weather-habitat/widget", "/api/weather-habitat/compare"],
+      "envFlags": ["ORCHID_AI_ENABLED"],
+      "usesAI": true,
+      "dbTables": ["orchid_record", "weather_data"],
+      "description": "Growing condition analysis with AI-powered advice"
+    },
+    {
+      "name": "AI Breeder Pro",
+      "paths": [
+        {"file": "ai_breeder_assistant_pro.py", "lineStart": 1, "lineEnd": null},
+        {"file": "templates/ai_breeder_pro/", "lineStart": 1, "lineEnd": null}
+      ],
+      "routes": ["/ai-breeder-pro"],
+      "envFlags": ["ORCHID_AI_ENABLED"],
+      "usesAI": true,
+      "dbTables": ["breeding_projects", "breeding_crosses", "offspring_plants"],
+      "description": "AI-powered breeding prediction assistant"
+    },
+    {
+      "name": "Orchid Mahjong",
+      "paths": [
+        {"file": "templates/orchid_mahjong.html", "lineStart": 1, "lineEnd": null}
+      ],
+      "routes": ["/mahjong", "/api/mahjong/game"],
+      "envFlags": [],
+      "usesAI": false,
+      "dbTables": ["mahjong_games", "mahjong_players", "game_scores"],
+      "description": "Educational mahjong game with orchid themes"
+    },
+    {
+      "name": "Bug Report System",
+      "paths": [
+        {"file": "bug_report_system.py", "lineStart": 1, "lineEnd": null},
+        {"file": "templates/admin_bug_reports.html", "lineStart": 1, "lineEnd": null}
+      ],
+      "routes": ["/api/bug-report", "/admin/bug-reports"],
+      "envFlags": [],
+      "usesAI": false,
+      "dbTables": ["bug_reports"],
+      "description": "Beta tester feedback and bug tracking"
+    },
+    {
+      "name": "GBIF Multi-Image Enrichment",
+      "paths": [
+        {"file": "validation/enrich_gbif_stable.py", "lineStart": 1, "lineEnd": null}
+      ],
+      "routes": [],
+      "envFlags": [],
+      "usesAI": false,
+      "dbTables": ["orchid_taxonomy", "orchid_images"],
+      "description": "Background worker collecting unlimited FREE wild orchid images from GBIF (195 images/min)"
+    },
+    {
+      "name": "EOL Image Enrichment",
+      "paths": [
+        {"file": "validation/enrich_eol_images.py", "lineStart": 1, "lineEnd": null}
+      ],
+      "routes": [],
+      "envFlags": [],
+      "usesAI": false,
+      "dbTables": ["orchid_taxonomy", "orchid_images"],
+      "description": "Background worker collecting FREE images from Encyclopedia of Life (5.8M database)"
+    },
+    {
+      "name": "SVO Analysis Tool",
+      "paths": [
+        {"file": "templates/svo_analysis/index.html", "lineStart": 1, "lineEnd": null}
+      ],
+      "routes": ["/svo-analysis", "/api/svo-analysis/run"],
+      "envFlags": [],
+      "usesAI": false,
+      "dbTables": ["svo_analysis_sessions", "svo_results", "svo_analysis_summaries"],
+      "description": "Web scraping tool for botanical Subject-Verb-Object pattern extraction"
+    }
+  ],
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/healthz",
+      "handler": "healthz",
+      "file": "app.py",
+      "lineStart": 363,
+      "lineEnd": 395,
+      "auth": false,
+      "touchesDB": false,
+      "touchesAI": false,
+      "description": "Static health check, <100ms response, no DB/OpenAI calls"
+    },
+    {
+      "method": "GET",
+      "path": "/",
+      "handler": "index",
+      "file": "routes.py",
+      "lineStart": 100,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": true,
+      "touchesAI": false,
+      "description": "Homepage with featured orchid content"
+    },
+    {
+      "method": "GET",
+      "path": "/articles",
+      "handler": "featured_articles",
+      "file": "routes.py",
+      "lineStart": 253,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": true,
+      "touchesAI": false,
+      "description": "Article listing page"
+    },
+    {
+      "method": "GET",
+      "path": "/articles/<slug>",
+      "handler": "display_article",
+      "file": "routes.py",
+      "lineStart": 318,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": true,
+      "touchesAI": false,
+      "description": "Individual article display"
+    },
+    {
+      "method": "GET",
+      "path": "/partnerships",
+      "handler": "partnerships",
+      "file": "routes.py",
+      "lineStart": 356,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": false,
+      "touchesAI": false,
+      "description": "Partnership information page"
+    },
+    {
+      "method": "GET",
+      "path": "/partner/gary/dashboard",
+      "handler": "gary_partner_dashboard",
+      "file": "routes.py",
+      "lineStart": 376,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": true,
+      "touchesAI": false,
+      "description": "Gary partnership demo dashboard"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gary-upload",
+      "handler": "gary_upload_api",
+      "file": "routes.py",
+      "lineStart": 434,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": true,
+      "touchesAI": false,
+      "description": "Gary photo upload endpoint"
+    },
+    {
+      "method": "GET",
+      "path": "/global-satellite-map",
+      "handler": "global_satellite_map",
+      "file": "routes.py",
+      "lineStart": 538,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": false,
+      "touchesAI": false,
+      "description": "Satellite map visualization"
+    },
+    {
+      "method": "GET",
+      "path": "/space-earth-globe",
+      "handler": "space_earth_globe",
+      "file": "routes.py",
+      "lineStart": 543,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": false,
+      "touchesAI": false,
+      "description": "3D globe with 35th parallel overlay"
+    },
+    {
+      "method": "GET",
+      "path": "/api/orchid-coordinates-all",
+      "handler": "orchid_coordinates_all",
+      "file": "routes.py",
+      "lineStart": 548,
+      "lineEnd": 600,
+      "auth": false,
+      "touchesDB": true,
+      "touchesAI": false,
+      "description": "All orchid GPS coordinates for globe (PERFORMANCE RISK: Large dataset)",
+      "risk": "HIGH_VOLUME_QUERY"
+    },
+    {
+      "method": "GET",
+      "path": "/api/orchid-genera",
+      "handler": "orchid_genera",
+      "file": "routes.py",
+      "lineStart": 600,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": true,
+      "touchesAI": false,
+      "description": "Genus statistics and counts"
+    },
+    {
+      "method": "GET",
+      "path": "/api/image-counts",
+      "handler": "orchid_image_counts",
+      "file": "routes.py",
+      "lineStart": 631,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": true,
+      "touchesAI": false,
+      "description": "Image count by species (aggregation query)"
+    },
+    {
+      "method": "POST",
+      "path": "/api/earth-ai-chat",
+      "handler": "earth_ai_chat",
+      "file": "routes.py",
+      "lineStart": 1104,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": false,
+      "touchesAI": true,
+      "description": "Globe AI chat (PROTECTED by safe_ai_call wrapper)",
+      "aiProtection": "safe_ai_call"
+    },
+    {
+      "method": "POST",
+      "path": "/api/chat-search-assist",
+      "handler": "search_ai_chat",
+      "file": "routes.py",
+      "lineStart": 1277,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": true,
+      "touchesAI": true,
+      "description": "Search assistant with AI (PROTECTED by safe_ai_call wrapper)",
+      "aiProtection": "safe_ai_call"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/diagnostic-status",
+      "handler": "diagnostic_status",
+      "file": "routes.py",
+      "lineStart": 1229,
+      "lineEnd": null,
+      "auth": true,
+      "touchesDB": true,
+      "touchesAI": false,
+      "description": "Admin system diagnostics"
+    },
+    {
+      "method": "POST",
+      "path": "/partner/api/send-to-ai",
+      "handler": "gary_ai_chat",
+      "file": "routes.py",
+      "lineStart": 1415,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": false,
+      "touchesAI": true,
+      "description": "Gary partnership AI messaging (PROTECTED by safe_ai_call wrapper)",
+      "aiProtection": "safe_ai_call"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/run-sunset-valley-scraper",
+      "handler": "run_sunset_valley_scraper",
+      "file": "routes.py",
+      "lineStart": 1536,
+      "lineEnd": null,
+      "auth": true,
+      "touchesDB": true,
+      "touchesAI": false,
+      "description": "Trigger web scraper for Sunset Valley nursery"
+    },
+    {
+      "method": "GET",
+      "path": "/judging",
+      "handler": "judging_home",
+      "file": "routes.py",
+      "lineStart": 1661,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": true,
+      "touchesAI": false,
+      "description": "Judging standards homepage"
+    },
+    {
+      "method": "GET",
+      "path": "/judging/analyze/<id>",
+      "handler": "judging_analyze_orchid",
+      "file": "routes.py",
+      "lineStart": 1683,
+      "lineEnd": null,
+      "auth": false,
+      "touchesDB": true,
+      "touchesAI": false,
+      "description": "Orchid judging analysis by ID"
+    }
+  ],
+  "db": {
+    "engine": "PostgreSQL 16 (production), SQLite (development)",
+    "connectionPool": {
+      "pool_recycle": 300,
+      "pool_pre_ping": true,
+      "file": "app.py",
+      "lineStart": 37,
+      "lineEnd": 47
+    },
+    "migrations": "Manual (db.create_all), no Alembic",
+    "tables": [
+      {
+        "name": "orchid_taxonomy",
+        "description": "Master taxonomy table - 35,320 orchid species",
+        "columns": [
+          {"name": "id", "type": "Integer", "nullable": false, "indexed": "PK"},
+          {"name": "scientific_name", "type": "String(200)", "nullable": false, "indexed": "UNIQUE"},
+          {"name": "genus", "type": "String(100)", "nullable": false, "indexed": true},
+          {"name": "species", "type": "String(100)", "nullable": false, "indexed": false},
+          {"name": "author", "type": "String(200)", "nullable": true, "indexed": false},
+          {"name": "synonyms", "type": "Text (JSON)", "nullable": true, "indexed": false},
+          {"name": "common_names", "type": "Text (JSON)", "nullable": true, "indexed": false},
+          {"name": "gbif_taxon_key", "type": "BigInteger", "nullable": true, "indexed": true},
+          {"name": "eol_page_id", "type": "String(32)", "nullable": true, "indexed": true},
+          {"name": "gbif_occurrence_count", "type": "Integer", "nullable": true, "indexed": false},
+          {"name": "kingdom", "type": "String(120)", "nullable": true, "indexed": false},
+          {"name": "family", "type": "String(120)", "nullable": true, "indexed": false},
+          {"name": "taxonomic_status", "type": "String(50)", "nullable": true, "indexed": false},
+          {"name": "vernacular_names", "type": "JSON", "nullable": true, "indexed": false},
+          {"name": "created_at", "type": "DateTime", "nullable": false, "indexed": false},
+          {"name": "updated_at", "type": "DateTime", "nullable": false, "indexed": false}
+        ],
+        "pk": "id",
+        "fk": [],
+        "cites": ["models.py:530-592"]
+      },
+      {
+        "name": "orchid_record",
+        "description": "Individual orchid records/observations with GPS data",
+        "columns": [
+          {"name": "id", "type": "Integer", "nullable": false, "indexed": "PK"},
+          {"name": "taxonomy_id", "type": "Integer", "nullable": true, "indexed": "FK"},
+          {"name": "user_id", "type": "Integer", "nullable": true, "indexed": false},
+          {"name": "display_name", "type": "String(200)", "nullable": false, "indexed": false},
+          {"name": "scientific_name", "type": "String(200)", "nullable": true, "indexed": true},
+          {"name": "genus", "type": "String(100)", "nullable": true, "indexed": true},
+          {"name": "decimal_latitude", "type": "Float", "nullable": true, "indexed": false},
+          {"name": "decimal_longitude", "type": "Float", "nullable": true, "indexed": false},
+          {"name": "country", "type": "String(100)", "nullable": true, "indexed": false},
+          {"name": "bloom_time", "type": "String(100)", "nullable": true, "indexed": false},
+          {"name": "growth_habit", "type": "String(50)", "nullable": true, "indexed": false},
+          {"name": "climate_preference", "type": "String(20)", "nullable": true, "indexed": false}
+        ],
+        "pk": "id",
+        "fk": [{"column": "taxonomy_id", "references": "orchid_taxonomy.id"}],
+        "cites": ["models.py:594-946"]
+      },
+      {
+        "name": "bug_reports",
+        "description": "Beta tester feedback system",
+        "columns": [
+          {"name": "id", "type": "Integer", "nullable": false, "indexed": "PK"},
+          {"name": "item_type", "type": "String(50)", "nullable": false, "indexed": false},
+          {"name": "item_id", "type": "String(100)", "nullable": false, "indexed": false},
+          {"name": "item_name", "type": "String(200)", "nullable": false, "indexed": false},
+          {"name": "issue_type", "type": "String(50)", "nullable": false, "indexed": false},
+          {"name": "description", "type": "Text", "nullable": false, "indexed": false},
+          {"name": "status", "type": "String(20)", "nullable": false, "indexed": false},
+          {"name": "created_at", "type": "DateTime", "nullable": false, "indexed": false}
+        ],
+        "pk": "id",
+        "fk": [],
+        "cites": ["models.py:55-81"]
+      },
+      {
+        "name": "mahjong_games",
+        "description": "Educational mahjong game sessions",
+        "pk": "id",
+        "cites": ["models.py:238-258"]
+      },
+      {
+        "name": "breeding_projects",
+        "description": "Orchid hybridization projects",
+        "pk": "id",
+        "cites": ["models.py:1207-1234"]
+      },
+      {
+        "name": "breeding_crosses",
+        "description": "Individual breeding crosses",
+        "pk": "id",
+        "fk": [{"column": "project_id", "references": "breeding_projects.id"}],
+        "cites": ["models.py:1270-1311"]
+      },
+      {
+        "name": "research_documents",
+        "description": "Academic PDF library with metadata",
+        "pk": "id (UUID)",
+        "cites": ["models.py:3757-3820"]
+      },
+      {
+        "name": "svo_analysis_sessions",
+        "description": "Web scraping sessions for botanical patterns",
+        "pk": "id (UUID)",
+        "cites": ["models.py:84-133"]
+      },
+      {
+        "name": "svo_results",
+        "description": "Extracted Subject-Verb-Object tuples",
+        "pk": "id",
+        "fk": [{"column": "session_id", "references": "svo_analysis_sessions.id"}],
+        "cites": ["models.py:135-185"]
+      }
+    ],
+    "tableCount": 57,
+    "tableListCite": "models.py:55-3982"
+  },
+  "integrations": [
+    {
+      "name": "OpenAI",
+      "clientFiles": ["app/ai_utils.py", "routes.py"],
+      "envVars": ["OPENAI_API_KEY", "ORCHID_AI_ENABLED"],
+      "endpoints": ["chat.completions.create()", "images.analyze()"],
+      "models": ["GPT-4o (primary)", "GPT-3.5-turbo (inferred fallback)"],
+      "protection": {
+        "killSwitch": "ORCHID_AI_ENABLED",
+        "retryLogic": "backoff_retry (5 attempts, exponential backoff 0.5s-8s)",
+        "protectedRoutes": ["/api/earth-ai-chat", "/api/chat-search-assist", "/partner/api/send-to-ai"],
+        "savingsPerDay": 1728
+      },
+      "cites": ["app/ai_utils.py:5-53", "routes.py:1104,1277,1415"]
+    },
+    {
+      "name": "GBIF (Global Biodiversity Information Facility)",
+      "clientFiles": ["validation/enrich_gbif_stable.py"],
+      "envVars": [],
+      "endpoints": [
+        "/species/match?name={scientific_name}",
+        "/occurrence/search?taxonKey={key}&hasCoordinate=true&hasMedia=true"
+      ],
+      "authentication": "None (public API)",
+      "cost": "FREE (no API key required)",
+      "errorHandling": "Explicit 'ERROR' sentinels, retry with exponential backoff",
+      "performance": "195 images/min (~1 species/second)",
+      "cites": ["validation/enrich_gbif_stable.py", "replit.md:60-66"]
+    },
+    {
+      "name": "EOL (Encyclopedia of Life)",
+      "clientFiles": ["validation/enrich_eol_images.py"],
+      "envVars": [],
+      "endpoints": ["/pages/{eol_page_id}", "/pages/{eol_page_id}/media"],
+      "authentication": "None (public API)",
+      "cost": "FREE (5.8M image database)",
+      "cites": ["validation/enrich_eol_images.py", "replit.md:67-68"]
+    },
+    {
+      "name": "Google Drive/Sheets",
+      "clientFiles": ["requirements.txt (google-api-python-client, gspread)"],
+      "envVars": ["GOOGLE_API_KEY (MISSING)"],
+      "endpoints": ["Drive API v3", "Sheets API v4"],
+      "status": "INCOMPLETE (service account JSON location unknown)",
+      "cites": ["requirements.txt", "replit.md:74"]
+    },
+    {
+      "name": "Neon One CMS",
+      "type": "Embeddable JavaScript Widgets",
+      "widgets": ["Orchid of the Day", "Themed Galleries", "My Collection", "Hollywood Blooms", "Philosophy Quiz"],
+      "implementation": "Vite multi-entry build, CDN deployment (S3/Cloudflare R2)",
+      "configuration": "data-api-base attribute for API URL",
+      "cites": ["replit.md:119-126"]
+    }
+  ],
+  "configs": {
+    "render": {
+      "services": [
+        {"type": "web", "name": "orchid-continuum", "healthCheckPath": "/healthz", "autoDeploy": false},
+        {"type": "worker", "name": "orchid-gbif-worker", "autoDeploy": false},
+        {"type": "worker", "name": "orchid-eol-worker", "autoDeploy": false}
+      ],
+      "healthCheckPath": "/healthz",
+      "autoDeploy": false,
+      "buildFilterPaths": "None configured",
+      "cites": ["render.yaml:1-42"]
+    },
+    "docker": {
+      "files": ["Dockerfile"],
+      "baseImages": ["python:3.11.9-slim (PINNED)"],
+      "healthCheck": {
+        "command": "curl -f http://localhost:8080/healthz",
+        "interval": "30s",
+        "timeout": "10s",
+        "retries": 3
+      },
+      "cites": ["Dockerfile:3,39-40"]
+    },
+    "replit": {
+      "files": [".replit"],
+      "modules": ["python-3.11", "postgresql-16", "nodejs-20"],
+      "entrypoint": "./init.sh",
+      "cites": [".replit:1-10"]
+    }
+  },
+  "secrets": [
+    {"file": "render.yaml", "line": 13, "note": "OPENAI_API_KEY (sync: false, manual entry required)"},
+    {"file": "render.yaml", "line": 15, "note": "SESSION_SECRET (auto-generated)"},
+    {"file": "render.yaml", "line": 17, "note": "DATABASE_URL (sync: false, PostgreSQL connection)"},
+    {"file": "render.yaml", "line": 19, "note": "ORCHID_AI_ENABLED (default: false, AI kill-switch)"},
+    {"file": "replit.md", "line": 74, "note": "GOOGLE_API_KEY (MISSING - Google services integration)"}
+  ],
+  "costControls": {
+    "aiKillSwitch": {
+      "enabled": true,
+      "envVar": "ORCHID_AI_ENABLED",
+      "defaultValue": "false",
+      "savingsPerDay": "1,728 OpenAI calls (health checks + scheduled tasks)",
+      "cites": ["app/settings.py:1-3", "PRODUCTION_STABILITY.md"]
+    },
+    "manualDeploys": {
+      "enabled": true,
+      "autoDeploy": false,
+      "benefit": "Prevents surprise builds consuming free tier minutes",
+      "cites": ["render.yaml:11,28,39"]
+    },
+    "freeDataCollection": {
+      "gbif": "100% FREE, no API key",
+      "eol": "100% FREE, no API key",
+      "savingsPerImage": "$0.10-$0.50 (vs AI vision)",
+      "cites": ["replit.md:60-68"]
+    }
+  },
+  "risks": [
+    {"area": "AI", "risk": "OpenAI quota exhaustion", "impact": "HIGH", "likelihood": "MEDIUM", "mitigation": "AI kill-switch, retry logic"},
+    {"area": "Database", "risk": "No migration system", "impact": "HIGH", "likelihood": "MEDIUM", "mitigation": "Manual SQL, db.create_all()"},
+    {"area": "Performance", "risk": "Large coordinate query", "impact": "MEDIUM", "likelihood": "MEDIUM", "mitigation": "Pagination needed"},
+    {"area": "Security", "risk": "DEBUG logging in production", "impact": "MEDIUM", "likelihood": "HIGH", "mitigation": "Change to INFO level"},
+    {"area": "Integration", "risk": "No CORS configuration", "impact": "MEDIUM", "likelihood": "HIGH", "mitigation": "Add Flask-CORS"}
+  ]
+}

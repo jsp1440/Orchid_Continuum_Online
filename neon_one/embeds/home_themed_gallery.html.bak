@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<!-- 
+  🎨 Themed Orchid Gallery Widget
+  Self-contained embed for Neon One CMS
+  Displays themed orchid collections
+-->
+<div id="themed-gallery-widget" role="region" aria-label="Themed Orchid Gallery">
+  <style>
+    #themed-gallery-widget {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    #themed-gallery-widget h2 {
+      font-size: 28px;
+      margin: 0 0 16px 0;
+      color: #2d3748;
+    }
+    #themed-gallery-widget .theme-selector {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    #themed-gallery-widget .theme-btn {
+      padding: 10px 20px;
+      border: 2px solid #e2e8f0;
+      background: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    #themed-gallery-widget .theme-btn:hover {
+      border-color: #667eea;
+      background: #f7fafc;
+    }
+    #themed-gallery-widget .theme-btn.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+    #themed-gallery-widget .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    #themed-gallery-widget .gallery-item {
+      background: #f7fafc;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    #themed-gallery-widget .gallery-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+    #themed-gallery-widget .gallery-item h3 {
+      font-size: 18px;
+      margin: 12px 0 8px 0;
+      color: #2d3748;
+      font-style: italic;
+    }
+    #themed-gallery-widget .gallery-item p {
+      font-size: 14px;
+      color: #718096;
+      margin: 4px 0;
+    }
+    #themed-gallery-widget .banner {
+      background: #fff3cd;
+      color: #856404;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+  </style>
+
+  <h2>🎨 Themed Orchid Galleries</h2>
+  
+  <div class="theme-selector">
+    <button class="theme-btn active" onclick="window.loadTheme('fragrant')">🌸 Fragrant</button>
+    <button class="theme-btn" onclick="window.loadTheme('night')">🌙 Night-Blooming</button>
+    <button class="theme-btn" onclick="window.loadTheme('madagascar')">🇲🇬 Madagascar</button>
+    <button class="theme-btn" onclick="window.loadTheme('thailand')">🇹🇭 Thailand</button>
+  </div>
+  
+  <div id="gallery-content"></div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // ============================================================================
+  // CONFIG - CHANGE ME
+  // ============================================================================
+  const CONFIG = {
+    BASE_URL: 'https://your-orchid-app.onrender.com',  // CHANGE ME
+  };
+  // ============================================================================
+  
+  const contentDiv = document.getElementById('gallery-content');
+  let currentTheme = 'fragrant';
+  
+  const themes = {
+    fragrant: { title: 'Fragrant Orchids', query: 'fragrant' },
+    night: { title: 'Night-Blooming Orchids', query: 'night-blooming' },
+    madagascar: { title: 'Madagascar Orchids', query: 'madagascar' },
+    thailand: { title: 'Thailand Orchids', query: 'thailand' }
+  };
+  
+  async function fetchThemeOrchids(theme) {
+    try {
+      const themeInfo = themes[theme];
+      const response = await fetch(`${CONFIG.BASE_URL}/api/taxonomy/search?q=${themeInfo.query}&limit=6`, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' }
+      });
+      
+      if (!response.ok) {
+        return null;
+      }
+      
+      const data = await response.json();
+      return data.results || data || [];
+    } catch (error) {
+      console.error('Failed to fetch themed orchids:', error);
+      return null;
+    }
+  }
+  
+  function renderGallery(orchids, theme) {
+    if (!orchids) {
+      contentDiv.innerHTML = `<div class="banner">
+        ⚠️ Unable to load gallery. Link to full gallery: 
+        <a href="${CONFIG.BASE_URL}/${theme}-orchids" target="_blank">View ${themes[theme].title}</a>
+      </div>`;
+      return;
+    }
+    
+    if (orchids.length === 0) {
+      contentDiv.innerHTML = `<div class="banner">No orchids found for this theme yet.</div>`;
+      return;
+    }
+    
+    let html = '<div class="gallery-grid">';
+    orchids.forEach(orchid => {
+      html += `<div class="gallery-item">
+        <h3>${orchid.scientific_name || orchid.genus + ' ' + orchid.species}</h3>
+        ${orchid.common_names ? `<p><strong>${orchid.common_names}</strong></p>` : ''}
+        ${orchid.distribution ? `<p>📍 ${orchid.distribution}</p>` : ''}
+      </div>`;
+    });
+    html += '</div>';
+    
+    contentDiv.innerHTML = html;
+  }
+  
+  async function loadTheme(theme) {
+    // Update button states
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    currentTheme = theme;
+    contentDiv.innerHTML = '<div style="text-align:center;padding:40px;">🌸 Loading...</div>';
+    
+    const orchids = await fetchThemeOrchids(theme);
+    renderGallery(orchids, theme);
+  }
+  
+  window.loadTheme = loadTheme;
+  
+  // Auto-load default theme
+  loadTheme('fragrant');
+})();
+</script>

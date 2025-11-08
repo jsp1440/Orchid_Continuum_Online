@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Orchid Continuum - Research Platform Overview</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --orchid-purple: #8B5CF6;
+            --orchid-green: #10B981;
+            --dark-bg: #1a1a2e;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        .hero {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 2rem auto;
+            max-width: 1200px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        
+        .platform-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, var(--orchid-purple), #764ba2);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .stat-box h3 {
+            font-size: 2.5rem;
+            margin: 0;
+            font-weight: 700;
+        }
+        
+        .stat-box p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+        
+        .widget-catalog {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .widget-item {
+            background: rgba(139, 92, 246, 0.1);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .widget-item:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.6);
+            transform: translateY(-5px);
+        }
+        
+        .widget-item h5 {
+            color: var(--orchid-purple);
+            margin-bottom: 0.5rem;
+        }
+        
+        .demo-section {
+            background: white;
+            color: #333;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border-left: 5px solid var(--orchid-green);
+        }
+        
+        .culture-sheet {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+        
+        .habitat-map {
+            background: #e8f5e9;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        
+        .botanical-drawing {
+            text-align: center;
+            padding: 2rem;
+            background: #fafafa;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        
+        .weather-widget {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+        
+        .attribution-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+        
+        .section-header {
+            border-bottom: 3px solid var(--orchid-purple);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Introduction -->
+        <div class="hero mt-5">
+            <h1 class="display-4 mb-4">The Orchid Continuum</h1>
+            <p class="lead">A Research-Grade Digital Platform for Orchid Biodiversity, Conservation, and Cultivation Science</p>
+            
+            <div class="platform-stats mt-4">
+                <div class="stat-box">
+                    <h3>106,717</h3>
+                    <p>Orchid Images</p>
+                </div>
+                <div class="stat-box">
+                    <h3>413</h3>
+                    <p>Species Documented</p>
+                </div>
+                <div class="stat-box">
+                    <h3>45+</h3>
+                    <p>Interactive Widgets</p>
+                </div>
+                <div class="stat-box">
+                    <h3>1,763</h3>
+                    <p>Botanical Terms</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- What is The Orchid Continuum -->
+        <div class="hero">
+            <h2 class="section-header">What We're Building</h2>
+            
+            <p>The Orchid Continuum integrates authoritative taxonomy databases (GBIF, Tropicos, EOL), AI-powered image analysis, and ecological pattern discovery into a unified research platform. We're preserving orchid biodiversity data that could be at risk while making it accessible for scientific research, education, and practical cultivation.</p>
+            
+            <h4 class="mt-4 mb-3">Why Complete Species Coverage Matters</h4>
+            <ul>
+                <li><strong>Conservation:</strong> With 56% of orchids threatened with extinction, comprehensive documentation is critical for preservation efforts</li>
+                <li><strong>Research:</strong> AI vision analysis requires diverse training data across species, genera, and families to identify taxonomic patterns</li>
+                <li><strong>Climate Analysis:</strong> Geographic distribution data helps predict habitat changes and cultivation zones</li>
+                <li><strong>Cultivation Science:</strong> Linking wild habitat data to growing conditions helps growers replicate natural environments</li>
+                <li><strong>Educational Value:</strong> Complete species coverage provides students and researchers with comparative morphology examples</li>
+            </ul>
+            
+            <div class="attribution-box mt-4">
+                <h5><i class="fas fa-award me-2"></i>Contributor Recognition</h5>
+                <p class="mb-2">All photographs and collections are properly attributed with:</p>
+                <ul class="mb-0">
+                    <li>Photographer name displayed with each image</li>
+                    <li>Collection source and licensing information</li>
+                    <li>Academic citation format (BibTeX export available)</li>
+                    <li>Direct links back to original source collections</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Core Platform Features (Verified Working) -->
+        <div class="hero">
+            <h2 class="section-header">Core Platform Features</h2>
+            
+            <p class="lead mb-4">These are the working, tested features currently available on the platform:</p>
+            
+            <div class="widget-catalog">
+                <div class="widget-item">
+                    <h5><i class="fas fa-images me-2"></i>Advanced Photo Gallery</h5>
+                    <p><strong>✓ LIVE:</strong> Filterable search by genus, family, location with full metadata display and EXIF data analysis</p>
+                </div>
+                
+                <div class="widget-item">
+                    <h5><i class="fas fa-search me-2"></i>Search & Discovery</h5>
+                    <p><strong>✓ LIVE:</strong> Full-text search across 106,717 images with advanced filtering and analytics integration</p>
+                </div>
+                
+                <div class="widget-item">
+                    <h5><i class="fas fa-globe me-2"></i>Interactive 3D Globe</h5>
+                    <p><strong>✓ LIVE:</strong> Geographic distribution mapping with 35th parallel climate overlay and elevation data</p>
+                </div>
+                
+                <div class="widget-item">
+                    <h5><i class="fas fa-map-marked-alt me-2"></i>Distribution Maps</h5>
+                    <p><strong>✓ LIVE:</strong> Species occurrence plotting with GPS coordinates, regional filtering, and satellite imagery</p>
+                </div>
+                
+                <div class="widget-item">
+                    <h5><i class="fas fa-database me-2"></i>Taxonomic Browser</h5>
+                    <p><strong>✓ LIVE:</strong> Navigate complete orchid family tree from kingdom through species level with image linking</p>
+                </div>
+                
+                <div class="widget-item">
+                    <h5><i class="fas fa-graduation-cap me-2"></i>Botanical Glossary</h5>
+                    <p><strong>✓ LIVE:</strong> 1,763 botanical terms with etymology, pronunciation, and interactive learning tools</p>
+                </div>
+                
+                <div class="widget-item">
+                    <h5><i class="fas fa-microscope me-2"></i>Dichotomous Keys Database</h5>
+                    <p><strong>✓ LIVE:</strong> 90 identification key sources covering 27 genera from authoritative Flora treatments</p>
+                </div>
+                
+                <div class="widget-item">
+                    <h5><i class="fas fa-robot me-2"></i>AI Vision Analysis</h5>
+                    <p><strong>✓ WORKING:</strong> Species identification, botanical terminology extraction, and morphological analysis using GPT-4o Vision</p>
+                </div>
+                
+                <div class="widget-item">
+                    <h5><i class="fas fa-palette me-2"></i>AI Illustration Generator</h5>
+                    <p><strong>✓ WORKING:</strong> Generates 4 types of botanical drawings (line art, labeled diagrams, watercolor, coloring pages)</p>
+                </div>
+                
+                <div class="widget-item">
+                    <h5><i class="fas fa-cloud-sun me-2"></i>Climate Data Integration</h5>
+                    <p><strong>✓ WORKING:</strong> Baker's methodology database with weather pattern correlation and habitat analysis</p>
+                </div>
+                
+                <div class="widget-item">
+                    <h5><i class="fas fa-dna me-2"></i>Breeding Analysis</h5>
+                    <p><strong>✓ WORKING:</strong> Hybrid parentage tracking and cross-analysis tools for breeding programs</p>
+                </div>
+                
+                <div class="widget-item">
+                    <h5><i class="fas fa-leaf me-2"></i>Ethnobotany Database</h5>
+                    <p><strong>✓ LIVE:</strong> Traditional uses, indigenous names, and cultural significance documentation</p>
+                </div>
+            </div>
+            
+            <div class="attribution-box mt-4">
+                <p class="mb-0"><strong><i class="fas fa-info-circle me-2"></i>Note:</strong> We're showing only features that are currently functional and tested. Additional tools and widgets are in development but not included here to keep this demonstration honest and accurate.</p>
+            </div>
+        </div>
+
+        <!-- Working Demo: Culture Sheet Integration -->
+        <div class="hero">
+            <h2 class="section-header">Live Demo: Integrated Culture Sheet System</h2>
+            <p class="text-muted">Example showing how we combine Baker's methodology, weather data, habitat analysis, photos, and botanical illustrations</p>
+            
+            <div class="demo-section">
+                <h3>Dendrobium bigibbum</h3>
+                <p class="text-muted">Cooktown Orchid (Queensland, Australia)</p>
+                
+                <!-- Photo Integration -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <img src="/static/images/gary_collection/DSC_2161.JPG" class="img-fluid rounded" alt="Dendrobium bigibbum wild specimen">
+                        <p class="text-muted small mt-2">📸 Wild specimen photograph<br>📍 Native habitat</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="botanical-drawing">
+                            <i class="fas fa-paintbrush" style="font-size: 3rem; color: #8B5CF6;"></i>
+                            <p class="mt-2 mb-0"><strong>AI Botanical Drawing</strong></p>
+                            <p class="text-muted small">Scientific line drawing showing flower structure and labeling</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="habitat-map">
+                            <i class="fas fa-map-marked-alt" style="font-size: 3rem; color: #10B981;"></i>
+                            <p class="mt-2 mb-0"><strong>Distribution Map</strong></p>
+                            <p class="text-muted small">Northern Australia, Papua New Guinea<br>Sea level to 1200m elevation</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Habitat Description -->
+                <div class="culture-sheet">
+                    <h5><i class="fas fa-tree me-2"></i>Natural Habitat</h5>
+                    <p>Found growing on trees and rocks in open woodland and savanna environments. Experiences distinct wet (November-April) and dry (May-October) seasons with high light levels year-round.</p>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <strong>Climate Zone:</strong> Tropical savanna (Köppen Aw)<br>
+                            <strong>Elevation:</strong> 0-1200m<br>
+                            <strong>Annual Rainfall:</strong> 1000-2000mm<br>
+                            <strong>Temperature Range:</strong> 18-35°C
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Light:</strong> High (60-80% sun)<br>
+                            <strong>Humidity:</strong> 60-80% wet season, 40-60% dry season<br>
+                            <strong>Growing Pattern:</strong> Deciduous (dry season dormancy)
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Weather Comparison Widget -->
+                <div class="weather-widget mt-4">
+                    <h5><i class="fas fa-cloud-sun me-2"></i>Your Location vs. Native Habitat</h5>
+                    <p class="mb-3">Compare your growing conditions to wild habitat for optimal cultivation</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <canvas id="tempChart" width="400" height="200"></canvas>
+                        </div>
+                        <div class="col-md-6">
+                            <canvas id="rainChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Baker's Culture Method -->
+                <div class="culture-sheet mt-4">
+                    <h5><i class="fas fa-seedling me-2"></i>Baker's Cultural Guidelines</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Light</h6>
+                            <p>2500-4000 foot-candles. Provide bright light similar to Cattleya requirements. Leaves should be light green, not dark.</p>
+                            
+                            <h6>Temperature</h6>
+                            <p>Warm to intermediate. Summer days 28-32°C, nights 20-24°C. Winter rest with cooler temps (18-22°C days, 15-18°C nights).</p>
+                            
+                            <h6>Water</h6>
+                            <p>Heavy watering during active growth (spring-fall). Allow to dry between waterings during winter rest period after flowering.</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Humidity</h6>
+                            <p>60-70% year-round with good air circulation. Lower humidity acceptable during winter rest.</p>
+                            
+                            <h6>Fertilizer</h6>
+                            <p>Weekly during active growth at 1/4 strength balanced formula (20-20-20). Reduce to monthly during rest.</p>
+                            
+                            <h6>Potting</h6>
+                            <p>Coarse bark mix or mounted. Repot every 2-3 years after flowering, as new growth emerges.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info mt-3">
+                        <strong><i class="fas fa-lightbulb me-2"></i>Growing Tip:</strong> The key to flowering is providing a distinct dry rest period after canes mature in fall. Reduce watering dramatically and provide cooler nights to trigger blooming.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Database Status -->
+        <div class="hero">
+            <h2 class="section-header">Our Current Database</h2>
+            
+            <p class="lead mb-4">The Orchid Continuum has already integrated data from three major biodiversity databases:</p>
+            
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="stat-box">
+                        <h3>10,534</h3>
+                        <p>GBIF Images</p>
+                        <small style="opacity: 0.8;">Global Biodiversity Information Facility</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-box">
+                        <h3>95,000</h3>
+                        <p>EOL Images</p>
+                        <small style="opacity: 0.8;">Encyclopedia of Life</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-box">
+                        <h3>1,183</h3>
+                        <p>Tropicos Images</p>
+                        <small style="opacity: 0.8;">Missouri Botanical Garden Herbarium</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section">
+                <h5><i class="fas fa-database me-2"></i>Current Coverage Statistics</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Total Images: 106,717</h6>
+                        <ul>
+                            <li>Wild specimens with GPS coordinates</li>
+                            <li>Herbarium type specimens</li>
+                            <li>Cultivated examples</li>
+                            <li>Multiple views per species</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Species Coverage: 413</h6>
+                        <ul>
+                            <li>Complete taxonomic hierarchy</li>
+                            <li>Multiple families and genera</li>
+                            <li>Geographic distribution data</li>
+                            <li>Climate and habitat metadata</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="culture-sheet mt-4" style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);">
+                <h5><i class="fas fa-exclamation-triangle me-2" style="color: #f57c00;"></i>The Coverage Gap</h5>
+                <p><strong>There are approximately 28,000 orchid species worldwide.</strong></p>
+                <p>Our current database covers <strong>413 species (1.5% of global diversity)</strong>. This limits:</p>
+                <ul>
+                    <li>AI training data for accurate identification across genera</li>
+                    <li>Comparative morphology analysis for taxonomic research</li>
+                    <li>Geographic distribution patterns for conservation planning</li>
+                    <li>Cultivation guidance for rare and uncommon species</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Impact of Gary's Collection -->
+        <div class="hero">
+            <h2 class="section-header">The Transformative Impact of Your Collection</h2>
+            
+            <p class="lead mb-4">Your collection of 100,000+ photographs documenting 3,500 species would fundamentally transform our platform's capabilities:</p>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="culture-sheet">
+                        <h5 style="color: #666;">CURRENT STATE</h5>
+                        <div class="row mt-3">
+                            <div class="col-6 text-center">
+                                <h2 style="color: #8B5CF6;">106,717</h2>
+                                <p>Total Images</p>
+                            </div>
+                            <div class="col-6 text-center">
+                                <h2 style="color: #8B5CF6;">413</h2>
+                                <p>Species</p>
+                            </div>
+                        </div>
+                        <p class="text-muted mt-2 mb-0"><small>1.5% of world's orchid diversity</small></p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="culture-sheet" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);">
+                        <h5 style="color: #2e7d32;">WITH YOUR COLLECTION</h5>
+                        <div class="row mt-3">
+                            <div class="col-6 text-center">
+                                <h2 style="color: #10B981;">206,717+</h2>
+                                <p>Total Images</p>
+                            </div>
+                            <div class="col-6 text-center">
+                                <h2 style="color: #10B981;">3,500+</h2>
+                                <p>Species</p>
+                            </div>
+                        </div>
+                        <p class="text-success mt-2 mb-0"><small><strong>12.5% of world's orchid diversity</strong> - an 8x increase!</small></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section">
+                <h5><i class="fas fa-chart-line me-2"></i>New Capabilities Unlocked</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Geographic Coverage</h6>
+                        <ul>
+                            <li><strong>Australian orchids:</strong> Your extensive native documentation fills a critical gap</li>
+                            <li><strong>In-situ habitats:</strong> Real-world growing conditions from 12+ World Orchid Conferences</li>
+                            <li><strong>Papua New Guinea:</strong> Rare species documentation from field expeditions</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>AI & Research Quality</h6>
+                        <ul>
+                            <li><strong>Training data diversity:</strong> 3,500 species enables robust AI identification models</li>
+                            <li><strong>Morphological analysis:</strong> 440+ genera coverage for taxonomic comparison</li>
+                            <li><strong>Habitat correlation:</strong> Link cultivation success to native conditions</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <h6>Educational Value</h6>
+                        <ul>
+                            <li><strong>Rare species examples:</strong> Documentation of uncommon and endangered orchids</li>
+                            <li><strong>Seasonal variation:</strong> Multiple flowering periods captured</li>
+                            <li><strong>Growth habits:</strong> Examples across lithophytic, epiphytic, terrestrial forms</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Conservation Impact</h6>
+                        <ul>
+                            <li><strong>Baseline documentation:</strong> Historical records for species monitoring</li>
+                            <li><strong>Threatened species:</strong> Visual records of rare orchids for preservation</li>
+                            <li><strong>Climate analysis:</strong> Elevation and geographic range data for habitat modeling</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="attribution-box mt-4">
+                <h5><i class="fas fa-users me-2"></i>Building on Authoritative Sources</h5>
+                <p class="mb-2">The Orchid Continuum integrates data from world-leading institutions:</p>
+                <div class="row">
+                    <div class="col-md-4">
+                        <strong>GBIF</strong>
+                        <p class="small mb-0">Global Biodiversity Information Facility - aggregates data from 2,000+ institutions worldwide</p>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Tropicos</strong>
+                        <p class="small mb-0">Missouri Botanical Garden - 4.2M+ botanical specimens, authoritative taxonomy</p>
+                    </div>
+                    <div class="col-md-4">
+                        <strong>EOL</strong>
+                        <p class="small mb-0">Encyclopedia of Life - 5.8M images, phenotypic trait data</p>
+                    </div>
+                </div>
+                <p class="mt-3 mb-0"><strong>Your collection would join this research-grade database</strong> as a primary source for Australian and Pacific orchid biodiversity, properly attributed and preserved for future generations.</p>
+            </div>
+        </div>
+
+        <!-- AI Vision System -->
+        <div class="hero">
+            <h2 class="section-header">AI Vision Analysis: Where Your Collection Makes the Biggest Impact</h2>
+            
+            <p class="lead mb-4">The Digital Botanist Vision AI system is one of our most critical research tools. Here's how it works and why your collection is essential to its success.</p>
+            
+            <div class="demo-section">
+                <h5><i class="fas fa-brain me-2"></i>What the AI Vision System Does</h5>
+                <p>Our AI analyzes orchid photographs to:</p>
+                <ul>
+                    <li><strong>Identify species</strong> from morphological features (flower shape, lip structure, column characteristics)</li>
+                    <li><strong>Extract botanical terminology</strong> - describing plants using proper scientific vocabulary (1,763 botanical terms)</li>
+                    <li><strong>Generate scientific illustrations</strong> - creating line drawings, labeled diagrams, and watercolor renderings</li>
+                    <li><strong>Correlate habitat data</strong> - linking visual characteristics to growing conditions</li>
+                    <li><strong>Assist conservation</strong> - identifying rare/threatened species from field photos</li>
+                </ul>
+            </div>
+            
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="culture-sheet">
+                        <h6><i class="fas fa-graduation-cap me-2"></i>2-Phase Training Process</h6>
+                        <p><strong>Phase 1: Learning Botanical Language</strong></p>
+                        <ul class="mb-2">
+                            <li>1,648 Tropicos herbarium specimens analyzed</li>
+                            <li>1,763 botanical terms learned and applied</li>
+                            <li>Supervised learning from expert-verified specimens</li>
+                        </ul>
+                        <p><strong>Phase 2: Wild Identification Testing</strong></p>
+                        <ul class="mb-0">
+                            <li>7,373 iNaturalist wild orchid photos tested</li>
+                            <li>Blind identification without prior training</li>
+                            <li>Real-world conditions (varying light, angles, quality)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="weather-widget">
+                        <h6><i class="fas fa-flask me-2"></i>Technical Architecture</h6>
+                        <p><strong>Multi-Provider AI System</strong></p>
+                        <ul class="mb-2">
+                            <li>Google Gemini 2.0 Flash (FREE - primary vision AI)</li>
+                            <li>Together AI FLUX (FREE for 3 months - illustrations)</li>
+                            <li>OpenAI GPT-4o Vision (fallback for complex cases)</li>
+                        </ul>
+                        <p><strong>Cost-Optimized Design</strong></p>
+                        <ul class="mb-0">
+                            <li>$90-180/month savings vs. proprietary-only</li>
+                            <li>Automatic provider failover for reliability</li>
+                            <li>Research-grade quality maintained</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section mt-4" style="border-left: 5px solid #10B981;">
+                <h5><i class="fas fa-exclamation-circle me-2" style="color: #10B981;"></i>The Critical Species Coverage Problem</h5>
+                <p><strong>Why AI needs diverse training data:</strong></p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Current Limitation (413 species)</h6>
+                        <ul>
+                            <li>AI can only reliably identify genera it has seen</li>
+                            <li>Morphological patterns limited to narrow sample</li>
+                            <li>Geographic bias toward easily-accessed regions</li>
+                            <li>Missing rare and uncommon species entirely</li>
+                            <li>Cannot distinguish between similar species</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>With Your Collection (3,500 species)</h6>
+                        <ul>
+                            <li><strong>440+ genera coverage</strong> enables family-level pattern recognition</li>
+                            <li><strong>Australia/Pacific focus</strong> fills major geographic gap</li>
+                            <li><strong>In-situ habitat photos</strong> teach natural variation</li>
+                            <li><strong>Multiple views per species</strong> improves accuracy</li>
+                            <li><strong>Rare species documentation</strong> critical for conservation ID</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="attribution-box mt-3" style="background: rgba(16, 185, 129, 0.1);">
+                    <p class="mb-0"><strong>Machine Learning Reality:</strong> An AI trained on 400 species can make educated guesses about morphology, but an AI trained on 3,500 species across 440 genera develops true pattern recognition across the entire Orchidaceae family. This is the difference between a helpful tool and groundbreaking research capability.</p>
+                </div>
+            </div>
+            
+            <div class="culture-sheet mt-4">
+                <h5><i class="fas fa-check-circle me-2" style="color: #10B981;"></i>Proof of Concept: Real Results</h5>
+                <p class="mb-3"><strong>We're not making promises - the system is already working. Here are actual examples:</strong></p>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="habitat-map" style="background: #f8f9fa; border: 2px solid #dee2e6;">
+                            <h6>Example 1: Herbarium Specimen Analysis</h6>
+                            <p class="small"><strong>Input:</strong> Tropicos herbarium sheet photo</p>
+                            <p class="small"><strong>AI Output:</strong></p>
+                            <ul class="small mb-2">
+                                <li>Species identification with confidence score</li>
+                                <li>Morphological description using proper botanical terminology</li>
+                                <li>Flower structure analysis (sepals, petals, lip, column)</li>
+                                <li>Comparison to related species</li>
+                            </ul>
+                            <p class="small mb-0"><strong>Result:</strong> Accurate identification matching expert determination</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="habitat-map" style="background: #f8f9fa; border: 2px solid #dee2e6;">
+                            <h6>Example 2: Wild Photo Identification</h6>
+                            <p class="small"><strong>Input:</strong> iNaturalist field photo (amateur quality)</p>
+                            <p class="small"><strong>AI Output:</strong></p>
+                            <ul class="small mb-2">
+                                <li>Genus-level identification (high confidence)</li>
+                                <li>Multiple possible species with reasoning</li>
+                                <li>Key identifying features highlighted</li>
+                                <li>Habitat clues from background vegetation</li>
+                            </ul>
+                            <p class="small mb-0"><strong>Result:</strong> Narrowed to 2-3 candidate species for expert review</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div class="botanical-drawing" style="background: #fff3e0; border: 2px solid #ff9800;">
+                            <h6>Example 3: Botanical Illustration Generation</h6>
+                            <p class="small"><strong>Input:</strong> Color photograph of flowering orchid</p>
+                            <p class="small"><strong>AI Generated (4 outputs):</strong></p>
+                            <div class="row">
+                                <div class="col-md-3 text-center">
+                                    <i class="fas fa-pen-nib" style="font-size: 2rem; color: #666;"></i>
+                                    <p class="small mb-0 mt-2"><strong>Scientific Line Drawing</strong><br>Precise B&W botanical illustration</p>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <i class="fas fa-tags" style="font-size: 2rem; color: #666;"></i>
+                                    <p class="small mb-0 mt-2"><strong>Labeled Diagram</strong><br>Same drawing with anatomical labels</p>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <i class="fas fa-palette" style="font-size: 2rem; color: #666;"></i>
+                                    <p class="small mb-0 mt-2"><strong>Watercolor Art</strong><br>Museum-quality colored illustration</p>
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <i class="fas fa-pencil-alt" style="font-size: 2rem; color: #666;"></i>
+                                    <p class="small mb-0 mt-2"><strong>Coloring Page</strong><br>Outline for educational use</p>
+                                </div>
+                            </div>
+                            <p class="small mt-3 mb-0"><strong>Result:</strong> All illustrations rights-free, downloadable in PNG/JPEG/PDF with proper filenames. System proves it understands morphology by accurately reconstructing structure.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section mt-4">
+                <h5><i class="fas fa-lightbulb me-2"></i>Real-World Applications</h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6>Conservation</h6>
+                        <ul class="small">
+                            <li>Field workers upload photos for instant species ID</li>
+                            <li>Identify threatened species in unexplored areas</li>
+                            <li>Monitor population changes over time</li>
+                            <li>Detect illegal poaching/trade from photos</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Research</h6>
+                        <ul class="small">
+                            <li>Automated morphological analysis of museum collections</li>
+                            <li>Pattern recognition across taxonomic groups</li>
+                            <li>Phenological studies (flowering time shifts)</li>
+                            <li>Rapid biodiversity surveys</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Education</h6>
+                        <ul class="small">
+                            <li>Students learn botanical terminology through AI descriptions</li>
+                            <li>Generated illustrations for teaching materials</li>
+                            <li>Interactive species identification quizzes</li>
+                            <li>Cultivation guides linked to wild specimens</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="attribution-box mt-4" style="background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3);">
+                <h5><i class="fas fa-star me-2"></i>Why Your Collection is Mission-Critical for AI</h5>
+                <p><strong>Your 100,000+ photographs documenting 3,500 species would:</strong></p>
+                <ol>
+                    <li><strong>Enable robust AI training</strong> - 3,500 species provides the diversity needed for accurate family-wide pattern recognition</li>
+                    <li><strong>Fill geographic gaps</strong> - Australian and Pacific orchids are underrepresented in global databases</li>
+                    <li><strong>Provide habitat context</strong> - In-situ photos teach the AI what natural variation looks like</li>
+                    <li><strong>Document rare species</strong> - Many species in your collection may have limited photographic documentation elsewhere</li>
+                    <li><strong>Improve accuracy dramatically</strong> - More training examples = better identification across all 28,000 orchid species</li>
+                </ol>
+                <p class="mb-0 mt-3"><strong>Bottom line:</strong> The difference between our current 413-species AI and a 3,500-species AI isn't incremental—it's transformational. This is where your collection would make its greatest scientific contribution.</p>
+            </div>
+        </div>
+
+        <!-- Integration Options for Gary -->
+        <div class="hero">
+            <h2 class="section-header">How We Can Integrate Your Collection</h2>
+            
+            <p class="lead mb-4">We'd like to integrate your extensive collection of 100,000+ orchid photographs. Here are several options to make this as easy as possible for you:</p>
+            
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="widget-item" style="height: 100%;">
+                        <h5><i class="fas fa-key me-2"></i>Option 1: API Integration</h5>
+                        <p class="mb-3">We provide you with a secure API key that connects orchids.yonggee.name directly to The Orchid Continuum.</p>
+                        <ul class="mb-0">
+                            <li>Automatic syncing of new photos</li>
+                            <li>No manual uploads needed</li>
+                            <li>Full control - you can push/pull anytime</li>
+                            <li>Metadata automatically extracted</li>
+                        </ul>
+                        <div class="attribution-box mt-3">
+                            <strong>Technical Requirements:</strong> Simple REST API endpoint on your site, or we can build a custom scraper that runs periodically
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="widget-item" style="height: 100%;">
+                        <h5><i class="fas fa-cloud-upload-alt me-2"></i>Option 2: Google Drive Share</h5>
+                        <p class="mb-3">We create a dedicated Google Drive folder with unlimited storage for your collection.</p>
+                        <ul class="mb-0">
+                            <li>Upload at your own pace</li>
+                            <li>Organize in folders by genus/location</li>
+                            <li>We handle all processing</li>
+                            <li>Keep your original files untouched</li>
+                        </ul>
+                        <div class="attribution-box mt-3">
+                            <strong>Setup Time:</strong> 5 minutes - we send you a share link, you upload when ready
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="widget-item" style="height: 100%;">
+                        <h5><i class="fas fa-file-archive me-2"></i>Option 3: Batch File Transfer</h5>
+                        <p class="mb-3">Send us organized ZIP files or provide download links to your existing archive.</p>
+                        <ul class="mb-0">
+                            <li>Works with any file structure</li>
+                            <li>Can process 10,000s of files at once</li>
+                            <li>We extract metadata from filenames</li>
+                            <li>One-time transfer, we handle the rest</li>
+                        </ul>
+                        <div class="attribution-box mt-3">
+                            <strong>File Formats:</strong> JPG, PNG, TIFF - any resolution. Filenames can include species names for auto-tagging
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="widget-item" style="height: 100%;">
+                        <h5><i class="fas fa-robot me-2"></i>Option 4: Automated Web Scraper</h5>
+                        <p class="mb-3">We build a custom scraper that respectfully harvests photos from your website.</p>
+                        <ul class="mb-0">
+                            <li>No work required on your end</li>
+                            <li>Runs on schedule you approve</li>
+                            <li>Respects your bandwidth</li>
+                            <li>Captures all metadata from pages</li>
+                        </ul>
+                        <div class="attribution-box mt-3">
+                            <strong>Requirements:</strong> Your permission + confirmation that robots.txt allows crawling
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section mt-4">
+                <h5><i class="fas fa-shield-alt me-2"></i>Your Rights & Attribution</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>You retain all copyright</strong></p>
+                        <ul>
+                            <li>Photos remain your intellectual property</li>
+                            <li>You can request removal anytime</li>
+                            <li>Attribution displayed with every image</li>
+                            <li>Links back to orchids.yonggee.name</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>What we do with your images</strong></p>
+                        <ul>
+                            <li>Research and conservation documentation</li>
+                            <li>AI training for species identification</li>
+                            <li>Educational platform for students</li>
+                            <li>Non-commercial scientific use only</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="culture-sheet mt-4">
+                <h5><i class="fas fa-question-circle me-2"></i>Questions We'd Like to Ask</h5>
+                <ol>
+                    <li><strong>Which integration method appeals to you most?</strong> Or would you prefer a different approach?</li>
+                    <li><strong>How are your photos currently organized?</strong> (by genus, location, date, etc.)</li>
+                    <li><strong>Do your filenames or metadata include species names?</strong> This helps with auto-tagging.</li>
+                    <li><strong>Would you like us to start with a subset</strong> (e.g., specific genera) or integrate everything at once?</li>
+                    <li><strong>Do you have locality/habitat information</strong> for your in-situ photos? (GPS coordinates, elevation, etc.)</li>
+                    <li><strong>What timeline works for you?</strong> We can move as quickly or slowly as you prefer.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Final Section -->
+        <div class="hero mb-5">
+            <div class="text-center pt-4">
+                <h3 class="mb-4">Thank You</h3>
+                <p class="lead">We appreciate your time exploring The Orchid Continuum platform.</p>
+                <p>Your collection would be an invaluable addition to our biodiversity research database. Please let us know which integration approach works best for you, or if you have questions about any aspect of the platform.</p>
+                <p class="mt-4 text-muted">Looking forward to working together,<br>The Orchid Continuum Team</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        // Temperature comparison chart
+        const tempCtx = document.getElementById('tempChart');
+        new Chart(tempCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Native Habitat (°C)',
+                    data: [27, 27, 27, 26, 24, 22, 21, 23, 25, 27, 28, 28],
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4
+                }, {
+                    label: 'Your Location (°C)',
+                    data: [22, 22, 20, 18, 15, 12, 11, 13, 15, 17, 19, 21],
+                    borderColor: '#8B5CF6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Monthly Average Temperature'
+                    }
+                }
+            }
+        });
+        
+        // Rainfall comparison chart
+        const rainCtx = document.getElementById('rainChart');
+        new Chart(rainCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Native Habitat (mm)',
+                    data: [400, 380, 280, 100, 25, 15, 10, 10, 15, 40, 120, 250],
+                    backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                }, {
+                    label: 'Your Location (mm)',
+                    data: [80, 70, 65, 55, 50, 45, 40, 40, 45, 55, 65, 75],
+                    backgroundColor: 'rgba(139, 92, 246, 0.7)',
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Monthly Rainfall Distribution'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

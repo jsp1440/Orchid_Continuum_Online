@@ -1,0 +1,24 @@
+================================================================================
+🌺 REPLIT ORCHID HARVESTER - WORKING VERSION
+================================================================================
+Regional targeting: Australia, PNG, SE Asia, Central/South America, Africa
+Started: 11:30:51 PM
+
+
+────────────────────────────────────────────────────────────────────────────────
+CYCLE #1
+────────────────────────────────────────────────────────────────────────────────
+Processing 50 species...
+
+      DB Error: invalid input syntax for type timestamp: "1906-10-01/1906-10-31"
+LINE 15:       
+      DB Error: duplicate key value violates unique constraint "unique_occurrence"
+DETAIL:  Key 
+[✅] Appendicula callifera J. J. Sm.: +1 | Rate: 14.3/min | Total: 2
+      DB Error: invalid input syntax for type timestamp: "1899-10"
+LINE 15:                 '189
+      DB Error: invalid input syntax for type timestamp: "1906-10-01/1906-10-31"
+LINE 15:       
+      DB Error: invalid input syntax for type timestamp: "1899-10"
+LINE 15:                 '189
+[✅] Chloraea membranacea Lindl.: +5 | Rate: 38.9/min | Total: 6

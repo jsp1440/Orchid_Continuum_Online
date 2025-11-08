@@ -1,0 +1,60 @@
+═══════════════════════════════════════════════════════════
+STEP 3: PUSH TO YOUR NEW GITHUB REPO
+═══════════════════════════════════════════════════════════
+
+Copy and paste these commands ONE AT A TIME into Replit Shell:
+
+═══════════════════════════════════════════════════════════
+
+cd /home/runner/orchid_clean_export
+
+git init
+
+git add .
+
+git commit -m "Deploy: 7 widgets + Render fixes"
+
+git remote add origin https://github.com/jsp1440/Orchid-continuum-clean.git
+
+git push -u origin main
+
+═══════════════════════════════════════════════════════════
+WHAT WILL HAPPEN:
+═══════════════════════════════════════════════════════════
+
+Command 1: Navigate to clean export folder
+Command 2: Create fresh Git repo (no history!)
+Command 3: Stage all files
+Command 4: Create first commit
+Command 5: Connect to your GitHub repo
+Command 6: Push to GitHub (should take < 1 minute!)
+
+═══════════════════════════════════════════════════════════
+EXPECTED OUTPUT:
+═══════════════════════════════════════════════════════════
+
+You should see:
+- Counting objects
+- Compressing objects
+- Writing objects
+- Total XXXX (delta XXX), reused 0
+- Branch 'main' set up to track 'origin/main'
+
+✅ NO INDEX.LOCK ERRORS!
+
+═══════════════════════════════════════════════════════════
+IF YOU GET ASKED FOR CREDENTIALS:
+═══════════════════════════════════════════════════════════
+
+Use your GitHub username and Personal Access Token
+(NOT your password - GitHub requires tokens now)
+
+Or use Replit's Git UI instead (it handles auth automatically)
+
+═══════════════════════════════════════════════════════════
+AFTER SUCCESSFUL PUSH:
+═══════════════════════════════════════════════════════════
+
+Tell me "Push succeeded!" and I'll give you Step 4 (Render setup)
+
+═══════════════════════════════════════════════════════════
