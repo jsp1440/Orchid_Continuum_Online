@@ -39,9 +39,16 @@ def fetch_eol(name):
     """Fetch from EOL"""
     time.sleep(REQUEST_DELAY)
     
+    # Strip author names - EOL prefers binomial (Genus species)
+    name_parts = name.split()
+    if len(name_parts) >= 2:
+        simple_name = f"{name_parts[0]} {name_parts[1]}"
+    else:
+        simple_name = name
+    
     try:
         search_url = "https://eol.org/api/search/1.0.json"
-        params = {'q': name, 'page': 1, 'exact': True}
+        params = {'q': simple_name, 'page': 1, 'exact': True}
         resp = requests.get(search_url, params=params, timeout=10)
         if resp.status_code != 200:
             return []
@@ -89,10 +96,17 @@ def fetch_ala(name):
     """Fetch from ALA"""
     time.sleep(REQUEST_DELAY)
     
+    # Strip author names - ALA prefers binomial (Genus species)
+    name_parts = name.split()
+    if len(name_parts) >= 2:
+        simple_name = f"{name_parts[0]} {name_parts[1]}"
+    else:
+        simple_name = name
+    
     try:
         search_url = "https://biocache.ala.org.au/ws/occurrences/search"
         params = {
-            'q': f'scientificName:"{name}"',
+            'q': f'scientificName:"{simple_name}"',
             'fq': 'multimedia:Image',
             'pageSize': 15
         }

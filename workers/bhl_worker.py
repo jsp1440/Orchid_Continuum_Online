@@ -43,9 +43,16 @@ def fetch_bhl(name):
     
     time.sleep(REQUEST_DELAY)
     
+    # Strip author names - BHL prefers binomial (Genus species)
+    name_parts = name.split()
+    if len(name_parts) >= 2:
+        simple_name = f"{name_parts[0]} {name_parts[1]}"
+    else:
+        simple_name = name
+    
     try:
         search_url = "https://www.biodiversitylibrary.org/api3"
-        params = {'op': 'NameSearch', 'name': name, 'apikey': BHL_API_KEY, 'format': 'json'}
+        params = {'op': 'NameSearch', 'name': simple_name, 'apikey': BHL_API_KEY, 'format': 'json'}
         resp = requests.get(search_url, params=params, timeout=15)
         if resp.status_code != 200:
             return []

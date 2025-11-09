@@ -43,9 +43,16 @@ def fetch_tropicos(name):
     
     time.sleep(REQUEST_DELAY)
     
+    # Strip author names - Tropicos prefers binomial (Genus species)
+    name_parts = name.split()
+    if len(name_parts) >= 2:
+        simple_name = f"{name_parts[0]} {name_parts[1]}"
+    else:
+        simple_name = name
+    
     try:
         search_url = "http://services.tropicos.org/Name/Search"
-        params = {'apikey': TROPICOS_API_KEY, 'name': name, 'type': 'wildcard', 'format': 'json'}
+        params = {'apikey': TROPICOS_API_KEY, 'name': simple_name, 'type': 'wildcard', 'format': 'json'}
         resp = requests.get(search_url, params=params, timeout=15)
         if resp.status_code != 200:
             return []

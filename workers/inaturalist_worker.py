@@ -39,10 +39,17 @@ def fetch_inaturalist(name):
     """Fetch from iNaturalist"""
     time.sleep(REQUEST_DELAY)
     
+    # Strip author names - iNaturalist only wants binomial (Genus species)
+    name_parts = name.split()
+    if len(name_parts) >= 2:
+        simple_name = f"{name_parts[0]} {name_parts[1]}"
+    else:
+        simple_name = name
+    
     try:
         search_url = "https://api.inaturalist.org/v1/observations"
         params = {
-            'taxon_name': name,
+            'taxon_name': simple_name,
             'quality_grade': 'research',
             'photos': 'true',
             'per_page': 30

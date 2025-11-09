@@ -39,12 +39,19 @@ def fetch_idigbio(name):
     """Fetch from iDigBio"""
     time.sleep(REQUEST_DELAY)
     
+    # Strip author names - iDigBio prefers binomial (Genus species)
+    name_parts = name.split()
+    if len(name_parts) >= 2:
+        simple_name = f"{name_parts[0]} {name_parts[1]}"
+    else:
+        simple_name = name
+    
     try:
         search_url = "https://search.idigbio.org/v2/search/records"
         
         query = {
             'rq': {
-                'scientificname': name,
+                'scientificname': simple_name,
                 'hasImage': True
             },
             'limit': 15,
