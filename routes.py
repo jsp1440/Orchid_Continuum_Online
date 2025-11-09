@@ -87,7 +87,7 @@ except ImportError:
     start_ai_monitoring = None
     get_monitoring_status = None
     get_ai_monitor = None
-from admin_control_center import register_admin_control_center
+# DISABLED: from admin_control_center import register_admin_control_center
 from admin_svo_research import admin_svo as admin_svo_bp
 try:
     from automated_repair_system import repair_system
@@ -96,10 +96,13 @@ except ImportError:
 # DISABLED: from comprehensive_diagnostic_system import start_diagnostic_monitoring, get_diagnostic_status
 from eol_integration import EOLIntegrator
 from external_databases.gbif_integration import GBIFIntegrator
-from bug_report_system import bug_report_bp
+# DISABLED: from bug_report_system import bug_report_bp
 # Gary demo blueprint now registered in app.py - removed to prevent duplicate registration
 # from gary_photo_demo import gary_demo as gary_demo_bp
-from drive_importer import drive_import_bp
+try:
+    from drive_importer import drive_import_bp
+except ImportError:
+    drive_import_bp = None
 from orchid_nursery_directory import get_nursery_directory, register_nursery_api_routes
 from orchid_society_directory import get_society_directory, register_society_api_routes
 from orchid_genetics_laboratory import register_genetics_laboratory
@@ -2072,8 +2075,8 @@ except ImportError as e:
 # Image monitoring disabled - can be started manually from admin panel if needed
 logger.info("🔇 Automatic image health monitoring disabled")
 
-# Register the Atlas blueprint
-app.register_blueprint(atlas_bp)
+# DISABLED: Register the Atlas blueprint (archived module)
+# app.register_blueprint(atlas_bp)
 
 # Register weather habitat comparison routes
 register_weather_habitat_routes(app)
