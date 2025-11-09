@@ -240,7 +240,16 @@ except ImportError as e:
     logging.warning(f"⚠️ AOS Glossary system not available: {e}")
 
 # Import routes after app initialization
-import routes  # Full featured routes with complete homepage
+# Allow skipping routes.py for widget-only testing (set SKIP_FULL_ROUTES=1)
+if not os.environ.get('SKIP_FULL_ROUTES'):
+    try:
+        import routes  # Full featured routes with complete homepage
+        logging.info("✅ Full routes module loaded successfully")
+    except Exception as e:
+        logging.error(f"⚠️ Could not load full routes module: {e}")
+        logging.info("💡 TIP: For widget-only testing, run: SKIP_FULL_ROUTES=1 python widget_test_app.py")
+else:
+    logging.info("🧪 SKIP_FULL_ROUTES enabled - Running in widget-only test mode")
 # import simple_routes  # DISABLED - using full routes instead
 import botanical_routes  # Import botanical database routes
 import botanical_analysis_route  # Additional botanical analysis integration

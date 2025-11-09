@@ -2137,18 +2137,14 @@ app.register_blueprint(historical_climate_bp)
 # from mycorrhizal_network_monitor import mycorrhizal_bp  # DISABLED: Conflicts with existing mycorrhizal_bp
 # app.register_blueprint(mycorrhizal_bp)  # DISABLED: Blueprint already registered above
 
-# Register AI Research Director (Autonomous Climate Commander)
-from ai_research_director import research_director_bp
-app.register_blueprint(research_director_bp)
+# DISABLED: Missing module
+# from ai_research_director import research_director_bp
+# app.register_blueprint(research_director_bp)
 
-# Register Admin Orchid Approval routes
-app.register_blueprint(orchid_approval_bp)
-
-# Register Pattern Analysis routes
-app.register_blueprint(pattern_analysis_bp)
-
-# Register OrchidStein Lab routes
-app.register_blueprint(lab_bp)
+# DISABLED: Missing blueprints
+# app.register_blueprint(orchid_approval_bp)
+# app.register_blueprint(pattern_analysis_bp)
+# app.register_blueprint(lab_bp)
 
 # Register Globe Weather Widget routes
 from globe_weather_routes import globe_weather_bp
