@@ -11,12 +11,20 @@
 
 ## 🚀 **Quick Start - Access Your Admin Dashboard**
 
-### **Step 1: Set Admin Password**
+### **Step 1: Set Admin Password (REQUIRED)**
+
+**⚠️ CRITICAL: This is REQUIRED for security!**
 
 In your Replit Secrets, add:
 ```
 ADMIN_PASSWORD=your_secure_password_here
 ```
+
+**Security Notes:**
+- Use a strong, unique password (at least 20 characters)
+- NEVER commit this to your code repository
+- The admin dashboard will NOT work without this set
+- No default password exists for security reasons
 
 ### **Step 2: Access Dashboard**
 

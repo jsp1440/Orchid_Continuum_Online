@@ -15,14 +15,28 @@ logger = logging.getLogger(__name__)
 admin_widget_bp = Blueprint('admin_widget', __name__, url_prefix='/admin/widget')
 
 
-# Simple admin password check (you can enhance this later)
+# Secure admin authentication check (requires ADMIN_PASSWORD environment variable)
 def check_admin_auth():
-    """Simple admin authentication check"""
+    """Secure admin authentication check - requires ADMIN_PASSWORD in environment"""
     import os
-    admin_password = os.environ.get('ADMIN_PASSWORD', 'change_me_now')
+    
+    # SECURITY: No fallback value - admin password MUST be set
+    admin_password = os.environ.get('ADMIN_PASSWORD')
+    
+    if not admin_password:
+        logger.error('🚨 SECURITY ERROR: ADMIN_PASSWORD environment variable not set!')
+        return False, jsonify({
+            'error': 'Server misconfiguration - Admin password not configured',
+            'details': 'Contact system administrator to set ADMIN_PASSWORD environment variable'
+        }), 500
+    
     provided_password = request.headers.get('X-Admin-Password') or request.args.get('admin_password')
     
+    if not provided_password:
+        return False, jsonify({'error': 'Unauthorized - Missing admin password'}), 401
+    
     if provided_password != admin_password:
+        logger.warning(f'🚨 SECURITY: Failed admin login attempt from {request.remote_addr}')
         return False, jsonify({'error': 'Unauthorized - Invalid admin password'}), 401
     
     return True, None, None
