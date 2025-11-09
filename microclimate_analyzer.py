@@ -110,6 +110,9 @@ class MicroclimateAnalyzer:
             'metadata_richness': self._analyze_metadata_sql(taxonomy_id)
         }
         
+        # Calculate source breakdown for data transparency
+        source_breakdown = self._analyze_source_breakdown_sql(taxonomy_id)
+        
         # Calculate quality score
         quality_score = self._calculate_quality_score(patterns)
         
@@ -125,6 +128,7 @@ class MicroclimateAnalyzer:
             'data_quality_score': quality_score,
             'patterns': patterns,
             'recommendations': recommendations,
+            'source_breakdown': source_breakdown,
             'ai_analysis_pending': {
                 'note': 'Additional insights available with AI vision analysis',
                 'capabilities': ['light_conditions', 'substrate_types', 'growth_position', 'morphological_variations']
@@ -132,7 +136,7 @@ class MicroclimateAnalyzer:
         }
         
         # Cache the result
-        self._save_to_cache(taxonomy_id, result, total_images)
+        self._save_to_cache(taxonomy_id, result, total_images, source_breakdown)
         
         return result
     
@@ -315,6 +319,108 @@ class MicroclimateAnalyzer:
             'with_media_metadata': result[6]
         }
     
+    def _analyze_source_breakdown_sql(self, taxonomy_id: int) -> Dict:
+        """
+        Analyze image source breakdown for data transparency
+        Shows which APIs contributed images and metadata quality per source
+        """
+        # Get count and metadata completeness per source
+        self.cur.execute("""
+            SELECT 
+                image_source,
+                COUNT(*) as image_count,
+                COUNT(CASE WHEN latitude IS NOT NULL AND longitude IS NOT NULL THEN 1 END) as with_gps,
+                COUNT(CASE WHEN elevation_meters IS NOT NULL THEN 1 END) as with_elevation,
+                COUNT(CASE WHEN observation_date IS NOT NULL THEN 1 END) as with_date,
+                COUNT(CASE WHEN country IS NOT NULL THEN 1 END) as with_country,
+                COUNT(CASE WHEN image_license IS NOT NULL THEN 1 END) as with_license
+            FROM orchid_images
+            WHERE taxonomy_id = %s AND wild_specimen = true
+            GROUP BY image_source
+            ORDER BY image_count DESC
+        """, (taxonomy_id,))
+        
+        sources = []
+        total_images = 0
+        
+        # Source display names and URLs
+        source_metadata = {
+            'gbif': {
+                'name': 'GBIF (Global Biodiversity Information Facility)',
+                'url': 'https://www.gbif.org',
+                'description': 'Global biodiversity database with occurrence records from institutions worldwide'
+            },
+            'inaturalist': {
+                'name': 'iNaturalist',
+                'url': 'https://www.inaturalist.org',
+                'description': 'Community science platform with research-grade observations'
+            },
+            'idigbio': {
+                'name': 'iDigBio',
+                'url': 'https://www.idigbio.org',
+                'description': 'Digitized herbarium specimens from natural history collections'
+            },
+            'eol': {
+                'name': 'Encyclopedia of Life',
+                'url': 'https://eol.org',
+                'description': 'Comprehensive biodiversity encyclopedia'
+            },
+            'ala': {
+                'name': 'Atlas of Living Australia',
+                'url': 'https://www.ala.org.au',
+                'description': 'Australian biodiversity occurrence database'
+            },
+            'tropicos': {
+                'name': 'Tropicos (Missouri Botanical Garden)',
+                'url': 'https://www.tropicos.org',
+                'description': 'Botanical research database from Missouri Botanical Garden'
+            },
+            'bhl': {
+                'name': 'Biodiversity Heritage Library',
+                'url': 'https://www.biodiversitylibrary.org',
+                'description': 'Historical botanical literature and illustrations'
+            }
+        }
+        
+        for row in self.cur.fetchall():
+            source_key, img_count, gps, elevation, dates, country, license_info = row
+            total_images += img_count
+            
+            # Get metadata for this source (case-insensitive lookup)
+            source_key_lower = source_key.lower() if source_key else 'unknown'
+            meta = source_metadata.get(source_key_lower, {
+                'name': source_key.upper() if source_key else 'Unknown Source',
+                'url': '',
+                'description': 'Data source'
+            })
+            
+            sources.append({
+                'source_key': source_key,
+                'name': meta['name'],
+                'url': meta['url'],
+                'description': meta['description'],
+                'image_count': img_count,
+                'metadata_completeness': {
+                    'gps_coordinates': gps,
+                    'elevation': elevation,
+                    'observation_date': dates,
+                    'country': country,
+                    'license': license_info
+                },
+                'percentage': 0  # Will be calculated after loop
+            })
+        
+        # Calculate percentages
+        for source in sources:
+            source['percentage'] = round((source['image_count'] / total_images * 100), 1) if total_images > 0 else 0
+        
+        return {
+            'total_images': total_images,
+            'source_count': len(sources),
+            'sources': sources,
+            'generated_at': datetime.now().isoformat()
+        }
+    
     def _calculate_quality_score(self, patterns: Dict) -> float:
         """
         Calculate data quality score (0-100) with metric-specific thresholds
@@ -486,20 +592,23 @@ class MicroclimateAnalyzer:
         
         return cached_data
     
-    def _save_to_cache(self, taxonomy_id: int, analysis: Dict, image_count: int):
+    def _save_to_cache(self, taxonomy_id: int, analysis: Dict, image_count: int, source_breakdown: Dict = None):
         """Save analysis to cache"""
         expires_at = datetime.now() + timedelta(days=30)
         
         self.cur.execute("""
             INSERT INTO microclimate_analysis_cache 
-                (taxonomy_id, analysis_data, total_images_analyzed, data_quality_score, last_image_count, expires_at)
-            VALUES (%s, %s, %s, %s, %s, %s)
+                (taxonomy_id, analysis_data, total_images_analyzed, data_quality_score, last_image_count, 
+                 source_breakdown, schema_version, expires_at)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
             ON CONFLICT (taxonomy_id) 
             DO UPDATE SET
                 analysis_data = EXCLUDED.analysis_data,
                 total_images_analyzed = EXCLUDED.total_images_analyzed,
                 data_quality_score = EXCLUDED.data_quality_score,
                 last_image_count = EXCLUDED.last_image_count,
+                source_breakdown = EXCLUDED.source_breakdown,
+                schema_version = EXCLUDED.schema_version,
                 generated_at = NOW(),
                 expires_at = EXCLUDED.expires_at
         """, (
@@ -508,6 +617,8 @@ class MicroclimateAnalyzer:
             analysis['total_images_analyzed'],
             analysis['data_quality_score'],
             image_count,
+            json.dumps(source_breakdown) if source_breakdown else None,
+            2,  # Schema version 2 includes source_breakdown
             expires_at
         ))
         
