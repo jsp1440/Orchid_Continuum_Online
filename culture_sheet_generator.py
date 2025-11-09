@@ -2,6 +2,7 @@
 """
 Advanced Culture Sheet Generator
 Combines Baker methodology + AOS guidelines + Location-specific weather analysis
++ Microclimate Analysis + Substrate Recommendations
 """
 import os
 import psycopg2
@@ -9,6 +10,10 @@ import json
 from datetime import datetime, timedelta
 import requests
 from typing import Dict, Optional, Any
+
+# Import our revolutionary new systems
+from microclimate_analyzer import MicroclimateAnalyzer
+from substrate_recommendation_engine import SubstrateRecommendationEngine
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
@@ -18,12 +23,31 @@ class CultureSheetGenerator:
     1. Baker's detailed species data
     2. AOS genus-level guidelines  
     3. Local weather/climate data
-    4. Orchid Continuum database enrichment
+    4. Microclimate analysis (revolutionary image-based insights)
+    5. Substrate recommendations (commercial + DIY + mounting)
     """
     
-    def __init__(self):
+    def __init__(self, enable_microclimate=True, enable_substrate=True):
+        """
+        Initialize culture sheet generator
+        
+        Args:
+            enable_microclimate: Enable microclimate analysis (default True)
+            enable_substrate: Enable substrate recommendations (default True)
+        """
         self.conn = psycopg2.connect(DATABASE_URL)
         self.cur = self.conn.cursor()
+        
+        # Feature flags
+        self.enable_microclimate = enable_microclimate
+        self.enable_substrate = enable_substrate
+        
+        # Initialize analyzers with shared connection
+        if self.enable_microclimate:
+            self.microclimate_analyzer = MicroclimateAnalyzer(connection=self.conn)
+        
+        if self.enable_substrate:
+            self.substrate_engine = SubstrateRecommendationEngine()
     
     def generate_culture_sheet(
         self, 
@@ -74,6 +98,31 @@ class CultureSheetGenerator:
         # Get monthly comparison (native habitat vs grower location)
         monthly_comparison = self._get_monthly_comparison(baker_data, latitude, longitude)
         
+        # NEW: Get microclimate analysis (revolutionary image-based insights)
+        microclimate_data = None
+        if self.enable_microclimate:
+            try:
+                print("   🔬 Running microclimate analysis...")
+                microclimate_data = self.microclimate_analyzer.analyze_species_images(taxonomy_id)
+                print(f"   ✅ Microclimate analysis complete (status: {microclimate_data.get('status', 'unknown')})")
+            except Exception as e:
+                print(f"   ⚠️  Microclimate analysis failed: {e}")
+                microclimate_data = {'status': 'error', 'error': str(e)}
+        
+        # NEW: Get substrate recommendations
+        substrate_recs = None
+        if self.enable_substrate:
+            try:
+                print("   🌱 Generating substrate recommendations...")
+                substrate_recs = self.substrate_engine.recommend_substrate(
+                    microclimate_data=microclimate_data,
+                    grower_conditions={'climate': weather_data.get('climate_type')}
+                )
+                print("   ✅ Substrate recommendations generated")
+            except Exception as e:
+                print(f"   ⚠️  Substrate recommendation failed: {e}")
+                substrate_recs = {'status': 'error', 'error': str(e)}
+        
         # Generate comparison and recommendations
         culture_sheet = self._merge_and_analyze(
             species_info=species_info,
@@ -81,6 +130,8 @@ class CultureSheetGenerator:
             aos_data=aos_data,
             weather_data=weather_data,
             monthly_comparison=monthly_comparison,
+            microclimate_data=microclimate_data,
+            substrate_recs=substrate_recs,
             location={'lat': latitude, 'lon': longitude, 'city': city, 'country': country}
         )
         
@@ -582,9 +633,11 @@ class CultureSheetGenerator:
         aos_data: Optional[Dict],
         weather_data: Dict,
         monthly_comparison: Optional[Dict],
+        microclimate_data: Optional[Dict],
+        substrate_recs: Optional[Dict],
         location: Dict
     ) -> Dict:
-        """Merge all data sources and generate recommendations"""
+        """Merge all data sources including microclimate analysis and substrate recommendations"""
         
         culture_sheet = {
             'metadata': {
@@ -687,8 +740,26 @@ class CultureSheetGenerator:
         elif aos_data and aos_data.get('special_notes'):
             culture_sheet['special_care'] = {'notes': aos_data['special_notes'], 'source': 'AOS'}
         
+        # NEW: Microclimate Analysis (Revolutionary feature!)
+        if microclimate_data:
+            culture_sheet['microclimate_analysis'] = {
+                'data': microclimate_data,
+                'generated_at': datetime.now().isoformat(),
+                'unique_feature': 'This data-driven analysis is unique to The Orchid Continuum'
+            }
+        
+        # NEW: Substrate Recommendations
+        if substrate_recs:
+            culture_sheet['substrate_recommendations'] = {
+                'data': substrate_recs,
+                'generated_at': datetime.now().isoformat()
+            }
+        
         # Generate location-specific recommendations
-        recommendations = self._generate_recommendations(baker_data, aos_data, weather_data, location)
+        recommendations = self._generate_recommendations(
+            baker_data, aos_data, weather_data, location, 
+            microclimate_data, substrate_recs
+        )
         culture_sheet['recommendations'] = recommendations
         
         return culture_sheet
@@ -698,7 +769,9 @@ class CultureSheetGenerator:
         baker_data: Optional[Dict],
         aos_data: Optional[Dict],
         weather_data: Dict,
-        location: Dict
+        location: Dict,
+        microclimate_data: Optional[Dict] = None,
+        substrate_recs: Optional[Dict] = None
     ) -> list:
         """Generate location-specific growing recommendations"""
         recommendations = []
