@@ -32,8 +32,20 @@ class MicroclimateAnalyzer:
     MIN_DATE_SAMPLES = 6
     MIN_COORDINATE_SAMPLES = 5
     
-    def __init__(self):
-        self.conn = psycopg2.connect(DATABASE_URL)
+    def __init__(self, connection=None):
+        """
+        Initialize analyzer with optional shared connection
+        
+        Args:
+            connection: Optional psycopg2 connection to share. If None, creates own connection.
+        """
+        if connection:
+            self.conn = connection
+            self.owns_connection = False
+        else:
+            self.conn = psycopg2.connect(DATABASE_URL)
+            self.owns_connection = True
+        
         self.cur = self.conn.cursor()
     
     def analyze_species_images(self, taxonomy_id: int) -> Dict:
@@ -519,10 +531,10 @@ class MicroclimateAnalyzer:
         }
     
     def __del__(self):
-        """Cleanup"""
+        """Cleanup - only close connection if we own it"""
         if hasattr(self, 'cur'):
             self.cur.close()
-        if hasattr(self, 'conn'):
+        if hasattr(self, 'conn') and self.owns_connection:
             self.conn.close()
 
 
