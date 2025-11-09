@@ -1,0 +1,663 @@
+═══════════════════════════════════════════════════════════════════════════════
+🌺 ORCHID CULTURE SHEET WIDGET - COMPLETE FRONT-END DESIGN PROJECT
+ULTIMATE EDITION: Technical Spec + UX Enhancements
+═══════════════════════════════════════════════════════════════════════════════
+
+This file contains the complete technical specification for the Orchid Culture 
+Sheet Widget PLUS detailed UX enhancements, microcopy, and user guidance.
+
+Paste this entire prompt into Famous AI for a comprehensive front-end design.
+
+═══════════════════════════════════════════════════════════════════════════════
+PART 1: TECHNICAL SPECIFICATION
+═══════════════════════════════════════════════════════════════════════════════
+
+⚠️⚠️⚠️ CRITICAL INSTRUCTION ⚠️⚠️⚠️
+
+You are designing FRONT-END ONLY. Do NOT create any backend code whatsoever.
+
+✅ YOUR JOB: Create HTML + CSS + JavaScript files ONLY
+❌ NOT YOUR JOB: Create Python/Flask, API endpoints, databases, or ANY backend logic
+
+The backend API is ALREADY COMPLETE and running. You are ONLY building the 
+beautiful user interface that calls the existing API.
+
+Think of it this way: You're designing the beautiful STOREFRONT for a fully 
+operational WAREHOUSE. The warehouse is stocked - you just need the customer-
+facing displays.
+
+───────────────────────────────────────────────────────────────────────────────
+
+📋 PROJECT SUMMARY
+
+Build an extraordinary, interactive web interface for generating personalized 
+orchid growing guides. This is NOT just a simple form - it's a comprehensive 
+educational platform with:
+
+🎨 Multiple customizable visual themes (interface + culture sheet styles)
+🗺️ Interactive maps showing native distributions and wild collection points
+🐝 Educational sections on pollinators and companion plants
+🌍 Regional cultural themes based on geographic origin
+🖼️ AI-generated botanical artwork in multiple styles
+📊 Climate comparison charts and data visualizations
+💾 Collection management and public library
+📱 Mobile-optimized PWA with offline capability
+🔗 Embeddable widget for CRM platforms
+♿ Full accessibility with ARIA, keyboard shortcuts, screen reader support
+
+───────────────────────────────────────────────────────────────────────────────
+
+🎨 THEME CUSTOMIZATION SYSTEM
+
+Users can customize BOTH the interface appearance AND culture sheet design.
+
+INTERFACE THEMES (How the app looks):
+
+1. 🔬 Scientific Laboratory (DEFAULT)
+   - Dark navy (#1a1a2e), purple accent (#9d4edd)
+   - Clean, minimal, professional
+   - Bootstrap 5 dark theme
+
+2. 🌿 Artistic Botanical Garden
+   - Cream/parchment background, olive green accent
+   - Vintage botanical aesthetic with decorative borders
+   - Serif fonts, watercolor textures
+
+3. ✨ Fantasy Enchanted Forest
+   - Midnight blue, magical cyan accent
+   - Glowing effects, ethereal gradients
+   - Fantasy fonts, particle effects
+
+4. 🚀 Sci-Fi Orbital Station
+   - Deep black, matrix green/electric blue
+   - Neon glows, hexagonal patterns
+   - Monospace fonts, holographic effects
+
+5. 🌟 Futuristic Greenhouse
+   - Clean white, bright green accent
+   - Minimalist modern, flat design
+   - Sans-serif fonts, subtle shadows
+
+6. 🍃 Nature Field Guide
+   - Beige, saddle brown, forest green
+   - Earthy natural, textured paper
+   - Handwriting fonts, sketched illustrations
+
+7. 🌍 Ecological Research
+   - Blue-gray, green accent
+   - Professional scientific
+   - Data visualization focus, charts
+
+CULTURE SHEET THEMES (How generated sheets look):
+
+1. 📋 Scientific Publication - Academic paper layout, precise
+2. 🎨 Vintage Botanical Plate - Ornate borders, aged parchment
+3. 📖 Fantasy Spell Grimoire - Medieval fonts, mystical symbols
+4. 💾 Sci-Fi Database Entry - Holographic interface, wireframes
+5. 📱 Futuristic Guide - Minimalist modern, infographics
+6. 📓 Field Journal Entry - Handwritten style, coffee stains
+7. 📊 Research Report - Professional tables, conservation data
+
+REGIONAL CULTURAL THEMES (Based on orchid origin):
+
+🏯 Asian Theme - For Chinese, Japanese, Thai orchids
+   - Ink wash painting aesthetics, bamboo motifs
+   - Red/gold colors, Asian calligraphy fonts
+
+🌺 South American Theme - For Brazilian, Colombian, Ecuadorian orchids
+   - Tropical rainforest imagery, vibrant colors
+   - Mayan/Aztec patterns, festive decorations
+
+🦁 African Theme - For Madagascar, South African orchids
+   - African textile patterns, savanna sunset
+   - Terracotta/bronze colors, tribal designs
+
+🦘 Australian/Oceanic Theme - For Australian, Pacific orchids
+   - Ocean wave patterns, indigenous dot painting
+   - Coral/turquoise colors, coastal imagery
+
+🏛️ European/Mediterranean Theme - For European orchids
+   - Classical architecture, marble aesthetic
+   - Mediterranean tiles, olive branches
+
+🦅 North American Theme - For USA, Canadian orchids
+   - National park aesthetic, wilderness vibe
+   - Brown/tan colors, rustic wood textures
+
+───────────────────────────────────────────────────────────────────────────────
+
+🗺️ INTERACTIVE MAP FEATURES
+
+1. SPECIES DISTRIBUTION MAP
+   - Show native range with colored polygons
+   - Elevation zones, climate zones
+   - Interactive: click regions for details
+   - Conservation status legend
+   - Type locality marker (where first discovered)
+
+2. WILD IMAGE COLLECTION POINTS MAP
+   - GPS pins showing where habitat photos were taken
+   - Cluster markers by region
+   - Click pin: see photo, location, elevation, date
+   - Filter by data source (GBIF, iNaturalist)
+   - Color-code pins by source
+
+3. CLIMATE COMPARISON MAP
+   - Split-screen: native range vs. your location
+   - Temperature/rainfall overlays
+   - Highlight similar climates worldwide
+   - "Find Your Climate Match" tool
+
+4. EXPLORE BY REGION MAP
+   - Click any country to see native orchids
+   - Regional diversity statistics
+   - Browse species by geography
+
+TECHNOLOGY: Use Leaflet.js or Mapbox GL
+- GeoJSON for polygons
+- Marker clustering
+- Heat maps
+- Mobile touch controls (pinch, swipe)
+
+───────────────────────────────────────────────────────────────────────────────
+
+🐝🌿 EDUCATIONAL ECOLOGY SECTIONS
+
+Add to culture sheets (user can toggle on/off):
+
+POLLINATORS SECTION:
+- Which creatures pollinate this orchid in wild
+- Bees, moths, hummingbirds, butterflies
+- Pollination biology and fascinating facts
+- Conservation status of pollinators
+- Photos/illustrations
+- Theme-specific wording:
+  * Scientific: "Pollination Biology"
+  * Fantasy: "Magical Helpers"
+  * Sci-Fi: "Reproductive Protocol"
+
+COMPANION PLANTS SECTION:
+- What plants grow near this orchid in nature
+- Support trees (for epiphytic orchids)
+- Co-epiphytes (bromeliads, ferns, air plants)
+- Benefits of growing together
+- Tips for recreating natural habitat
+- Habitat photos
+
+───────────────────────────────────────────────────────────────────────────────
+
+📱 SCREENS TO DESIGN
+
+1. MAIN GENERATOR PAGE
+   - Species search with autocomplete
+   - Location input (GPS or manual)
+   - Section toggles (temperature, light, water, etc.)
+   - Theme selectors
+   - Artwork style picker
+   - Generate button with loading states
+
+2. GENERATED CULTURE SHEET DISPLAY
+   - Beautiful header with AI artwork
+   - Action buttons: Save, Print, Share, View Sources
+   - Themed content sections
+   - Interactive maps (if included)
+   - Pollinator/companion cards
+   - Climate comparison charts
+   - Footer with citations
+
+3. MY COLLECTION PAGE
+   - Grid of saved sheets (responsive)
+   - Search/filter
+   - Delete/Edit options
+   - Empty state message
+
+4. PUBLIC LIBRARY PAGE
+   - Browse community-shared sheets
+   - Sort: Popular, Recent, Alphabetical
+   - Search functionality
+   - Save to collection
+
+5. THEME CUSTOMIZATION PANEL
+   - Visual theme selector with previews
+   - Interface theme picker (7 options)
+   - Culture sheet theme picker (7 options)
+   - Regional theme suggestions
+   - Live preview switching
+
+6. SETTINGS/PREFERENCES
+   - Default location
+   - Default sections
+   - Temperature units (F/C)
+   - Beginner/Expert toggle
+   - Theme preferences
+   - Microclimate presets
+
+───────────────────────────────────────────────────────────────────────────────
+
+🔧 TECHNOLOGY STACK (Front-end Only!)
+
+REQUIRED:
+- HTML5
+- CSS3 with Bootstrap 5
+- Vanilla JavaScript (or jQuery)
+- Chart.js for climate charts
+- Leaflet.js or Mapbox GL for maps
+- Feather Icons
+
+RECOMMENDED:
+- Axios or Fetch API
+- Lodash (debounced search)
+- Date-fns (date formatting)
+- FileSaver.js (downloads)
+
+PWA REQUIREMENTS:
+- manifest.json
+- service-worker.js
+- Icons (192x192, 512x512)
+
+───────────────────────────────────────────────────────────────────────────────
+
+🔌 API INTEGRATION (Already Built - Just Call!)
+
+Base URL: https://orchid-continuum-online.onrender.com
+
+1. Search Species
+   GET /api/species/search?query={term}
+
+2. Generate Culture Sheet
+   POST /api/culture-sheets/generate
+   Body: {taxonomy_id, latitude, longitude, city, country, sections, 
+          artwork_style, interface_theme, sheet_theme}
+
+3. Get Distribution Data
+   GET /api/species/{taxonomy_id}/distribution
+
+4. Get Collection Points
+   GET /api/species/{taxonomy_id}/collection-points
+
+5. Save to Collection
+   POST /api/my-collection/save
+
+6. Get My Collection
+   GET /api/my-collection?user_id={id}
+
+7. Browse Public Library
+   GET /api/public-library?sort=popular&page=1
+
+8. Get Data Sources
+   GET /api/culture-sheets/{taxonomy_id}/sources
+
+───────────────────────────────────────────────────────────────────────────────
+
+📋 DELIVERABLES
+
+HTML FILES (6):
+1. index.html - Main generator
+2. culture-sheet.html - Display sheet
+3. my-collection.html - Saved sheets
+4. public-library.html - Browse library
+5. themes.html - Theme selector
+6. widget.html - Embeddable version
+
+CSS FILES (21):
+7. styles.css - Base styles
+8-14. Interface theme files (7)
+15-21. Sheet theme files (7)
+22-27. Regional theme files (6)
+28. print.css - Print styles
+
+JAVASCRIPT FILES (5):
+29. app.js - Main logic
+30. theme-switcher.js - Theme management
+31. maps.js - Map integration
+32. api.js - API calls
+33. collection.js - Collections
+
+PWA FILES:
+34. manifest.json
+35. service-worker.js
+36. icons/ folder
+
+DOCUMENTATION:
+37. README.md
+
+═══════════════════════════════════════════════════════════════════════════════
+PART 2: UX ENHANCEMENTS & MICROCOPY
+═══════════════════════════════════════════════════════════════════════════════
+
+🧭 USER-FACING LANGUAGE & HELPER TEXT
+
+GLOBAL MESSAGING:
+- Hero text: "Generate a beautiful, evidence-based orchid culture sheet tailored 
+  to your species and your climate."
+- Disclaimer: "Species ranges, climate, and pollinator data are compiled from 
+  multiple sources. Always observe your plant and adjust care accordingly."
+- Educational note: "Culture sheets are guidance, not guarantees. Microclimates, 
+  potting media, and home conditions vary."
+
+SEARCH & SPECIES SELECT:
+- Placeholder: "Search genus or species (e.g., Cattleya mossiae)"
+- Empty state: "No match yet. Try a genus only, check spelling, or browse by region."
+- Loading: "Searching 35,327 species..."
+
+LOCATION CAPTURE:
+- Button tooltip: "Use your device location to compare your climate to the orchid's native range."
+- Privacy note: "Your location is used once for comparison and not stored unless saved in Settings."
+- Manual entry: "City" / "Country" / "Or use coordinates"
+
+SECTIONS TOGGLES (with tooltips):
+
+| Section | Tooltip |
+|---------|---------|
+| Temperature | Native and recommended day/night ranges |
+| Light | Foot-candle or Lux targets |
+| Water | Frequency based on media and season |
+| Humidity | Target RH and air movement tips |
+| Potting | Media choices and repot timing |
+| Fertilizer | Dilution ratios and timing |
+| Pollinators | Who visits this orchid in the wild |
+| Companions | Plants in same habitat |
+| Maps | Native distribution and climate match |
+
+GENERATE BUTTON:
+- Label: "🌸 Generate My Culture Sheet"
+- Loading states:
+  * "Analyzing climate & habitat..."
+  * "Rendering AI artwork..."
+  * "Compiling data sources..."
+  * "Almost ready!"
+
+GENERATED SHEET BUTTONS:
+- 💾 Save to My Collection
+- 🖨️ Print (tooltip: "Use 'Background graphics' in print settings for full theme fidelity.")
+- 📤 Share
+- 📊 View Data Sources
+
+MAPS & CLIMATE:
+- Layer buttons: 
+  * 🗺️ Native Range
+  * 📍 Wild Photos (245)
+  * 🌡️ Climate Zones
+  * 📍 Your Location
+- Caption: "How your climate compares to native habitat (°F/°C toggle in Settings)."
+- Alert examples:
+  * "⚠️ Your winter lows dip below native range. Provide protection."
+  * "✅ Your climate closely matches native conditions!"
+  * "☀️ Your summers are hotter—increase humidity and air movement."
+
+POLLINATORS & COMPANIONS:
+- Scientific theme: "Pollination Biology"
+- Fantasy theme: "Magical Helpers"
+- Nature theme: "Wild Partnerships"
+- Disclaimer: "Companion plants show habitat context—don't necessarily co-pot."
+
+COLLECTIONS & LIBRARY:
+- Empty state: "📭 Create your first culture sheet to start your collection."
+- Error: "⚠️ Couldn't reach the API. Check your connection and try again."
+- Offline: "📶 Offline mode—viewing cached sheets only."
+- Success: "✅ Saved to your collection!"
+
+SOURCES & CREDITS:
+- Header: "📊 Data Sources & Scientific Attribution"
+- Intro: "This sheet aggregates multiple authoritative sources. Follow links for details."
+- Footer: "Educational guidance only. Always observe your plant."
+
+───────────────────────────────────────────────────────────────────────────────
+
+🧑‍🏫 ONBOARDING & HELP
+
+ABOUT/HELP MODAL:
+Title: "How to Use the Culture Sheet Generator"
+
+Quick Start:
+1. **Search** – Type a genus or species name
+2. **Location** – Use GPS or enter your city
+3. **Customize** – Toggle sections and choose themes
+4. **Generate** – View your personalized sheet
+5. **Save & Print** – Add to collection or print
+
+Getting the Most:
+• Start with defaults if you're new
+• Use microclimate presets (Windowsill, Greenhouse, etc.)
+• Compare climates to understand growing challenges
+• Explore maps to learn about natural habitats
+• Try different themes for different uses
+
+FIRST-TIME USER TOUR:
+- Step 1: "👋 Welcome! Let's create your first culture sheet."
+- Step 2: "🔍 Search for any orchid species here."
+- Step 3: "📍 Set your location to get climate comparisons."
+- Step 4: "⚙️ Customize sections and themes (or skip for now)."
+- Step 5: "🌸 Click Generate to see your personalized guide!"
+- Final: "✅ You can save, print, or share from the results page."
+
+───────────────────────────────────────────────────────────────────────────────
+
+💡 QUALITY-OF-LIFE FEATURES
+
+MICROCLIMATE PRESETS:
+- 🪟 Windowsill - Bright indirect, moderate humidity
+- 🏠 Grow Tent - Controlled environment, supplemental light
+- 🏡 Greenhouse - High humidity, filtered sun
+- 🌳 Outdoor - Seasonal variation, natural rain
+
+POTTING MEDIA PRESETS:
+- Bark-based mix
+- Sphagnum moss
+- Semi-hydroponic (LECA)
+- Mounted (no media)
+
+BEGINNER/EXPERT TOGGLE:
+- Beginner: Simple explanations, basic recommendations
+- Expert: Technical details, scientific terminology
+
+KEYBOARD SHORTCUTS:
+- `/` - Focus search
+- `g` - Generate sheet
+- `s` - Save to collection
+- `p` - Print
+- `?` - Show help
+- `Esc` - Close modals
+
+ACCESSIBILITY FEATURES:
+- High-contrast mode
+- Dyslexia-friendly font option
+- Reduced motion mode
+- Full ARIA labels
+- Keyboard navigation
+- Screen reader optimized
+
+ADVANCED FEATURES:
+- Care calendar export (.ics)
+- Climate risk alerts
+- Confidence badges (High/Medium/Emerging data)
+- Offline cache (last 10 sheets)
+- QR code on printed sheets (links to live version)
+- i18n strings.json for translations
+
+───────────────────────────────────────────────────────────────────────────────
+
+🎯 ERROR & EMPTY STATES
+
+SEARCH ERRORS:
+- No connection: "Can't reach the server. Check your connection."
+- No results: "No species found. Try searching by genus only."
+- API error: "Something went wrong. Please try again."
+
+GENERATION ERRORS:
+- Missing species: "Please select a species first."
+- Missing location: "Please enter your location for climate comparison."
+- API failure: "Couldn't generate sheet. Please try again later."
+- Timeout: "Taking longer than expected. Still working..."
+
+MAP ERRORS:
+- No distribution data: "Distribution data not yet available for this species."
+- No GPS data: "No wild specimen coordinates available."
+- Map load failed: "Couldn't load map. Check your connection."
+
+EMPTY STATES:
+- No saved sheets: "📭 Your collection is empty. Generate your first sheet!"
+- No public sheets: "Public library is being populated. Check back soon!"
+- No search results: "No orchids match your search. Try broader terms."
+
+OFFLINE MODE:
+- Banner: "📶 You're offline. Viewing cached content only."
+- Limited features: "Some features unavailable offline (maps, new sheets)."
+- Sync prompt: "Reconnect to sync your saved sheets."
+
+───────────────────────────────────────────────────────────────────────────────
+
+📱 MOBILE OPTIMIZATIONS
+
+TOUCH-FRIENDLY:
+- Minimum 44px tap targets
+- Swipe gestures for navigation
+- Pull-to-refresh
+- Pinch-to-zoom on maps
+- Bottom sheet for details
+
+MOBILE SHORTCUTS:
+- Swipe left: Delete from collection
+- Swipe right: Share sheet
+- Long-press: Quick actions menu
+
+RESPONSIVE BREAKPOINTS:
+- Mobile: < 768px (single column)
+- Tablet: 768-1024px (2 columns)
+- Desktop: > 1024px (3 columns)
+
+PWA FEATURES:
+- Install prompt
+- Offline capability
+- Add to home screen
+- Share API integration
+- Badge notifications (optional)
+
+───────────────────────────────────────────────────────────────────────────────
+
+⚖️ LEGAL & DISCLAIMERS
+
+FOOTER DISCLAIMER:
+"Educational guidance only. Orchid care varies with microclimate, media, and 
+practice. Data are compiled from multiple sources and may evolve. Map and image 
+attributions appear in Sources."
+
+DATA ATTRIBUTION:
+"Image and occurrence data sourced from GBIF, iNaturalist, iDigBio, EOL, and 
+other scientific databases. Climate data from Open-Meteo. AI illustrations 
+generated with OpenAI DALL-E."
+
+PRIVACY:
+"Location data is used only for climate comparison and is not stored unless you 
+save preferences. No personal data is collected without consent."
+
+───────────────────────────────────────────────────────────────────────────────
+
+✅ FRONT-END CHECKLIST
+
+FUNCTIONALITY:
+□ All theme CSS files created (20+)
+□ Map integration working (Leaflet.js)
+□ Pollinators & companions sections designed
+□ API calls properly structured
+□ Loading states for all async operations
+□ Error handling for all failure modes
+□ Empty states for all collections/lists
+□ Form validation (species, location)
+
+ACCESSIBILITY:
+□ ARIA labels on all interactive elements
+□ Keyboard navigation fully functional
+□ Focus outlines visible
+□ Screen reader tested
+□ High-contrast mode available
+□ Reduced motion option
+□ Alt text on all images
+
+MOBILE:
+□ Responsive on all breakpoints
+□ Touch targets minimum 44px
+□ Pinch/zoom working on maps
+□ Swipe gestures implemented
+□ Bottom sheet for mobile details
+□ PWA manifest configured
+
+PERFORMANCE:
+□ Images optimized/lazy loaded
+□ CSS minified
+□ JavaScript bundled
+□ Service worker caching
+□ Offline mode functional
+□ Fast initial load
+
+PRINT:
+□ Print.css with clean breaks
+□ Background graphics preserved
+□ QR code on printed sheets
+□ Theme fidelity maintained
+
+DOCUMENTATION:
+□ README with setup instructions
+□ API integration examples
+□ Theme customization guide
+□ Deployment instructions
+
+NO BACKEND CODE:
+□ No Python files created
+□ No Flask/API routes
+□ No database models
+□ No server configuration
+□ Only HTML/CSS/JS delivered
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🎯 SUCCESS CRITERIA
+
+Your design succeeds if:
+✅ User can generate sheet in < 2 minutes
+✅ First-time users understand without help docs
+✅ All themes are visually distinct and beautiful
+✅ Maps are interactive and educational
+✅ Mobile experience is smooth
+✅ Print output looks professional
+✅ Accessibility score is 100%
+✅ Works offline (PWA)
+✅ Embeddable in iframes
+✅ Zero backend code created
+
+═══════════════════════════════════════════════════════════════════════════════
+
+🌺 FINAL REMINDER
+
+You are creating the BEAUTIFUL, USER-FRIENDLY STOREFRONT.
+
+The backend (warehouse) is complete:
+✅ All APIs ready
+✅ Data processing done
+✅ AI artwork generation working
+✅ Database fully operational
+
+You create the STOREFRONT:
+🎨 Beautiful HTML/CSS/JavaScript
+🗺️ Interactive maps and visualizations
+🎭 Multiple gorgeous themes
+📱 Mobile-friendly PWA
+♿ Fully accessible interface
+🧭 Clear, helpful user guidance
+
+Focus on:
+✨ Stunning visual design
+✨ Intuitive user experience
+✨ Helpful microcopy and tooltips
+✨ Graceful error handling
+✨ Smooth interactions
+✨ Professional polish
+
+Ready to build the most beautiful, accessible, and user-friendly orchid culture 
+sheet generator ever created? 🌺✨
+
+Let's make something amazing!
+
+═══════════════════════════════════════════════════════════════════════════════
+END OF PROMPT
+═══════════════════════════════════════════════════════════════════════════════
