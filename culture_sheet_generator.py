@@ -14,6 +14,8 @@ from typing import Dict, Optional, Any
 # Import our revolutionary new systems
 from microclimate_analyzer import MicroclimateAnalyzer
 from substrate_recommendation_engine import SubstrateRecommendationEngine
+from growing_environment_manager import GrowingEnvironmentManager
+from environmental_delta_analyzer import EnvironmentalDeltaAnalyzer
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
@@ -27,13 +29,14 @@ class CultureSheetGenerator:
     5. Substrate recommendations (commercial + DIY + mounting)
     """
     
-    def __init__(self, enable_microclimate=True, enable_substrate=True):
+    def __init__(self, enable_microclimate=True, enable_substrate=True, enable_environment_delta=True):
         """
         Initialize culture sheet generator
         
         Args:
             enable_microclimate: Enable microclimate analysis (default True)
             enable_substrate: Enable substrate recommendations (default True)
+            enable_environment_delta: Enable growing environment analysis (default True)
         """
         self.conn = psycopg2.connect(DATABASE_URL)
         self.cur = self.conn.cursor()
@@ -41,6 +44,7 @@ class CultureSheetGenerator:
         # Feature flags
         self.enable_microclimate = enable_microclimate
         self.enable_substrate = enable_substrate
+        self.enable_environment_delta = enable_environment_delta
         
         # Initialize analyzers with shared connection
         if self.enable_microclimate:
@@ -48,6 +52,10 @@ class CultureSheetGenerator:
         
         if self.enable_substrate:
             self.substrate_engine = SubstrateRecommendationEngine()
+        
+        if self.enable_environment_delta:
+            self.environment_manager = GrowingEnvironmentManager(connection=self.conn)
+            self.delta_analyzer = EnvironmentalDeltaAnalyzer()
     
     def generate_culture_sheet(
         self, 
@@ -55,7 +63,8 @@ class CultureSheetGenerator:
         latitude: float, 
         longitude: float,
         city: Optional[str] = None,
-        country: Optional[str] = None
+        country: Optional[str] = None,
+        growing_environment_id: Optional[int] = None
     ) -> Dict[str, Any]:
         """
         Generate comprehensive culture sheet for a species at a specific location
@@ -66,6 +75,7 @@ class CultureSheetGenerator:
             longitude: Location longitude
             city: Optional city name
             country: Optional country name
+            growing_environment_id: Optional ID of user's growing environment for personalized analysis
         
         Returns:
             Dict containing complete culture sheet with recommendations
