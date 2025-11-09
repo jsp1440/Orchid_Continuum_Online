@@ -119,34 +119,52 @@ class AOSCultureImporter:
             
             soup = BeautifulSoup(response.content, 'html.parser')
             
-            # Extract main content
-            content = soup.get_text()
+            # Remove nav, header, footer elements
+            for element in soup.find_all(['nav', 'header', 'footer', 'aside']):
+                element.decompose()
+            
+            # Find main content container using semantic selectors
+            main_content = soup.find('main')
+            if not main_content:
+                main_content = soup.find('article')
+            if not main_content:
+                main_content = soup.find('section', role='main')
+            if not main_content:
+                # Fallback: use body if no semantic container found
+                main_content = soup.find('body')
+            
+            if not main_content:
+                return None
+            
+            # Extract sections by heading (H2/H3)
+            sections = self.extract_sections_by_heading(main_content)
+            full_text = main_content.get_text()
             
             data = {
                 'genus': genus,
                 'source_url': full_url,
-                'light_requirements': self.extract_section(content, 'light'),
-                'temperature_requirements': self.extract_section(content, 'temperature'),
-                'water_requirements': self.extract_section(content, 'water'),
-                'humidity_requirements': self.extract_section(content, 'humidity'),
-                'fertilizer_requirements': self.extract_section(content, 'fertilizer'),
-                'potting_requirements': self.extract_section(content, 'potting'),
-                'special_notes': self.extract_section(content, 'special|problems|notes'),
+                'light_requirements': sections.get('light', sections.get('lighting')),
+                'temperature_requirements': sections.get('temperature', sections.get('temperatures')),
+                'water_requirements': sections.get('water', sections.get('watering')),
+                'humidity_requirements': sections.get('humidity'),
+                'fertilizer_requirements': sections.get('fertilizer', sections.get('fertilizing')),
+                'potting_requirements': sections.get('potting', sections.get('repotting')),
+                'special_notes': sections.get('problems', sections.get('notes', sections.get('cultural notes'))),
                 'raw_html': str(soup)[:3000]
             }
             
             # Classify temperature category
-            if 'cool' in content.lower():
+            if 'cool' in full_text.lower():
                 data['temp_category'] = 'cool'
-            elif 'warm' in content.lower():
+            elif 'warm' in full_text.lower():
                 data['temp_category'] = 'warm'
             else:
                 data['temp_category'] = 'intermediate'
             
             # Classify light level
-            if 'bright' in content.lower() or 'high' in content.lower():
+            if 'bright' in full_text.lower() or 'high' in full_text.lower():
                 data['light_level'] = 'bright'
-            elif 'shade' in content.lower() or 'low' in content.lower():
+            elif 'shade' in full_text.lower() or 'low' in full_text.lower():
                 data['light_level'] = 'low'
             else:
                 data['light_level'] = 'medium'
@@ -157,20 +175,32 @@ class AOSCultureImporter:
             print(f"      Error scraping: {str(e)[:50]}")
             return None
     
-    def extract_section(self, text, keywords):
-        """Extract text section based on keywords"""
-        import re
+    def extract_sections_by_heading(self, container):
+        """Extract content by H2/H3 headings"""
+        sections = {}
+        current_heading = None
+        current_content = []
         
-        # Find section containing keywords
-        pattern = rf'(?i)({keywords})[:\s]+(.*?)(?=\n\n|\Z)'
-        match = re.search(pattern, text, re.DOTALL)
+        # Walk through all direct children
+        for element in container.find_all(['h1', 'h2', 'h3', 'p']):
+            if element.name in ['h1', 'h2', 'h3']:
+                # Save previous section if exists
+                if current_heading:
+                    sections[current_heading.lower()] = ' '.join(current_content).strip()[:500]
+                # Start new section
+                current_heading = element.get_text().strip()
+                current_content = []
+            elif element.name == 'p' and current_heading:
+                # Add paragraph to current section
+                text = element.get_text().strip()
+                if text:
+                    current_content.append(text)
         
-        if match:
-            section_text = match.group(2).strip()
-            # Limit to first 500 characters
-            return section_text[:500] if section_text else None
+        # Save final section
+        if current_heading:
+            sections[current_heading.lower()] = ' '.join(current_content).strip()[:500]
         
-        return None
+        return sections
     
     def save_culture_sheet(self, data):
         """Save AOS culture sheet to database"""

@@ -67,25 +67,25 @@ class BakerCultureImporter:
                 try:
                     print(f"[{i}/{total}] {species_text}")
                     
-                    # Check if already imported
-                    self.cur.execute("""
-                        SELECT id FROM baker_culture_sheets 
-                        WHERE scientific_name = %s
-                    """, (species_text,))
-                    
-                    if self.cur.fetchone():
-                        print(f"   ⏭️  Already imported")
-                        self.stats['skipped'] += 1
-                        continue
-                    
-                    # Scrape culture sheet
+                    # Scrape culture sheet first to get cleaned name
                     culture_data = self.scrape_culture_sheet(url, species_text)
                     
                     if culture_data:
+                        # Check if already imported using CLEANED name
+                        self.cur.execute("""
+                            SELECT id FROM baker_culture_sheets 
+                            WHERE scientific_name = %s OR source_url = %s
+                        """, (culture_data['scientific_name'], url))
+                        
+                        if self.cur.fetchone():
+                            print(f"   ⏭️  Already imported ({culture_data['scientific_name']})")
+                            self.stats['skipped'] += 1
+                            continue
+                        
                         # Save to database
                         self.save_culture_sheet(culture_data)
                         self.stats['processed'] += 1
-                        print(f"   ✅ Imported successfully")
+                        print(f"   ✅ Imported ({culture_data['scientific_name']})")
                     else:
                         print(f"   ⚠️  No data extracted")
                         self.stats['errors'] += 1
@@ -122,14 +122,21 @@ class BakerCultureImporter:
             
             soup = BeautifulSoup(response.content, 'html.parser')
             
-            # Parse species name
-            genus, species = self.parse_species_name(species_name)
+            # Extract species name from <title> tag (most reliable)
+            title = soup.find('title')
+            if title:
+                # Title format: "Acacallis cyanea Culture"
+                title_text = title.get_text().strip()
+                species_name = title_text.replace(' Culture', '').strip()
+            
+            # Parse and clean species name
+            genus, species, clean_name = self.parse_species_name(species_name)
             
             # Extract data from the page
             text_content = soup.get_text()
             
             data = {
-                'scientific_name': species_name,
+                'scientific_name': clean_name,  # Use cleaned name
                 'genus': genus,
                 'species': species,
                 'source_url': url,
@@ -154,10 +161,18 @@ class BakerCultureImporter:
     
     def parse_species_name(self, name):
         """Parse genus and species from scientific name"""
-        parts = name.strip().split()
+        # Clean up name: remove newlines, extra whitespace, normalize
+        cleaned = ' '.join(name.strip().split())
+        
+        # Remove author citations in parentheses or after species name
+        cleaned = re.sub(r'\([^)]+\)', '', cleaned).strip()
+        cleaned = re.sub(r'\s+[A-Z][a-z]+\.?$', '', cleaned).strip()
+        
+        parts = cleaned.split()
         genus = parts[0] if parts else ''
         species = parts[1] if len(parts) > 1 else ''
-        return genus, species
+        
+        return genus, species, cleaned
     
     def extract_origin_data(self, text):
         """Extract geographic origin data"""
@@ -261,15 +276,29 @@ class BakerCultureImporter:
     
     def save_culture_sheet(self, data):
         """Save culture sheet to database"""
-        # Get taxonomy_id
+        # Get taxonomy_id - try exact match first, then fuzzy match by genus+species
+        taxonomy_id = None
+        
+        # Try exact scientific name match
         self.cur.execute("""
             SELECT id FROM orchid_taxonomy 
             WHERE scientific_name = %s
             LIMIT 1
         """, (data['scientific_name'],))
-        
         result = self.cur.fetchone()
-        taxonomy_id = result[0] if result else None
+        
+        if result:
+            taxonomy_id = result[0]
+        elif data.get('genus') and data.get('species'):
+            # Try genus + species match (handles variations in author citations)
+            self.cur.execute("""
+                SELECT id FROM orchid_taxonomy 
+                WHERE genus = %s AND species = %s
+                LIMIT 1
+            """, (data['genus'], data['species']))
+            result = self.cur.fetchone()
+            if result:
+                taxonomy_id = result[0]
         
         # Insert Baker culture sheet
         self.cur.execute("""
