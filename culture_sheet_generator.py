@@ -71,12 +71,16 @@ class CultureSheetGenerator:
         # Get location weather data
         weather_data = self._get_weather_data(latitude, longitude)
         
+        # Get monthly comparison (native habitat vs grower location)
+        monthly_comparison = self._get_monthly_comparison(baker_data, latitude, longitude)
+        
         # Generate comparison and recommendations
         culture_sheet = self._merge_and_analyze(
             species_info=species_info,
             baker_data=baker_data,
             aos_data=aos_data,
             weather_data=weather_data,
+            monthly_comparison=monthly_comparison,
             location={'lat': latitude, 'lon': longitude, 'city': city, 'country': country}
         )
         
@@ -269,7 +273,11 @@ class CultureSheetGenerator:
             }
             
             zone_response = requests.get(historical_url, params=zone_params, timeout=10)
+            if not zone_response.ok:
+                raise Exception(f"Open-Meteo API error: {zone_response.status_code}")
             zone_data = zone_response.json()
+            if 'daily' not in zone_data:
+                raise Exception("Unexpected API response structure")
             
             # Calculate USDA hardiness zone
             usda_zone = self._calculate_usda_zone(zone_data)
@@ -290,7 +298,11 @@ class CultureSheetGenerator:
             }
             
             climate_response = requests.get(historical_url, params=climate_params, timeout=10)
+            if not climate_response.ok:
+                raise Exception(f"Open-Meteo API error: {climate_response.status_code}")
             climate_data = climate_response.json()
+            if 'daily' not in climate_data:
+                raise Exception("Unexpected API response structure")
             
             # Calculate seasonal averages
             seasonal_data = self._calculate_seasonal_averages(climate_data)
@@ -340,22 +352,60 @@ class CultureSheetGenerator:
             # Calculate average annual extreme minimum
             avg_extreme_min = annual_min.mean()
             
-            # Map to USDA hardiness zone
-            zones = [
-                (-60, '1a'), (-55, '1b'), (-50, '2a'), (-45, '2b'),
-                (-40, '3a'), (-35, '3b'), (-30, '4a'), (-25, '4b'),
-                (-20, '5a'), (-15, '5b'), (-10, '6a'), (-5, '6b'),
-                (0, '7a'), (5, '7b'), (10, '8a'), (15, '8b'),
-                (20, '9a'), (25, '9b'), (30, '10a'), (35, '10b'),
-                (40, '11a'), (45, '11b'), (50, '12a'), (55, '12b'),
-                (60, '13a'), (65, '13b')
-            ]
-            
-            zone = '13b'  # Default to warmest
-            for temp, z in zones:
-                if avg_extreme_min < temp + 5:
-                    zone = z
-                    break
+            # Map to USDA hardiness zone with explicit boundaries
+            # Each zone is a 5°F range (e.g., 10a is 30-35°F)
+            if avg_extreme_min < -55:
+                zone = '1a'
+            elif avg_extreme_min < -50:
+                zone = '1b'
+            elif avg_extreme_min < -45:
+                zone = '2a'
+            elif avg_extreme_min < -40:
+                zone = '2b'
+            elif avg_extreme_min < -35:
+                zone = '3a'
+            elif avg_extreme_min < -30:
+                zone = '3b'
+            elif avg_extreme_min < -25:
+                zone = '4a'
+            elif avg_extreme_min < -20:
+                zone = '4b'
+            elif avg_extreme_min < -15:
+                zone = '5a'
+            elif avg_extreme_min < -10:
+                zone = '5b'
+            elif avg_extreme_min < -5:
+                zone = '6a'
+            elif avg_extreme_min < 0:
+                zone = '6b'
+            elif avg_extreme_min < 5:
+                zone = '7a'
+            elif avg_extreme_min < 10:
+                zone = '7b'
+            elif avg_extreme_min < 15:
+                zone = '8a'
+            elif avg_extreme_min < 20:
+                zone = '8b'
+            elif avg_extreme_min < 25:
+                zone = '9a'
+            elif avg_extreme_min < 30:
+                zone = '9b'
+            elif avg_extreme_min < 35:
+                zone = '10a'
+            elif avg_extreme_min < 40:
+                zone = '10b'
+            elif avg_extreme_min < 45:
+                zone = '11a'
+            elif avg_extreme_min < 50:
+                zone = '11b'
+            elif avg_extreme_min < 55:
+                zone = '12a'
+            elif avg_extreme_min < 60:
+                zone = '12b'
+            elif avg_extreme_min < 65:
+                zone = '13a'
+            else:
+                zone = '13b'
             
             return {
                 'zone': zone,
@@ -425,12 +475,113 @@ class CultureSheetGenerator:
         else:
             return "tropical/subtropical"
     
+    def _get_monthly_weather(self, lat: float, lon: float) -> Optional[Dict]:
+        """
+        Get monthly average weather data for a location (Baker's methodology)
+        Returns 12 months of temperature, precipitation, and humidity data
+        """
+        try:
+            import pandas as pd
+            from datetime import datetime, timedelta
+            
+            historical_url = "https://archive-api.open-meteo.com/v1/archive"
+            
+            # Get 3 years of recent data for monthly averages
+            end_date = datetime.now() - timedelta(days=7)
+            start_date = end_date - timedelta(days=1095)  # 3 years
+            
+            params = {
+                "latitude": lat,
+                "longitude": lon,
+                "start_date": start_date.strftime("%Y-%m-%d"),
+                "end_date": end_date.strftime("%Y-%m-%d"),
+                "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum,relative_humidity_2m_mean",
+                "temperature_unit": "fahrenheit",
+                "precipitation_unit": "mm"
+            }
+            
+            response = requests.get(historical_url, params=params, timeout=10)
+            if not response.ok:
+                raise Exception(f"Open-Meteo API error: {response.status_code}")
+            data = response.json()
+            if 'daily' not in data:
+                raise Exception("Unexpected API response structure")
+            
+            # Convert to DataFrame
+            df = pd.DataFrame({
+                'date': pd.to_datetime(data['daily']['time']),
+                'temp_max': data['daily']['temperature_2m_max'],
+                'temp_min': data['daily']['temperature_2m_min'],
+                'precipitation': data['daily']['precipitation_sum'],
+                'humidity': data['daily']['relative_humidity_2m_mean']
+            })
+            
+            # Extract month and calculate monthly averages
+            df['month'] = df['date'].dt.month
+            monthly = df.groupby('month').agg({
+                'temp_max': 'mean',
+                'temp_min': 'mean',
+                'precipitation': 'sum',
+                'humidity': 'mean'
+            })
+            
+            # Convert to list of dicts for each month
+            months = []
+            month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            
+            for i in range(1, 13):
+                if i in monthly.index:
+                    months.append({
+                        'month': month_names[i-1],
+                        'avg_high': round(monthly.loc[i, 'temp_max'], 1),
+                        'avg_low': round(monthly.loc[i, 'temp_min'], 1),
+                        'precipitation': round(monthly.loc[i, 'precipitation'] / 3, 1),  # 3 years
+                        'humidity': round(monthly.loc[i, 'humidity'], 0)
+                    })
+            
+            return {'months': months}
+            
+        except Exception as e:
+            print(f"   ⚠️  Monthly weather error: {e}")
+            return None
+    
+    def _get_monthly_comparison(self, baker_data: Optional[Dict], 
+                                grower_lat: float, grower_lon: float) -> Optional[Dict]:
+        """
+        Compare monthly weather between orchid's native habitat and grower's location
+        (Following Baker's methodology of showing monthly climate data)
+        """
+        # Get grower's monthly weather
+        grower_monthly = self._get_monthly_weather(grower_lat, grower_lon)
+        if not grower_monthly:
+            return None
+        
+        # Get native habitat monthly weather (requires geocoding Baker origin data)
+        native_monthly = None
+        if baker_data and baker_data.get('origin'):
+            # Future implementation: geocode Baker origin_country/origin_region to coordinates
+            # Then call: native_monthly = self._get_monthly_weather(native_lat, native_lon)
+            pass
+        
+        # Only mark as available if we have actual comparison data
+        has_comparison = bool(grower_monthly and native_monthly)
+        
+        return {
+            'grower_location': grower_monthly,
+            'native_habitat': native_monthly,
+            'comparison_available': has_comparison,
+            'grower_only': bool(grower_monthly and not native_monthly),
+            'note': 'Native habitat climate data requires geocoding Baker origin country/region to coordinates' if not has_comparison else None
+        }
+    
     def _merge_and_analyze(
         self, 
         species_info: Dict,
         baker_data: Optional[Dict],
         aos_data: Optional[Dict],
         weather_data: Dict,
+        monthly_comparison: Optional[Dict],
         location: Dict
     ) -> Dict:
         """Merge all data sources and generate recommendations"""
@@ -446,7 +597,8 @@ class CultureSheetGenerator:
                     'aos': bool(aos_data),
                     'weather': bool(weather_data and weather_data.get('usda_zone'))
                 },
-                'climate': weather_data if weather_data.get('usda_zone') else None
+                'climate': weather_data if weather_data.get('usda_zone') else None,
+                'monthly_comparison': monthly_comparison
             },
             'temperature': {},
             'light': {},
