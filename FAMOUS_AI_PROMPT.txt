@@ -1,0 +1,193 @@
+═══════════════════════════════════════════════════════════════════════════════
+🌺 ORCHID CULTURE SHEET WIDGET - FRONT-END DESIGN PROJECT
+═══════════════════════════════════════════════════════════════════════════════
+
+⚠️ CRITICAL INSTRUCTION ⚠️
+
+You are designing FRONT-END ONLY. Do NOT create any backend code.
+
+✅ YOUR JOB: Create HTML + CSS + JavaScript files
+❌ NOT YOUR JOB: Create Python/Flask, API endpoints, databases, or backend logic
+
+The backend API is ALREADY COMPLETE and running. You are ONLY building the beautiful user interface that calls the existing API.
+
+═══════════════════════════════════════════════════════════════════════════════
+
+PROJECT SUMMARY:
+Build a beautiful, mobile-responsive web interface for generating personalized orchid growing guides. Users search for a species, enter their location, and receive a customized culture sheet with AI-generated botanical artwork.
+
+COMPLETE SPECIFICATION:
+See attached file: FAMOUS_AI_CULTURE_SHEET_WIDGET_SPEC.md
+
+═══════════════════════════════════════════════════════════════════════════════
+
+KEY REQUIREMENTS:
+
+1. TECHNOLOGY STACK (Front-end only):
+   - HTML5
+   - CSS3 with Bootstrap 5 (dark theme)
+   - Vanilla JavaScript (or jQuery)
+   - Chart.js for climate charts
+   - Feather Icons for icons
+   
+2. SCREENS TO DESIGN:
+   - Main Generator (species search, location input, customization)
+   - Generated Culture Sheet Display (beautiful, printable)
+   - My Collection (saved sheets grid)
+   - Public Library (browse shared sheets)
+   - Data Sources & Citations (already exists, just link to it)
+   
+3. DESIGN THEME:
+   - Dark botanical elegance
+   - Primary: #1a1a2e (deep navy)
+   - Accent: #9d4edd (purple)
+   - Bootstrap 5 dark mode
+   - Mobile-first responsive
+   
+4. FEATURES:
+   - Autocomplete species search
+   - GPS location detection or manual entry
+   - Customizable sections (temperature, light, water, etc.)
+   - AI-generated botanical artwork (from API)
+   - Interactive climate comparison charts
+   - Print-friendly layouts
+   - Save to collection
+   - Browse public library
+   
+5. API INTEGRATION (endpoints already built - just call them):
+   
+   GET /api/species/search?query={term}
+   Returns: Species autocomplete results
+   
+   POST /api/culture-sheets/generate
+   Body: {taxonomy_id, latitude, longitude, city, country, sections, artwork_style}
+   Returns: Complete culture sheet data
+   
+   POST /api/my-collection/save
+   Body: {sheet_id, user_id, nickname}
+   Returns: Success confirmation
+   
+   GET /api/my-collection?user_id={id}
+   Returns: User's saved sheets
+   
+   GET /api/public-library?sort=popular&page=1
+   Returns: Public shared sheets
+   
+6. PROGRESSIVE WEB APP:
+   - Create manifest.json
+   - Service worker for offline capability
+   - Installable on mobile devices
+   
+7. WIDGET VERSION:
+   - Embeddable iframe for Neon One CRM
+   - Compact mode without header/footer
+   
+═══════════════════════════════════════════════════════════════════════════════
+
+DELIVERABLES:
+
+Please provide these HTML/CSS/JS files:
+
+1. index.html - Main generator page
+2. culture-sheet.html - Display generated sheet
+3. my-collection.html - Saved sheets grid
+4. public-library.html - Browse public sheets
+5. styles.css - All custom styles
+6. app.js - Main JavaScript logic
+7. manifest.json - PWA configuration
+8. service-worker.js - Basic offline caching
+9. widget.html - Embeddable widget version
+10. README.md - Integration instructions
+
+═══════════════════════════════════════════════════════════════════════════════
+
+WHAT NOT TO CREATE:
+
+❌ app.py or any Python files
+❌ models.py or database schemas
+❌ requirements.txt
+❌ API route handlers
+❌ Backend logic
+❌ Server configuration
+❌ Database connections
+
+═══════════════════════════════════════════════════════════════════════════════
+
+EXAMPLE API CALL (JavaScript):
+
+// Example: Generate culture sheet
+async function generateCultureSheet(speciesId, location) {
+  const response = await fetch('https://orchid-continuum-online.onrender.com/api/culture-sheets/generate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      taxonomy_id: speciesId,
+      latitude: location.lat,
+      longitude: location.lng,
+      city: location.city,
+      country: location.country,
+      sections: ['temperature', 'light', 'water', 'humidity', 'potting', 'fertilizer'],
+      artwork_style: 'artistic'
+    })
+  });
+  
+  const data = await response.json();
+  displayCultureSheet(data);
+}
+
+═══════════════════════════════════════════════════════════════════════════════
+
+DESIGN INSPIRATION:
+
+Think of:
+- Google Search (simple, powerful search interface)
+- Weather apps (location-aware, clear data visualization)
+- Recipe sites (printable, save favorites, beautiful presentation)
+- Curtis's Botanical Magazine (elegant botanical illustrations)
+- GitHub dark mode (clean dark theme)
+
+═══════════════════════════════════════════════════════════════════════════════
+
+QUESTIONS TO ASK IF NEEDED:
+
+1. Should we use vanilla JavaScript or a framework like React/Vue?
+2. Any specific accessibility requirements (WCAG level)?
+3. Browser compatibility targets (modern browsers only, or IE11 support)?
+4. Image optimization preferences?
+5. Analytics integration needed?
+
+═══════════════════════════════════════════════════════════════════════════════
+
+COMPLETE DETAILS:
+
+For full specifications including:
+- Exact API request/response formats
+- All screen mockups and layouts
+- Color palette and design system
+- Interactive features and animations
+- Form validation rules
+- Mobile optimization guidelines
+- PWA requirements
+- Widget embedding instructions
+
+Please reference: FAMOUS_AI_CULTURE_SHEET_WIDGET_SPEC.md
+
+═══════════════════════════════════════════════════════════════════════════════
+
+REMINDER: You are building the STOREFRONT, not the WAREHOUSE.
+
+The backend warehouse is fully stocked and operational. Your job is to create a beautiful, user-friendly storefront where customers can browse, select, and enjoy the products (culture sheets).
+
+Focus on making it:
+✨ Beautiful
+✨ Intuitive
+✨ Mobile-friendly
+✨ Fast and responsive
+✨ Print-friendly
+✨ Accessible
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Ready to create something amazing? Let's build a gorgeous orchid culture sheet generator! 🌺
