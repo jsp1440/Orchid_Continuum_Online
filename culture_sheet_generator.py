@@ -30,8 +30,8 @@ class CultureSheetGenerator:
         taxonomy_id: int, 
         latitude: float, 
         longitude: float,
-        city: str = None,
-        country: str = None
+        city: Optional[str] = None,
+        country: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Generate comprehensive culture sheet for a species at a specific location
@@ -249,19 +249,181 @@ class CultureSheetGenerator:
         }
     
     def _get_weather_data(self, lat: float, lon: float) -> Dict:
-        """Get local weather/climate data (simplified - use weather API in production)"""
-        # Simplified weather data - in production, call weather API
-        # For now, return placeholder structure
-        return {
-            'current_temp': None,
-            'avg_summer_high': None,
-            'avg_summer_low': None,
-            'avg_winter_high': None,
-            'avg_winter_low': None,
-            'avg_humidity': None,
-            'usda_zone': None,
-            'climate_type': None
-        }
+        """
+        Get local climate data using Open-Meteo API (free, no key required)
+        Calculates USDA hardiness zone and seasonal temperature ranges
+        """
+        try:
+            # Get 30 years of data for USDA zone calculation (1991-2020)
+            # Plus recent 3 years for current climate patterns
+            historical_url = "https://archive-api.open-meteo.com/v1/archive"
+            
+            # 30-year data for USDA zone
+            zone_params = {
+                "latitude": lat,
+                "longitude": lon,
+                "start_date": "1991-01-01",
+                "end_date": "2020-12-31",
+                "daily": "temperature_2m_min",
+                "temperature_unit": "fahrenheit"
+            }
+            
+            zone_response = requests.get(historical_url, params=zone_params, timeout=10)
+            zone_data = zone_response.json()
+            
+            # Calculate USDA hardiness zone
+            usda_zone = self._calculate_usda_zone(zone_data)
+            
+            # Recent 3 years for seasonal averages (more current patterns)
+            from datetime import datetime, timedelta
+            end_date = datetime.now() - timedelta(days=7)  # Open-Meteo has 2-7 day delay
+            start_date = end_date - timedelta(days=1095)  # 3 years
+            
+            climate_params = {
+                "latitude": lat,
+                "longitude": lon,
+                "start_date": start_date.strftime("%Y-%m-%d"),
+                "end_date": end_date.strftime("%Y-%m-%d"),
+                "daily": "temperature_2m_max,temperature_2m_min,precipitation_sum,relative_humidity_2m_mean",
+                "temperature_unit": "fahrenheit",
+                "precipitation_unit": "mm"
+            }
+            
+            climate_response = requests.get(historical_url, params=climate_params, timeout=10)
+            climate_data = climate_response.json()
+            
+            # Calculate seasonal averages
+            seasonal_data = self._calculate_seasonal_averages(climate_data)
+            
+            return {
+                'usda_zone': usda_zone['zone'],
+                'avg_extreme_min': usda_zone['avg_extreme_min'],
+                'summer_high': seasonal_data['summer_high'],
+                'summer_low': seasonal_data['summer_low'],
+                'winter_high': seasonal_data['winter_high'],
+                'winter_low': seasonal_data['winter_low'],
+                'avg_humidity': seasonal_data['avg_humidity'],
+                'annual_precipitation': seasonal_data['annual_precipitation'],
+                'climate_type': self._classify_climate(usda_zone['zone'], seasonal_data)
+            }
+            
+        except Exception as e:
+            print(f"   ⚠️  Weather API error: {e}")
+            # Return None values if API fails
+            return {
+                'usda_zone': None,
+                'avg_extreme_min': None,
+                'summer_high': None,
+                'summer_low': None,
+                'winter_high': None,
+                'winter_low': None,
+                'avg_humidity': None,
+                'annual_precipitation': None,
+                'climate_type': None
+            }
+    
+    def _calculate_usda_zone(self, zone_data: Dict) -> Dict:
+        """Calculate USDA hardiness zone from 30-year minimum temperature data"""
+        try:
+            import pandas as pd
+            
+            # Convert to DataFrame
+            df = pd.DataFrame({
+                'date': pd.to_datetime(zone_data['daily']['time']),
+                'temp_min': zone_data['daily']['temperature_2m_min']
+            })
+            
+            # Extract year and find annual extreme minimum
+            df['year'] = df['date'].dt.year
+            annual_min = df.groupby('year')['temp_min'].min()
+            
+            # Calculate average annual extreme minimum
+            avg_extreme_min = annual_min.mean()
+            
+            # Map to USDA hardiness zone
+            zones = [
+                (-60, '1a'), (-55, '1b'), (-50, '2a'), (-45, '2b'),
+                (-40, '3a'), (-35, '3b'), (-30, '4a'), (-25, '4b'),
+                (-20, '5a'), (-15, '5b'), (-10, '6a'), (-5, '6b'),
+                (0, '7a'), (5, '7b'), (10, '8a'), (15, '8b'),
+                (20, '9a'), (25, '9b'), (30, '10a'), (35, '10b'),
+                (40, '11a'), (45, '11b'), (50, '12a'), (55, '12b'),
+                (60, '13a'), (65, '13b')
+            ]
+            
+            zone = '13b'  # Default to warmest
+            for temp, z in zones:
+                if avg_extreme_min < temp + 5:
+                    zone = z
+                    break
+            
+            return {
+                'zone': zone,
+                'avg_extreme_min': round(avg_extreme_min, 1)
+            }
+        except Exception as e:
+            print(f"   ⚠️  USDA zone calculation error: {e}")
+            return {'zone': None, 'avg_extreme_min': None}
+    
+    def _calculate_seasonal_averages(self, climate_data: Dict) -> Dict:
+        """Calculate seasonal temperature/humidity/precipitation averages"""
+        try:
+            import pandas as pd
+            
+            df = pd.DataFrame({
+                'date': pd.to_datetime(climate_data['daily']['time']),
+                'temp_max': climate_data['daily']['temperature_2m_max'],
+                'temp_min': climate_data['daily']['temperature_2m_min'],
+                'precipitation': climate_data['daily']['precipitation_sum'],
+                'humidity': climate_data['daily']['relative_humidity_2m_mean']
+            })
+            
+            # Define seasons (Northern Hemisphere - adjust for location if needed)
+            df['month'] = df['date'].dt.month
+            df['season'] = df['month'].apply(lambda m: 
+                'summer' if m in [6, 7, 8] else 
+                'winter' if m in [12, 1, 2] else 
+                'spring' if m in [3, 4, 5] else 'fall'
+            )
+            
+            # Calculate seasonal averages
+            summer = df[df['season'] == 'summer']
+            winter = df[df['season'] == 'winter']
+            
+            return {
+                'summer_high': round(summer['temp_max'].mean(), 1) if len(summer) > 0 else None,
+                'summer_low': round(summer['temp_min'].mean(), 1) if len(summer) > 0 else None,
+                'winter_high': round(winter['temp_max'].mean(), 1) if len(winter) > 0 else None,
+                'winter_low': round(winter['temp_min'].mean(), 1) if len(winter) > 0 else None,
+                'avg_humidity': round(df['humidity'].mean(), 0) if 'humidity' in df else None,
+                'annual_precipitation': round(df['precipitation'].sum() / 3, 1)  # 3 years of data
+            }
+        except Exception as e:
+            print(f"   ⚠️  Seasonal calculation error: {e}")
+            return {
+                'summer_high': None, 'summer_low': None,
+                'winter_high': None, 'winter_low': None,
+                'avg_humidity': None, 'annual_precipitation': None
+            }
+    
+    def _classify_climate(self, usda_zone: str, seasonal_data: Dict) -> Optional[str]:
+        """Classify climate type based on USDA zone and seasonal patterns"""
+        if not usda_zone:
+            return None
+        
+        zone_num = int(usda_zone[:-1])  # Extract number from zone like "9a"
+        
+        # Simple climate classification
+        if zone_num <= 3:
+            return "arctic/subarctic"
+        elif zone_num <= 5:
+            return "cold continental"
+        elif zone_num <= 7:
+            return "temperate"
+        elif zone_num <= 9:
+            return "subtropical"
+        else:
+            return "tropical/subtropical"
     
     def _merge_and_analyze(
         self, 
@@ -282,8 +444,9 @@ class CultureSheetGenerator:
                 'data_sources': {
                     'baker': bool(baker_data),
                     'aos': bool(aos_data),
-                    'weather': bool(weather_data and weather_data.get('current_temp'))
-                }
+                    'weather': bool(weather_data and weather_data.get('usda_zone'))
+                },
+                'climate': weather_data if weather_data.get('usda_zone') else None
             },
             'temperature': {},
             'light': {},
