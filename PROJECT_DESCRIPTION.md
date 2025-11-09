@@ -21,12 +21,14 @@ The Orchid Continuum is the world's most comprehensive orchid research and educa
 
 **3. Revolutionary Data-Driven Culture Sheets**
 - **WORLD FIRST: Microclimate Analysis** - Automatically analyzes thousands of wild specimen images to derive data-driven cultural insights unavailable anywhere else
-- **Intelligent Substrate Recommendations** - Matches species microclimate preferences to optimal potting media (bark, moss, mounted, semi-hydro) with commercial product recommendations and DIY recipes
+- **WORLD FIRST: Growing Environment Personalization** - Input YOUR actual greenhouse/growing area conditions (temperature, humidity, light) and receive personalized compatibility scoring (0-100) with specific equipment recommendations (heaters, humidifiers, shade cloth) and substrate adjustments optimized for YOUR microenvironment
+- **Intelligent Substrate Recommendations** - Matches species microclimate preferences to optimal potting media (bark, moss, mounted, semi-hydro) with commercial product recommendations and DIY recipes, automatically adjusted based on your actual growing conditions
 - Location-based guidance combining Baker methodology + AOS guidelines + real-time weather data
 - USDA hardiness zone calculation from 30 years of historical climate data (Open-Meteo API)
 - Monthly climate comparisons: native habitat vs. grower's location
 - Personalized growing recommendations based on actual local conditions
 - Dynamic weather integration shows exactly how your climate compares to the orchid's natural environment
+- Multi-zone support: Create profiles for different growing areas (greenhouse, shaded patio, bright window, outdoor)
 
 **4. Customizable Print-Optimized Culture Sheets**
 - Professional print templates with multiple format options (single-page, double-sided cards, booklets)
@@ -256,6 +258,71 @@ Alternative: Semi-Hydro (LECA) - Prevents overwatering, beginner-friendly
 **Graceful Fallbacks**:
 - If microclimate data unavailable: Provides genus-level generic substrate recommendations based on AOS guidelines and grower's local climate
 - If species-specific insufficient: Falls back to temperature category (warm/intermediate/cool) substrate matching
+
+### 🏠 WORLD FIRST: Growing Environment Personalization System
+**Your Actual Microenvironment → Personalized Recommendations**
+
+The Orchid Continuum is the **only orchid platform in the world** that allows growers to input their actual growing conditions and receive personalized compatibility scoring and equipment-specific recommendations.
+
+**Features**:
+- **Environment Profile System**: Create and store multiple growing zones (greenhouse, shaded patio, bright window, indoor, outdoor)
+- **Template Library**: Quick setup with 5 pre-configured templates (cool greenhouse, warm greenhouse, shaded patio, bright window, low light indoor)
+- **Actual Condition Input**: Temperature (avg/min/max), humidity (avg/min/max), light level, air circulation, seasonal variation
+- **Compatibility Scoring**: 0-100 score comparing species requirements vs. YOUR actual conditions
+- **Delta Analysis**: Detailed comparison showing temperature, humidity, and light mismatches with severity ratings (critical/moderate/minor)
+- **Equipment Recommendations**: Specific suggestions (heating mats, humidifiers, shade cloth, fans, grow lights) with remediation strategies
+- **Substrate Optimization**: Automatically adjusts potting media recommendations based on YOUR actual humidity and temperature
+- **Multi-Zone Support**: Track multiple growing areas (e.g., "My Greenhouse" 75°F/65% humidity vs. "Shaded Patio" 68°F/55% humidity)
+
+**User Experience Flow**:
+```
+1. Create Environment Profile
+   "My Warm Greenhouse": 75°F avg (65-85°F range), 65% humidity, bright light
+
+2. Generate Culture Sheet with Environment
+   Species: Masdevallia veitchiana (cool-growing, 50-65°F, 80% humidity)
+   
+3. Receive Personalized Analysis
+   Compatibility Score: 58.3/100 (CHALLENGING)
+   
+   Temperature Delta:
+   ⚠️  10°F above ideal range
+   💡 Add cooling/ventilation
+   💡 Shield from direct sun during hottest hours
+   
+   Humidity Delta:
+   ⚠️  15% below ideal
+   💡 Use humidity tray or pebble tray
+   💡 Mist 2-3 times daily
+   💧 Add sphagnum moss to substrate for moisture retention
+   
+   Substrate Adjustments:
+   💧 Increase moisture retention (more moss, less bark)
+   💧 Water less frequently in cooler conditions
+```
+
+**Technical Implementation**:
+- **Database Schema**: `user_growing_environments` table with temperature/humidity/light parameters
+- **Optional Sensor Integration**: `environment_measurements` table supports historical data from temperature/humidity sensors
+- **Environmental Delta Analyzer**: Compares ideal species requirements (from Baker/AOS/microclimate data) vs. actual user conditions
+- **Severity-Based Recommendations**: Critical (>10° temp delta), Moderate (5-10°), Minor (<5°) with specific remediation tactics
+- **Substrate Adjustment Engine**: Modifies bark/moss ratios, watering frequency, and drainage based on actual humidity/temperature
+- **Graceful Degradation**: Works seamlessly with or without environment data (backward compatible)
+- **Caching**: Environment personalization data cached with cycle detection for JSON serialization
+
+**Revolutionary Value**:
+NO other orchid platform (AOS, RHS, OrchidWiz, IOSPE) offers:
+1. **Actual Microenvironment Analysis** - City-level weather is NOT enough. This analyzes YOUR greenhouse, YOUR patio, YOUR window.
+2. **"Can I Grow This?" Scoring** - Know BEFORE you buy if a species will thrive in YOUR conditions
+3. **Equipment-Specific Recommendations** - Not generic advice. Tells you exactly what heater, humidifier, or shade cloth you need.
+4. **Condition-Optimized Substrates** - Same species, different substrate based on YOUR actual humidity/temperature
+5. **Multi-Zone Management** - Track all your growing areas independently
+
+**Future Enhancements**:
+- Sensor API integrations (SensorPush, Govee, Ecowitt) for automated data collection
+- Reverse lookup: "Show me all orchids that will thrive in MY greenhouse"
+- Historical trend tracking and seasonal condition profiles
+- Real-time monitoring dashboards
 
 ### 📸 24/7 Image Harvesting System
 **Purpose**: Build the world's largest orchid image database with 30+ images per species
