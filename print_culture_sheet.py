@@ -72,6 +72,7 @@ class PrintCultureSheetGenerator:
             'artwork_url': artwork_url,
             
             # Species information
+            'taxonomy_id': taxonomy_id,  # For linking to sources page
             'species_name': culture_sheet['metadata']['species'],
             'genus': culture_sheet['metadata']['genus'],
             'family': 'Orchidaceae',  # All orchids
