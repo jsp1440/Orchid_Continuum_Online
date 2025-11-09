@@ -171,6 +171,14 @@ with app.app_context():
     except ImportError as e:
         logging.warning(f"Gary demo routes not available: {e}")
     
+    # Register Culture Sheets blueprint
+    try:
+        from routes_culture_sheets import culture_sheets_bp
+        app.register_blueprint(culture_sheets_bp)
+        logging.info("✅ Culture Sheets routes registered at /culture-sheets/*")
+    except ImportError as e:
+        logging.warning(f"Culture sheets routes not available: {e}")
+    
     # Register Replit Auth blueprint (optional - only on Replit)
     try:
         from replit_auth import make_replit_blueprint
