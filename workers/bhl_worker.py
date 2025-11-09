@@ -36,6 +36,25 @@ def lease(n=BATCH_SIZE):
     finally:
         put_conn(c)
 
+def simplify_name(full_name):
+    """Extract binomial name (Genus species) handling hybrids, subspecies, and authors"""
+    parts = full_name.split()
+    if len(parts) < 2:
+        return full_name
+    
+    genus = parts[0]
+    
+    # Handle hybrid marker
+    if parts[1] == 'x' and len(parts) >= 3:
+        return f"{genus} {parts[2]}"
+    
+    # Handle subspecies/variety markers
+    if len(parts) >= 3 and parts[2] in ('ssp.', 'subsp.', 'var.', 'f.', 'forma'):
+        return f"{genus} {parts[1]}"
+    
+    # Normal case - just genus and species
+    return f"{genus} {parts[1]}"
+
 def fetch_bhl(name):
     """Fetch from BHL"""
     if not BHL_API_KEY:
@@ -44,48 +63,42 @@ def fetch_bhl(name):
     time.sleep(REQUEST_DELAY)
     
     # Strip author names - BHL prefers binomial (Genus species)
-    name_parts = name.split()
-    if len(name_parts) >= 2:
-        simple_name = f"{name_parts[0]} {name_parts[1]}"
-    else:
-        simple_name = name
+    simple_name = simplify_name(name)
     
     try:
+        # BHL requires different approach - use PublicationSearch instead
         search_url = "https://www.biodiversitylibrary.org/api3"
-        params = {'op': 'NameSearch', 'name': simple_name, 'apikey': BHL_API_KEY, 'format': 'json'}
+        params = {'op': 'PublicationSearchAdvanced', 'title': simple_name, 'apikey': BHL_API_KEY, 'format': 'json'}
         resp = requests.get(search_url, params=params, timeout=15)
         if resp.status_code != 200:
             return []
         
         data = resp.json()
-        if not data.get('Result') or len(data['Result']) == 0:
+        results = data.get('Result', [])
+        if not results:
             return []
         
         imgs = []
-        for result in data['Result'][:5]:
-            page_id = result.get('PageID')
-            if not page_id:
+        # Get first title
+        for title in results[:2]:
+            title_id = title.get('TitleID')
+            if not title_id:
                 continue
             
-            page_url = "https://www.biodiversitylibrary.org/api3"
-            page_params = {'op': 'GetPageMetadata', 'pageid': page_id, 'apikey': BHL_API_KEY, 'format': 'json'}
-            page_resp = requests.get(page_url, params=page_params, timeout=10)
+            # Get items for this title
+            item_params = {'op': 'GetTitleItems', 'titleid': title_id, 'apikey': BHL_API_KEY, 'format': 'json'}
+            item_resp = requests.get(search_url, params=item_params, timeout=10)
             
-            if page_resp.status_code == 200:
-                page_data = page_resp.json()
-                if page_data.get('Result'):
-                    img_url = page_data['Result'][0].get('PageUrl')
-                    if img_url:
-                        imgs.append({
-                            'url': img_url,
-                            'source': 'BHL',
-                            'type': 'botanical_plate',
-                            'media_metadata': {
-                                'page_id': str(page_id),
-                                'title_id': result.get('TitleID'),
-                                'item_id': result.get('ItemID')
-                            }
-                        })
+            if item_resp.status_code == 200:
+                item_data = item_resp.json()
+                items = item_data.get('Result', [])
+                
+                for item in items[:1]:  # Get first item only
+                    item_id = item.get('ItemID')
+                    if item_id:
+                        # BHL doesn't provide direct image URLs easily - skip for now
+                        # Would need IIIF endpoint construction which is complex
+                        pass
             
             time.sleep(0.4)
             

@@ -35,16 +35,31 @@ def lease(n=BATCH_SIZE):
     finally:
         put_conn(c)
 
+def simplify_name(full_name):
+    """Extract binomial name (Genus species) handling hybrids, subspecies, and authors"""
+    parts = full_name.split()
+    if len(parts) < 2:
+        return full_name
+    
+    genus = parts[0]
+    
+    # Handle hybrid marker
+    if parts[1] == 'x' and len(parts) >= 3:
+        return f"{genus} {parts[2]}"
+    
+    # Handle subspecies/variety markers
+    if len(parts) >= 3 and parts[2] in ('ssp.', 'subsp.', 'var.', 'f.', 'forma'):
+        return f"{genus} {parts[1]}"
+    
+    # Normal case - just genus and species
+    return f"{genus} {parts[1]}"
+
 def fetch_idigbio(name):
     """Fetch from iDigBio"""
     time.sleep(REQUEST_DELAY)
     
     # Strip author names - iDigBio prefers binomial (Genus species)
-    name_parts = name.split()
-    if len(name_parts) >= 2:
-        simple_name = f"{name_parts[0]} {name_parts[1]}"
-    else:
-        simple_name = name
+    simple_name = simplify_name(name)
     
     try:
         search_url = "https://search.idigbio.org/v2/search/records"
@@ -70,28 +85,31 @@ def fetch_idigbio(name):
         imgs = []
         
         for item in data.get('items', []):
-            uuid = item.get('uuid')
-            if not uuid:
+            index_terms = item.get('indexTerms', {})
+            
+            # Check if record has media
+            media_records = index_terms.get('mediarecords', [])
+            if not media_records:
                 continue
             
-            media_url = f"https://search.idigbio.org/v2/view/records/{uuid}"
+            # Get first media record ID
+            media_id = media_records[0]
+            
+            # Fetch media details
+            media_url = f"https://search.idigbio.org/v2/view/media/{media_id}"
             media_resp = requests.get(media_url, timeout=10)
             
             if media_resp.status_code == 200:
                 media_data = media_resp.json()
                 
-                img_url = None
-                if media_data.get('data', {}).get('ac:accessURI'):
-                    img_url = media_data['data']['ac:accessURI']
-                elif media_data.get('mediarecords'):
-                    for media in media_data['mediarecords']:
-                        if media.get('accessuri'):
-                            img_url = media['accessuri']
-                            break
+                # Try to get image URL from media record
+                img_url = media_data.get('indexTerms', {}).get('accessuri')
+                if not img_url:
+                    img_url = media_data.get('data', {}).get('ac:accessURI')
                 
                 if img_url:
-                    index_terms = item.get('indexTerms', {})
                     geopoint = index_terms.get('geopoint', {})
+                    uuid = item.get('uuid')
                     
                     imgs.append({
                         'url': img_url,
@@ -102,6 +120,7 @@ def fetch_idigbio(name):
                         'lon': geopoint.get('lon') if isinstance(geopoint, dict) else None,
                         'occurrence_metadata': {
                             'idigbio_uuid': uuid,
+                            'media_id': media_id,
                             'institution': index_terms.get('institutioncode'),
                             'catalog_number': index_terms.get('catalognumber'),
                             'collector': index_terms.get('collector'),

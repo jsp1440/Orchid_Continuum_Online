@@ -1,0 +1,181 @@
+
+======================================================================
+🔬 COMPREHENSIVE API DIAGNOSTIC TEST
+======================================================================
+
+Testing 4 known orchid species across 5 APIs
+TROPICOS_API_KEY: SET ✅
+BHL_API_KEY: SET ✅
+
+
+######################################################################
+# TESTING SPECIES: Dendrobium speciosum
+######################################################################
+
+======================================================================
+🏛️  TESTING iDIGBIO: Dendrobium speciosum
+======================================================================
+Status: 200
+✅ Found 5 records with images
+   First UUID: d8606a23-d70c-4f8d-a8fb-78b2990828df
+   ⚠️ No image URL found in media record!
+   Media data keys: ['uuid', 'type', 'etag', 'data', 'indexTerms', 'attribution']
+
+======================================================================
+🌿 TESTING TROPICOS: Dendrobium speciosum
+======================================================================
+Search status: 200
+✅ Found NameId: 23500278
+Images status: 200
+✅ Found 1 images
+   First image URL: NO URL
+
+======================================================================
+📚 TESTING BHL: Dendrobium speciosum
+======================================================================
+Search status: 200
+✅ Found 38 name matches
+   First PageID: None
+
+======================================================================
+🌎 TESTING EOL: Dendrobium speciosum
+======================================================================
+❌ Exception: HTTPSConnectionPool(host='eol.org', port=443): Max retries exceeded with url: /api/search/1.0.json?q=Dendrobium+speciosum&page=1&exact=True (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x7f0e8a272190>, 'Connection to eol.org timed out. (connect timeout=10)'))
+
+======================================================================
+🦘 TESTING ALA (Australia): Dendrobium speciosum
+======================================================================
+Status: 200
+✅ Found 5 occurrences with images
+   ✅ Image URL: e5a62b7d-b24e-4dc5-bdca-2b0598c30cb6
+
+
+######################################################################
+# TESTING SPECIES: Cattleya labiata
+######################################################################
+
+======================================================================
+🏛️  TESTING iDIGBIO: Cattleya labiata
+======================================================================
+Status: 200
+✅ Found 5 records with images
+   First UUID: ff6ec110-f675-44fe-a407-b4475c4d91ef
+   ⚠️ No image URL found in media record!
+   Media data keys: ['uuid', 'type', 'etag', 'data', 'indexTerms', 'attribution']
+
+======================================================================
+🌿 TESTING TROPICOS: Cattleya labiata
+======================================================================
+Search status: 200
+✅ Found NameId: 23503210
+Images status: 200
+✅ Found 6 images
+   First image URL: NO URL
+
+======================================================================
+📚 TESTING BHL: Cattleya labiata
+======================================================================
+Search status: 200
+✅ Found 63 name matches
+   First PageID: None
+
+======================================================================
+🌎 TESTING EOL: Cattleya labiata
+======================================================================
+❌ Exception: HTTPSConnectionPool(host='eol.org', port=443): Max retries exceeded with url: /api/search/1.0.json?q=Cattleya+labiata&page=1&exact=True (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)')))
+
+======================================================================
+🦘 TESTING ALA (Australia): Cattleya labiata
+======================================================================
+Status: 200
+✅ Found 0 occurrences with images
+   ⚠️ No occurrences found
+
+
+######################################################################
+# TESTING SPECIES: Phalaenopsis amabilis
+######################################################################
+
+======================================================================
+🏛️  TESTING iDIGBIO: Phalaenopsis amabilis
+======================================================================
+Status: 200
+✅ Found 5 records with images
+   First UUID: c3159a9d-ecfa-4b41-9a51-044b53548829
+   ⚠️ No image URL found in media record!
+   Media data keys: ['uuid', 'type', 'etag', 'data', 'indexTerms', 'attribution']
+
+======================================================================
+🌿 TESTING TROPICOS: Phalaenopsis amabilis
+======================================================================
+Search status: 200
+✅ Found NameId: 23526550
+Images status: 200
+✅ Found 10 images
+   First image URL: NO URL
+
+======================================================================
+📚 TESTING BHL: Phalaenopsis amabilis
+======================================================================
+Search status: 200
+✅ Found 38 name matches
+   First PageID: None
+
+======================================================================
+🌎 TESTING EOL: Phalaenopsis amabilis
+======================================================================
+❌ Exception: HTTPSConnectionPool(host='eol.org', port=443): Max retries exceeded with url: /api/search/1.0.json?q=Phalaenopsis+amabilis&page=1&exact=True (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1016)')))
+
+======================================================================
+🦘 TESTING ALA (Australia): Phalaenopsis amabilis
+======================================================================
+Status: 200
+✅ Found 0 occurrences with images
+   ⚠️ No occurrences found
+
+
+######################################################################
+# TESTING SPECIES: Vanilla planifolia
+######################################################################
+
+======================================================================
+🏛️  TESTING iDIGBIO: Vanilla planifolia
+======================================================================
+Status: 200
+✅ Found 5 records with images
+   First UUID: 8dffc8e0-6def-4a7a-80bd-55155742424b
+   ⚠️ No image URL found in media record!
+   Media data keys: ['uuid', 'type', 'etag', 'data', 'indexTerms', 'attribution']
+
+======================================================================
+🌿 TESTING TROPICOS: Vanilla planifolia
+======================================================================
+Search status: 200
+✅ Found NameId: 23501046
+Images status: 200
+✅ Found 38 images
+   First image URL: NO URL
+
+======================================================================
+📚 TESTING BHL: Vanilla planifolia
+======================================================================
+Search status: 200
+✅ Found 7 name matches
+   First PageID: None
+
+======================================================================
+🌎 TESTING EOL: Vanilla planifolia
+======================================================================
+❌ Exception: HTTPSConnectionPool(host='eol.org', port=443): Max retries exceeded with url: /api/search/1.0.json?q=Vanilla+planifolia&page=1&exact=True (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x7f0e8a273290>, 'Connection to eol.org timed out. (connect timeout=10)'))
+
+======================================================================
+🦘 TESTING ALA (Australia): Vanilla planifolia
+======================================================================
+Status: 200
+✅ Found 4 occurrences with images
+   ✅ Image URL: fa651d78-5466-4479-8e26-9c163b42f362
+
+
+======================================================================
+✅ DIAGNOSTIC TEST COMPLETE
+======================================================================
