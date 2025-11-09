@@ -66,9 +66,9 @@ def fetch_bhl(name):
     simple_name = simplify_name(name)
     
     try:
-        # BHL requires different approach - use PublicationSearch instead
+        # Use NameSearch to find the name, then get pages with illustrations
         search_url = "https://www.biodiversitylibrary.org/api3"
-        params = {'op': 'PublicationSearchAdvanced', 'title': simple_name, 'apikey': BHL_API_KEY, 'format': 'json'}
+        params = {'op': 'NameSearch', 'name': simple_name, 'apikey': BHL_API_KEY, 'format': 'json'}
         resp = requests.get(search_url, params=params, timeout=15)
         if resp.status_code != 200:
             return []
@@ -79,26 +79,38 @@ def fetch_bhl(name):
             return []
         
         imgs = []
-        # Get first title
-        for title in results[:2]:
-            title_id = title.get('TitleID')
-            if not title_id:
-                continue
+        # Get pages for first few name results
+        for name_result in results[:3]:
+            name_confirmed = name_result.get('NameConfirmed', '')
             
-            # Get items for this title
-            item_params = {'op': 'GetTitleItems', 'titleid': title_id, 'apikey': BHL_API_KEY, 'format': 'json'}
-            item_resp = requests.get(search_url, params=item_params, timeout=10)
+            # Get pages for this name
+            page_params = {'op': 'NameGetPages', 'name': name_confirmed, 'apikey': BHL_API_KEY, 'format': 'json'}
+            page_resp = requests.get(search_url, params=page_params, timeout=10)
             
-            if item_resp.status_code == 200:
-                item_data = item_resp.json()
-                items = item_data.get('Result', [])
+            if page_resp.status_code == 200:
+                page_data = page_resp.json()
+                pages = page_data.get('Result', [])
                 
-                for item in items[:1]:  # Get first item only
-                    item_id = item.get('ItemID')
-                    if item_id:
-                        # BHL doesn't provide direct image URLs easily - skip for now
-                        # Would need IIIF endpoint construction which is complex
-                        pass
+                for page in pages[:3]:
+                    page_id = page.get('PageID')
+                    if page_id:
+                        # Construct BHL page URL (not direct image, but the page viewer)
+                        page_url = f"https://www.biodiversitylibrary.org/page/{page_id}"
+                        
+                        imgs.append({
+                            'url': page_url,
+                            'source': 'BHL - Biodiversity Heritage Library',
+                            'type': 'illustration',
+                            'media_metadata': {
+                                'page_id': str(page_id),
+                                'item_id': page.get('ItemID'),
+                                'volume': page.get('Volume', ''),
+                                'year': page.get('Year', '')
+                            }
+                        })
+                        
+                        if len(imgs) >= 5:
+                            break
             
             time.sleep(0.4)
             

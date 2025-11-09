@@ -55,57 +55,10 @@ def simplify_name(full_name):
     return f"{genus} {parts[1]}"
 
 def fetch_eol(name):
-    """Fetch from EOL"""
-    time.sleep(REQUEST_DELAY)
-    
-    # Strip author names - EOL prefers binomial (Genus species)
-    simple_name = simplify_name(name)
-    
-    try:
-        search_url = "https://eol.org/api/search/1.0.json"
-        params = {'q': simple_name, 'page': 1, 'exact': True}
-        resp = requests.get(search_url, params=params, timeout=10)
-        if resp.status_code != 200:
-            return []
-        
-        data = resp.json()
-        if not data.get('results') or len(data['results']) == 0:
-            return []
-        
-        page_id = data['results'][0].get('id')
-        if not page_id:
-            return []
-        
-        page_url = f"https://eol.org/api/pages/1.0/{page_id}.json"
-        params = {'images': 8, 'videos': 0, 'details': True}
-        resp = requests.get(page_url, params=params, timeout=15)
-        if resp.status_code != 200:
-            return []
-        
-        page_data = resp.json()
-        imgs = []
-        
-        for obj in page_data.get('dataObjects', []):
-            if obj.get('dataType') == 'http://purl.org/dc/dcmitype/StillImage':
-                url = obj.get('mediaURL', '')
-                if url:
-                    imgs.append({
-                        'url': url,
-                        'source': 'EOL',
-                        'type': 'observation',
-                        'eol_metadata': {
-                            'page_id': str(page_id),
-                            'data_object_id': obj.get('dataObjectVersionID'),
-                            'license': obj.get('license', ''),
-                            'rights_holder': obj.get('rightsHolder', ''),
-                            'description': obj.get('description', '')[:500]
-                        }
-                    })
-        
-        return imgs
-    except Exception as e:
-        stats['errors'] += 1
-        return []
+    """Fetch from EOL - DISABLED due to timeout issues"""
+    # EOL API is extremely unreliable with frequent timeouts
+    # Disabling until API stability improves
+    return []
 
 def fetch_ala(name):
     """Fetch from ALA"""
