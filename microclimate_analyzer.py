@@ -1,43 +1,51 @@
 #!/usr/bin/env python3
 """
-Microclimate Analysis System
+Microclimate Analysis System - Production Version
 Revolutionary AI-powered analysis of in-situ orchid photographs to derive
 data-driven cultural insights about light preferences, substrate types,
 growth positions, and morphological variations.
 
-This system analyzes thousands of wild specimen images to discover patterns like:
-- "85% of images show this species growing in dappled shade on tree bark"
-- "Plants in full sun show 30% more compact growth with thicker leaves"
-- "95% found between 1000-2000m elevation on moss-covered branches"
+Architecture improvements (based on Architect review):
+- SQL-based aggregations for performance with 1000+ images/species
+- Metric-specific minimum thresholds (elevation: 5+, dates: 6+)
+- Structured insufficient-data response contract
+- Dedicated microclimate_analysis_cache table
+- Database indexes for fast queries
 """
 import os
 import psycopg2
 import json
-from typing import Dict, List, Optional, Tuple
-from datetime import datetime
-import requests
+from typing import Dict, List, Optional
+from datetime import datetime, timedelta
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 class MicroclimateAnalyzer:
     """
     Analyzes orchid images to extract microclimate preferences and growing patterns
+    Uses SQL aggregations for performance and scalability
     """
+    
+    # Minimum thresholds for statistical significance
+    MIN_IMAGES_TOTAL = 10
+    MIN_ELEVATION_SAMPLES = 5
+    MIN_DATE_SAMPLES = 6
+    MIN_COORDINATE_SAMPLES = 5
     
     def __init__(self):
         self.conn = psycopg2.connect(DATABASE_URL)
         self.cur = self.conn.cursor()
     
-    def analyze_species_images(self, taxonomy_id: int, min_images: int = 10) -> Optional[Dict]:
+    def analyze_species_images(self, taxonomy_id: int) -> Dict:
         """
         Analyze all images for a species to derive microclimate insights
+        Returns structured response even if insufficient data
         
         Args:
             taxonomy_id: Species ID from orchid_taxonomy
-            min_images: Minimum images required for statistical significance
         
         Returns:
-            Dict with microclimate analysis results or None if insufficient data
+            Dict with analysis results (never None - always structured response)
         """
         print(f"🔬 Analyzing microclimate patterns for taxonomy_id={taxonomy_id}")
         
@@ -50,176 +58,302 @@ class MicroclimateAnalyzer:
         
         species_info = self.cur.fetchone()
         if not species_info:
-            print("   ❌ Species not found")
-            return None
+            return self._insufficient_data_response(
+                taxonomy_id, "Species not found in taxonomy database", 0
+            )
         
         scientific_name, genus, species = species_info
         print(f"   Species: {scientific_name}")
         
-        # Get all wild specimen images with metadata
+        # Check cache first
+        cached = self._get_from_cache(taxonomy_id)
+        if cached:
+            print("   ✅ Retrieved from cache")
+            return cached
+        
+        # Count total wild specimen images
         self.cur.execute("""
-            SELECT 
-                id, image_url, image_source,
-                latitude, longitude, elevation_meters,
-                occurrence_metadata, media_metadata, eol_metadata,
-                observation_date, locality, country
+            SELECT COUNT(*) 
             FROM orchid_images
-            WHERE taxonomy_id = %s
-              AND wild_specimen = true
+            WHERE taxonomy_id = %s AND wild_specimen = true
         """, (taxonomy_id,))
         
-        images = self.cur.fetchall()
-        total_images = len(images)
-        
+        total_images = self.cur.fetchone()[0]
         print(f"   📸 Found {total_images} wild specimen images")
         
-        if total_images < min_images:
-            print(f"   ⚠️  Insufficient images (need {min_images}+ for analysis)")
-            return None
+        if total_images < self.MIN_IMAGES_TOTAL:
+            return self._insufficient_data_response(
+                taxonomy_id, 
+                f"Insufficient images for analysis (found {total_images}, need {self.MIN_IMAGES_TOTAL}+)",
+                total_images,
+                scientific_name
+            )
         
-        # Extract patterns
+        # Extract patterns using SQL aggregations
         patterns = {
-            'elevation': self._analyze_elevation(images),
-            'geography': self._analyze_geography(images),
-            'coordinates': self._analyze_coordinates(images),
-            'metadata_richness': self._analyze_metadata(images),
-            'temporal': self._analyze_temporal_patterns(images)
+            'elevation': self._analyze_elevation_sql(taxonomy_id),
+            'geography': self._analyze_geography_sql(taxonomy_id),
+            'coordinates': self._analyze_coordinates_sql(taxonomy_id),
+            'temporal': self._analyze_temporal_sql(taxonomy_id),
+            'metadata_richness': self._analyze_metadata_sql(taxonomy_id)
         }
         
-        # Prepare AI analysis for images with URLs
-        patterns['ai_analysis_pending'] = {
-            'light_conditions': 'Pending AI vision analysis',
-            'substrate_types': 'Pending AI vision analysis',
-            'growth_position': 'Pending AI vision analysis',
-            'morphological_variations': 'Pending AI vision analysis'
-        }
+        # Calculate quality score
+        quality_score = self._calculate_quality_score(patterns)
         
-        return {
+        # Generate recommendations
+        recommendations = self._generate_recommendations(patterns)
+        
+        result = {
             'species': scientific_name,
             'taxonomy_id': taxonomy_id,
+            'status': 'success',
             'total_images_analyzed': total_images,
             'analysis_date': datetime.now().isoformat(),
+            'data_quality_score': quality_score,
             'patterns': patterns,
-            'data_quality_score': self._calculate_quality_score(patterns),
-            'recommendations': self._generate_recommendations(patterns)
+            'recommendations': recommendations,
+            'ai_analysis_pending': {
+                'note': 'Additional insights available with AI vision analysis',
+                'capabilities': ['light_conditions', 'substrate_types', 'growth_position', 'morphological_variations']
+            }
         }
-    
-    def _analyze_elevation(self, images: List[Tuple]) -> Dict:
-        """Analyze elevation distribution"""
-        elevations = [img[5] for img in images if img[5] is not None]
         
-        if not elevations:
-            return {'available': False}
+        # Cache the result
+        self._save_to_cache(taxonomy_id, result, total_images)
+        
+        return result
+    
+    def _analyze_elevation_sql(self, taxonomy_id: int) -> Dict:
+        """Analyze elevation distribution using SQL"""
+        self.cur.execute("""
+            SELECT 
+                COUNT(*) as sample_size,
+                MIN(elevation_meters) as min_meters,
+                MAX(elevation_meters) as max_meters,
+                AVG(elevation_meters)::integer as mean_meters
+            FROM orchid_images
+            WHERE taxonomy_id = %s 
+              AND wild_specimen = true
+              AND elevation_meters IS NOT NULL
+        """, (taxonomy_id,))
+        
+        result = self.cur.fetchone()
+        sample_size, min_m, max_m, mean_m = result
+        
+        if sample_size < self.MIN_ELEVATION_SAMPLES:
+            return {
+                'available': False,
+                'sample_size': sample_size,
+                'reason': f'Insufficient elevation data (found {sample_size}, need {self.MIN_ELEVATION_SAMPLES}+)'
+            }
         
         return {
             'available': True,
-            'sample_size': len(elevations),
-            'min_meters': min(elevations),
-            'max_meters': max(elevations),
-            'mean_meters': round(sum(elevations) / len(elevations)),
-            'range_meters': max(elevations) - min(elevations)
+            'sample_size': sample_size,
+            'min_meters': min_m,
+            'max_meters': max_m,
+            'mean_meters': mean_m,
+            'range_meters': max_m - min_m,
+            'confidence': 'high' if sample_size >= 20 else 'moderate' if sample_size >= 10 else 'low'
         }
     
-    def _analyze_geography(self, images: List[Tuple]) -> Dict:
-        """Analyze geographic distribution"""
-        countries = {}
-        localities = {}
+    def _analyze_geography_sql(self, taxonomy_id: int) -> Dict:
+        """Analyze geographic distribution using SQL"""
+        # Top countries
+        self.cur.execute("""
+            SELECT country, COUNT(*) as count
+            FROM orchid_images
+            WHERE taxonomy_id = %s 
+              AND wild_specimen = true
+              AND country IS NOT NULL
+            GROUP BY country
+            ORDER BY count DESC
+            LIMIT 10
+        """, (taxonomy_id,))
         
-        for img in images:
-            country = img[10]
-            locality = img[9]
-            
-            if country:
-                countries[country] = countries.get(country, 0) + 1
-            if locality:
-                localities[locality] = localities.get(locality, 0) + 1
+        countries = {row[0]: row[1] for row in self.cur.fetchall()}
+        
+        # Top localities
+        self.cur.execute("""
+            SELECT locality, COUNT(*) as count
+            FROM orchid_images
+            WHERE taxonomy_id = %s 
+              AND wild_specimen = true
+              AND locality IS NOT NULL
+            GROUP BY locality
+            ORDER BY count DESC
+            LIMIT 10
+        """, (taxonomy_id,))
+        
+        localities = {row[0]: row[1] for row in self.cur.fetchall()}
         
         return {
-            'countries': dict(sorted(countries.items(), key=lambda x: x[1], reverse=True)[:10]),
-            'localities': dict(sorted(localities.items(), key=lambda x: x[1], reverse=True)[:10]),
+            'countries': countries,
+            'localities': localities,
             'total_countries': len(countries),
             'total_localities': len(localities)
         }
     
-    def _analyze_coordinates(self, images: List[Tuple]) -> Dict:
-        """Analyze GPS coordinate distribution"""
-        coords = [(img[3], img[4]) for img in images if img[3] is not None and img[4] is not None]
+    def _analyze_coordinates_sql(self, taxonomy_id: int) -> Dict:
+        """Analyze GPS coordinate distribution using SQL"""
+        self.cur.execute("""
+            SELECT 
+                COUNT(*) as sample_size,
+                MIN(latitude) as min_lat,
+                MAX(latitude) as max_lat,
+                AVG(latitude) as avg_lat,
+                MIN(longitude) as min_lon,
+                MAX(longitude) as max_lon,
+                AVG(longitude) as avg_lon
+            FROM orchid_images
+            WHERE taxonomy_id = %s 
+              AND wild_specimen = true
+              AND latitude IS NOT NULL 
+              AND longitude IS NOT NULL
+        """, (taxonomy_id,))
         
-        if not coords:
-            return {'available': False}
+        result = self.cur.fetchone()
+        sample_size = result[0]
         
-        lats = [c[0] for c in coords]
-        lons = [c[1] for c in coords]
+        if sample_size < self.MIN_COORDINATE_SAMPLES:
+            return {
+                'available': False,
+                'sample_size': sample_size,
+                'reason': f'Insufficient coordinate data (found {sample_size}, need {self.MIN_COORDINATE_SAMPLES}+)'
+            }
         
         return {
             'available': True,
-            'sample_size': len(coords),
-            'latitude_range': {'min': float(min(lats)), 'max': float(max(lats))},
-            'longitude_range': {'min': float(min(lons)), 'max': float(max(lons))},
+            'sample_size': sample_size,
+            'latitude_range': {'min': float(result[1]), 'max': float(result[2])},
+            'longitude_range': {'min': float(result[4]), 'max': float(result[5])},
             'centroid': {
-                'lat': float(sum(lats) / len(lats)),
-                'lon': float(sum(lons) / len(lons))
+                'lat': float(result[3]),
+                'lon': float(result[6])
+            },
+            'confidence': 'high' if sample_size >= 20 else 'moderate' if sample_size >= 10 else 'low'
+        }
+    
+    def _analyze_temporal_sql(self, taxonomy_id: int) -> Dict:
+        """Analyze observation date patterns using SQL"""
+        self.cur.execute("""
+            SELECT 
+                EXTRACT(MONTH FROM observation_date)::integer as month,
+                COUNT(*) as count
+            FROM orchid_images
+            WHERE taxonomy_id = %s 
+              AND wild_specimen = true
+              AND observation_date IS NOT NULL
+            GROUP BY month
+            ORDER BY month
+        """, (taxonomy_id,))
+        
+        month_data = self.cur.fetchall()
+        total_dated = sum(row[1] for row in month_data)
+        
+        if total_dated < self.MIN_DATE_SAMPLES:
+            return {
+                'available': False,
+                'sample_size': total_dated,
+                'reason': f'Insufficient date data (found {total_dated}, need {self.MIN_DATE_SAMPLES}+)'
             }
-        }
-    
-    def _analyze_metadata(self, images: List[Tuple]) -> Dict:
-        """Analyze metadata richness"""
-        return {
-            'total_images': len(images),
-            'with_coordinates': sum(1 for img in images if img[3] is not None),
-            'with_elevation': sum(1 for img in images if img[5] is not None),
-            'with_date': sum(1 for img in images if img[8] is not None),
-            'with_locality': sum(1 for img in images if img[9] is not None),
-            'with_occurrence_metadata': sum(1 for img in images if img[6] is not None),
-            'with_media_metadata': sum(1 for img in images if img[7] is not None)
-        }
-    
-    def _analyze_temporal_patterns(self, images: List[Tuple]) -> Dict:
-        """Analyze observation date patterns"""
-        dates = [img[8] for img in images if img[8] is not None]
-        
-        if not dates:
-            return {'available': False}
-        
-        months = {}
-        for date in dates:
-            month = date.month
-            months[month] = months.get(month, 0) + 1
         
         month_names = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         
+        observations_by_month = {month_names[month-1]: count for month, count in month_data}
+        
+        # Find peak month
+        peak_month_num = max(month_data, key=lambda x: x[1])[0] if month_data else None
+        peak_month = month_names[peak_month_num - 1] if peak_month_num else None
+        
         return {
             'available': True,
-            'observations_by_month': {month_names[m-1]: count for m, count in sorted(months.items())},
-            'peak_observation_month': month_names[max(months, key=months.get) - 1] if months else None
+            'sample_size': total_dated,
+            'observations_by_month': observations_by_month,
+            'peak_observation_month': peak_month,
+            'confidence': 'high' if total_dated >= 20 else 'moderate' if total_dated >= 12 else 'low'
+        }
+    
+    def _analyze_metadata_sql(self, taxonomy_id: int) -> Dict:
+        """Analyze metadata richness using SQL"""
+        self.cur.execute("""
+            SELECT 
+                COUNT(*) as total,
+                COUNT(latitude) as with_coordinates,
+                COUNT(elevation_meters) as with_elevation,
+                COUNT(observation_date) as with_date,
+                COUNT(locality) as with_locality,
+                COUNT(occurrence_metadata) as with_occurrence,
+                COUNT(media_metadata) as with_media
+            FROM orchid_images
+            WHERE taxonomy_id = %s AND wild_specimen = true
+        """, (taxonomy_id,))
+        
+        result = self.cur.fetchone()
+        
+        return {
+            'total_images': result[0],
+            'with_coordinates': result[1],
+            'with_elevation': result[2],
+            'with_date': result[3],
+            'with_locality': result[4],
+            'with_occurrence_metadata': result[5],
+            'with_media_metadata': result[6]
         }
     
     def _calculate_quality_score(self, patterns: Dict) -> float:
-        """Calculate data quality score (0-100)"""
-        score = 0
+        """
+        Calculate data quality score (0-100) with metric-specific thresholds
+        Improved scoring algorithm per Architect feedback
+        """
+        score = 0.0
         max_score = 100
         
-        # Elevation data (20 points)
+        total_images = patterns['metadata_richness']['total_images']
+        
+        # Elevation data (25 points) - requires MIN_ELEVATION_SAMPLES
         if patterns['elevation'].get('available'):
-            score += 20 * (patterns['elevation']['sample_size'] / patterns['metadata_richness']['total_images'])
+            elevation_ratio = min(1.0, patterns['elevation']['sample_size'] / max(total_images, 1))
+            confidence_multiplier = {
+                'high': 1.0,
+                'moderate': 0.7,
+                'low': 0.4
+            }.get(patterns['elevation'].get('confidence', 'low'), 0.4)
+            score += 25 * elevation_ratio * confidence_multiplier
         
         # Geographic data (20 points)
-        if patterns['geography']['total_countries'] > 0:
-            score += 20
+        geo = patterns['geography']
+        if geo['total_countries'] > 0:
+            # More countries = broader understanding
+            geo_score = min(20, geo['total_countries'] * 2)
+            score += geo_score
         
-        # Coordinate data (30 points)
+        # Coordinate data (30 points) - requires MIN_COORDINATE_SAMPLES
         if patterns['coordinates'].get('available'):
-            score += 30 * (patterns['coordinates']['sample_size'] / patterns['metadata_richness']['total_images'])
+            coord_ratio = min(1.0, patterns['coordinates']['sample_size'] / max(total_images, 1))
+            confidence_multiplier = {
+                'high': 1.0,
+                'moderate': 0.7,
+                'low': 0.4
+            }.get(patterns['coordinates'].get('confidence', 'low'), 0.4)
+            score += 30 * coord_ratio * confidence_multiplier
         
-        # Temporal data (15 points)
+        # Temporal data (15 points) - requires MIN_DATE_SAMPLES
         if patterns['temporal'].get('available'):
-            score += 15
+            temporal_ratio = min(1.0, patterns['temporal']['sample_size'] / max(total_images, 1))
+            confidence_multiplier = {
+                'high': 1.0,
+                'moderate': 0.7,
+                'low': 0.4
+            }.get(patterns['temporal'].get('confidence', 'low'), 0.4)
+            score += 15 * temporal_ratio * confidence_multiplier
         
-        # Metadata richness (15 points)
+        # Metadata richness (10 points)
         meta = patterns['metadata_richness']
-        richness = (meta['with_occurrence_metadata'] + meta['with_media_metadata']) / (2 * meta['total_images'])
-        score += 15 * richness
+        richness = (meta['with_occurrence_metadata'] + meta['with_media_metadata']) / (2 * max(meta['total_images'], 1))
+        score += 10 * richness
         
         return round(score, 1)
     
@@ -227,107 +361,161 @@ class MicroclimateAnalyzer:
         """Generate culture recommendations based on patterns"""
         recommendations = []
         
-        # Elevation recommendations
+        # Elevation recommendations (only if meets threshold)
         if patterns['elevation'].get('available'):
             elev = patterns['elevation']
-            if elev['sample_size'] >= 5:
-                recommendations.append(
-                    f"Native habitat elevation: {elev['min_meters']}-{elev['max_meters']}m "
-                    f"(based on {elev['sample_size']} observations). "
-                    f"This suggests {'cool-growing' if elev['mean_meters'] > 1500 else 'intermediate' if elev['mean_meters'] > 800 else 'warm-growing'} conditions."
-                )
+            confidence_label = f" [{elev['confidence']} confidence]"
+            recommendations.append(
+                f"Native habitat elevation: {elev['min_meters']}-{elev['max_meters']}m "
+                f"(mean: {elev['mean_meters']}m, based on {elev['sample_size']} observations{confidence_label}). "
+                f"Temperature implication: {'cool-growing' if elev['mean_meters'] > 1500 else 'intermediate' if elev['mean_meters'] > 800 else 'warm-growing'} conditions."
+            )
         
         # Geographic patterns
         geo = patterns['geography']
-        if geo['total_countries'] > 0:
+        if geo['total_countries'] > 0 and geo['countries']:
             top_country = list(geo['countries'].keys())[0]
-            percentage = (geo['countries'][top_country] / patterns['metadata_richness']['total_images']) * 100
-            if percentage > 50:
+            count = geo['countries'][top_country]
+            percentage = (count / patterns['metadata_richness']['total_images']) * 100
+            if percentage > 30:  # Only report if significant
                 recommendations.append(
-                    f"{percentage:.0f}% of observations from {top_country}, indicating this as the primary natural range."
+                    f"Primary geographic range: {top_country} ({percentage:.0f}% of observations, n={count})."
                 )
         
-        # Coordinate-based climate zone
+        # Coordinate-based climate zone (only if meets threshold)
         if patterns['coordinates'].get('available'):
             centroid = patterns['coordinates']['centroid']
             lat = abs(centroid['lat'])
+            confidence_label = f" [{patterns['coordinates']['confidence']} confidence]"
+            
             if lat < 23.5:
-                recommendations.append("Centroid location in tropical zone - prefers warm, humid conditions year-round.")
+                climate_zone = "tropical"
+                advice = "prefers warm, humid conditions year-round"
             elif lat < 35:
-                recommendations.append("Centroid location in subtropical zone - tolerates mild winters with warm summers.")
+                climate_zone = "subtropical"
+                advice = "tolerates mild winters with warm summers"
             else:
-                recommendations.append("Centroid location in temperate zone - requires distinct seasonal temperature changes.")
+                climate_zone = "temperate"
+                advice = "requires distinct seasonal temperature changes"
+            
+            recommendations.append(
+                f"Centroid location in {climate_zone} zone (lat: {centroid['lat']:.1f}°) - {advice}{confidence_label}."
+            )
         
-        # Temporal flowering patterns
+        # Temporal flowering patterns (only if meets threshold)
         if patterns['temporal'].get('available'):
             peak_month = patterns['temporal']['peak_observation_month']
+            sample_size = patterns['temporal']['sample_size']
+            confidence_label = f" [{patterns['temporal']['confidence']} confidence]"
+            
             if peak_month:
                 recommendations.append(
-                    f"Peak observation month: {peak_month}. This may indicate natural flowering season."
+                    f"Peak observation month: {peak_month} (based on {sample_size} dated observations{confidence_label}). "
+                    f"This may indicate natural flowering season."
                 )
         
         return recommendations
     
-    def get_trait_data(self, taxonomy_id: int) -> Optional[Dict]:
-        """Get EOL TraitBank data for species"""
+    def _insufficient_data_response(
+        self, 
+        taxonomy_id: int, 
+        reason: str, 
+        image_count: int,
+        scientific_name: Optional[str] = None
+    ) -> Dict:
+        """
+        Structured insufficient-data response (per Architect feedback)
+        Returns consistent schema for graceful degradation
+        """
+        return {
+            'species': scientific_name or 'Unknown',
+            'taxonomy_id': taxonomy_id,
+            'status': 'insufficient_data',
+            'reason': reason,
+            'total_images_analyzed': image_count,
+            'minimum_required': self.MIN_IMAGES_TOTAL,
+            'next_steps': f"Need {self.MIN_IMAGES_TOTAL - image_count} more wild specimen images for analysis" if image_count < self.MIN_IMAGES_TOTAL else "Continue harvesting images",
+            'data_quality_score': 0.0,
+            'patterns': None,
+            'recommendations': [
+                "Microclimate analysis unavailable due to insufficient wild specimen images.",
+                f"The Orchid Continuum is actively harvesting images (2,000-3,000/hour across all species).",
+                "Check back as new images are added to the database daily."
+            ]
+        }
+    
+    def _get_from_cache(self, taxonomy_id: int) -> Optional[Dict]:
+        """Retrieve from cache if fresh"""
         self.cur.execute("""
-            SELECT scientific_name 
-            FROM orchid_taxonomy 
-            WHERE id = %s
+            SELECT analysis_data, generated_at, last_image_count
+            FROM microclimate_analysis_cache
+            WHERE taxonomy_id = %s
+              AND (expires_at IS NULL OR expires_at > NOW())
         """, (taxonomy_id,))
         
         result = self.cur.fetchone()
         if not result:
             return None
         
-        scientific_name = result[0]
+        cached_data, generated_at, cached_image_count = result
         
-        # Get traits from traitbank
+        # Check if image count has changed significantly (invalidate cache)
         self.cur.execute("""
-            SELECT * FROM traitbank_orchid_traits
-            WHERE scientific_name = %s
-            LIMIT 20
-        """, (scientific_name,))
+            SELECT COUNT(*) FROM orchid_images
+            WHERE taxonomy_id = %s AND wild_specimen = true
+        """, (taxonomy_id,))
         
-        # Get column names
-        columns = [desc[0] for desc in self.cur.description]
-        traits = []
+        current_image_count = self.cur.fetchone()[0]
         
-        for row in self.cur.fetchall():
-            trait_dict = dict(zip(columns, row))
-            traits.append(trait_dict)
-        
-        return {
-            'species': scientific_name,
-            'trait_count': len(traits),
-            'traits': traits
-        }
-    
-    def generate_microclimate_culture_section(self, taxonomy_id: int) -> Optional[Dict]:
-        """
-        Generate microclimate-based culture section for culture sheets
-        This is THE revolutionary feature - data-driven insights from real observations
-        """
-        analysis = self.analyze_species_images(taxonomy_id, min_images=10)
-        
-        if not analysis:
+        # Invalidate if 10+ new images added
+        if current_image_count >= cached_image_count + 10:
+            print(f"   🔄 Cache invalidated ({current_image_count} images vs {cached_image_count} cached)")
             return None
         
-        traits = self.get_trait_data(taxonomy_id)
+        return cached_data
+    
+    def _save_to_cache(self, taxonomy_id: int, analysis: Dict, image_count: int):
+        """Save analysis to cache"""
+        expires_at = datetime.now() + timedelta(days=30)
+        
+        self.cur.execute("""
+            INSERT INTO microclimate_analysis_cache 
+                (taxonomy_id, analysis_data, total_images_analyzed, data_quality_score, last_image_count, expires_at)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            ON CONFLICT (taxonomy_id) 
+            DO UPDATE SET
+                analysis_data = EXCLUDED.analysis_data,
+                total_images_analyzed = EXCLUDED.total_images_analyzed,
+                data_quality_score = EXCLUDED.data_quality_score,
+                last_image_count = EXCLUDED.last_image_count,
+                generated_at = NOW(),
+                expires_at = EXCLUDED.expires_at
+        """, (
+            taxonomy_id,
+            json.dumps(analysis),
+            analysis['total_images_analyzed'],
+            analysis['data_quality_score'],
+            image_count,
+            expires_at
+        ))
+        
+        self.conn.commit()
+    
+    def generate_microclimate_culture_section(self, taxonomy_id: int) -> Dict:
+        """
+        Generate microclimate section for culture sheets
+        Always returns structured data (never None)
+        """
+        analysis = self.analyze_species_images(taxonomy_id)
         
         return {
-            'section_title': '🌍 Microclimate Analysis (Data-Driven Insights)',
-            'subtitle': f'Based on analysis of {analysis["total_images_analyzed"]} wild specimen observations',
+            'section_title': '🌍 Microclimate Analysis',
+            'subtitle': f"Data-driven insights from {analysis['total_images_analyzed']} wild observations",
+            'status': analysis['status'],
             'data_quality_score': analysis['data_quality_score'],
             'insights': analysis['recommendations'],
-            'patterns': {
-                'elevation': analysis['patterns']['elevation'],
-                'geographic_distribution': analysis['patterns']['geography'],
-                'observation_seasonality': analysis['patterns']['temporal']
-            },
-            'trait_data': traits,
-            'ai_analysis_note': 'Additional microclimate insights (light conditions, substrate preferences, growth position) available with AI vision analysis',
-            'unique_value_proposition': 'This data-driven analysis is unique to The Orchid Continuum and unavailable anywhere else'
+            'patterns': analysis.get('patterns'),
+            'unique_value': 'This analysis is unique to The Orchid Continuum - unavailable anywhere else'
         }
     
     def __del__(self):
@@ -339,34 +527,31 @@ class MicroclimateAnalyzer:
 
 
 def main():
-    """Test microclimate analyzer"""
+    """Test microclimate analyzer with production improvements"""
     analyzer = MicroclimateAnalyzer()
     
     print("=" * 70)
-    print("🔬 MICROCLIMATE ANALYSIS SYSTEM")
+    print("🔬 MICROCLIMATE ANALYSIS SYSTEM (Production Version)")
     print("=" * 70)
     print()
     
-    # Test with a species that has wild images
-    test_taxonomy_id = 7905  # Cattleya aurantiaca
+    # Test with a species
+    test_taxonomy_id = 7905
     
-    # Full analysis
     analysis = analyzer.analyze_species_images(test_taxonomy_id)
     
-    if analysis:
-        print()
-        print("=" * 70)
-        print("📊 ANALYSIS RESULTS")
-        print("=" * 70)
-        print(json.dumps(analysis, indent=2, default=str))
-        
-        print()
-        print("=" * 70)
-        print("🌟 CULTURE SHEET INTEGRATION")
-        print("=" * 70)
-        culture_section = analyzer.generate_microclimate_culture_section(test_taxonomy_id)
-        if culture_section:
-            print(json.dumps(culture_section, indent=2, default=str))
+    print()
+    print("=" * 70)
+    print("📊 ANALYSIS RESULTS")
+    print("=" * 70)
+    print(json.dumps(analysis, indent=2, default=str))
+    
+    print()
+    print("=" * 70)
+    print("🌟 CULTURE SHEET SECTION")
+    print("=" * 70)
+    culture_section = analyzer.generate_microclimate_culture_section(test_taxonomy_id)
+    print(json.dumps(culture_section, indent=2, default=str))
     
     print()
     print("✅ Analysis complete!")
