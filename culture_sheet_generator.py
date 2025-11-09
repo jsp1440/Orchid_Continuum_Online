@@ -133,6 +133,77 @@ class CultureSheetGenerator:
                 print(f"   ⚠️  Substrate recommendation failed: {e}")
                 substrate_recs = {'status': 'error', 'error': str(e)}
         
+        # NEW: Get growing environment delta analysis (personalized recommendations)
+        environment_analysis = None
+        if self.enable_environment_delta and growing_environment_id:
+            try:
+                print(f"   🏠 Analyzing growing environment (ID: {growing_environment_id})...")
+                
+                # Load user's growing environment
+                growing_env = self.environment_manager.get_environment(growing_environment_id)
+                
+                if growing_env:
+                    # Mark as recently used
+                    self.environment_manager.mark_used(growing_environment_id)
+                    
+                    # Build species requirements from available data
+                    species_requirements = {}
+                    
+                    # Temperature from Baker or AOS
+                    if baker_data and baker_data.get('temp_summer_day_min'):
+                        species_requirements['temperature'] = {
+                            'min': baker_data.get('temp_summer_night_min', 60),
+                            'max': baker_data.get('temp_summer_day_max', 85),
+                            'category': baker_data.get('climate_zone', 'intermediate')
+                        }
+                    elif aos_data and aos_data.get('temperature_requirements'):
+                        temp_req = aos_data['temperature_requirements']
+                        species_requirements['temperature'] = {
+                            'min': temp_req.get('night_min', 60),
+                            'max': temp_req.get('day_max', 85),
+                            'category': temp_req.get('category', 'intermediate')
+                        }
+                    
+                    # Humidity from Baker or AOS
+                    if baker_data and baker_data.get('humidity_min'):
+                        humidity_avg = (baker_data['humidity_min'] + baker_data.get('humidity_max', baker_data['humidity_min'])) / 2
+                        species_requirements['humidity'] = int(humidity_avg)
+                    elif aos_data and aos_data.get('humidity_requirements'):
+                        species_requirements['humidity'] = aos_data['humidity_requirements'].get('target', 60)
+                    
+                    # Light from Baker or AOS
+                    if baker_data and baker_data.get('light_level'):
+                        species_requirements['light'] = baker_data['light_level']
+                    elif aos_data and aos_data.get('light_requirements'):
+                        species_requirements['light'] = aos_data['light_requirements'].get('level', 'medium')
+                    
+                    # Run delta analysis
+                    environment_analysis = self.delta_analyzer.generate_comprehensive_analysis(
+                        species_data=species_requirements,
+                        growing_environment=growing_env
+                    )
+                    
+                    # Adjust substrate recommendations based on environmental deltas
+                    if substrate_recs and environment_analysis:
+                        substrate_adjustments = self.delta_analyzer.adjust_substrate_for_conditions(
+                            base_substrate_recs=substrate_recs,
+                            environmental_deltas={
+                                'temperature': environment_analysis['temperature_delta'],
+                                'humidity': environment_analysis['humidity_delta'],
+                                'light': environment_analysis['light_delta']
+                            }
+                        )
+                        # Add adjustments to substrate recs
+                        substrate_recs['environmental_adjustments'] = substrate_adjustments
+                    
+                    print(f"   ✅ Environment analysis complete (compatibility: {environment_analysis['compatibility_score']}/100)")
+                else:
+                    print(f"   ⚠️  Growing environment ID {growing_environment_id} not found")
+                    
+            except Exception as e:
+                print(f"   ⚠️  Environment analysis failed: {e}")
+                environment_analysis = {'status': 'error', 'error': str(e)}
+        
         # Generate comparison and recommendations
         culture_sheet = self._merge_and_analyze(
             species_info=species_info,
@@ -142,6 +213,7 @@ class CultureSheetGenerator:
             monthly_comparison=monthly_comparison,
             microclimate_data=microclimate_data,
             substrate_recs=substrate_recs,
+            environment_analysis=environment_analysis,
             location={'lat': latitude, 'lon': longitude, 'city': city, 'country': country}
         )
         
@@ -645,6 +717,7 @@ class CultureSheetGenerator:
         monthly_comparison: Optional[Dict],
         microclimate_data: Optional[Dict],
         substrate_recs: Optional[Dict],
+        environment_analysis: Optional[Dict],
         location: Dict
     ) -> Dict:
         """Merge all data sources including microclimate analysis and substrate recommendations"""
@@ -763,6 +836,23 @@ class CultureSheetGenerator:
             culture_sheet['substrate_recommendations'] = {
                 'data': substrate_recs,
                 'generated_at': datetime.now().isoformat()
+            }
+        
+        # NEW: Growing Environment Personalization
+        if environment_analysis:
+            # Convert datetime objects to strings for JSON serialization
+            env_data = environment_analysis.copy()
+            # The growing_environment_name should already be a string, but ensure all nested objects are serializable
+            culture_sheet['environment_personalization'] = {
+                'compatibility_score': env_data.get('compatibility_score'),
+                'compatibility_rating': env_data.get('compatibility_rating'),
+                'growing_environment_name': env_data.get('growing_environment_name'),
+                'summary': env_data.get('summary'),
+                'temperature_delta': env_data.get('temperature_delta'),
+                'humidity_delta': env_data.get('humidity_delta'),
+                'light_delta': env_data.get('light_delta'),
+                'generated_at': datetime.now().isoformat(),
+                'unique_feature': 'Personalized recommendations based on YOUR actual growing conditions'
             }
         
         # Generate location-specific recommendations
