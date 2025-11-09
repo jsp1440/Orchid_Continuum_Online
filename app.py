@@ -561,3 +561,20 @@ try:
 except Exception as e:
     print(f"Upload Monitor initialization error: {e}")
 
+
+# ============================================================================
+# CULTURE SHEET WIDGET WITH NEON ONE INTEGRATION & CREDIT SYSTEM
+# ============================================================================
+try:
+    from widget_api_routes import widget_api
+    app.register_blueprint(widget_api)
+    print("🌺 Culture Sheet Widget API initialized (Neon One + Credits)")
+except Exception as e:
+    print(f"Widget API initialization error: {e}")
+
+try:
+    from admin_widget_routes import admin_widget_bp
+    app.register_blueprint(admin_widget_bp)
+    print("⚙️  Widget Admin Dashboard initialized")
+except Exception as e:
+    print(f"Admin Widget routes initialization error: {e}")
