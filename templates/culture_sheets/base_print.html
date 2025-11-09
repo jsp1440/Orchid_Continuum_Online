@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ species_name }} - Culture Sheet</title>
+    <link rel="stylesheet" href="/static/css/culture_sheets/print.css">
+    <style>
+        /* Inline styles for immediate rendering */
+        @media print {
+            body { margin: 0; padding: 0; }
+            .no-print { display: none; }
+            .page-break { page-break-after: always; }
+        }
+    </style>
+</head>
+<body class="print-template format-{{ format }}" data-artwork="{{ artwork_style }}">
+    
+    <!-- Print Controls (hidden when printing) -->
+    <div class="no-print print-controls">
+        <button onclick="window.print()">🖨️ Print</button>
+        <button onclick="window.close()">❌ Close</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="culture-sheet-container">
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+{% extends "culture_sheets/base_print.html" %}
+
+{% block content %}
+<div class="culture-sheet single-page">
+    
+    <!-- Header Section -->
+    <header class="sheet-header">
+        {% if artwork_url %}
+        <div class="artwork-header">
+            <img src="{{ artwork_url }}" alt="{{ species_name }} illustration">
+        </div>
+        {% endif %}
+        
+        <div class="species-info">
+            <h1 class="species-name">{{ species_name }}</h1>
+            <p class="genus-family">{{ genus }} | {{ family }}</p>
+            {% if native_origin %}
+            <p class="native-origin">Native to: {{ native_origin }}</p>
+            {% endif %}
+        </div>
+        
+        {% if climate_data %}
+        <div class="climate-badge">
+            <span class="usda-zone">Zone {{ climate_data.usda_zone }}</span>
+            <span class="climate-type">{{ climate_data.climate_type }}</span>
+        </div>
+        {% endif %}
+    </header>
+
+    <!-- Main Content Grid -->
+    <div class="content-grid">
+        
+        <!-- Temperature Section -->
+        {% if temperature %}
+        <section class="culture-section temperature">
+            <h2>🌡️ Temperature</h2>
+            <div class="section-content">
+                {% if temperature.summer_day %}
+                <div class="temp-range">
+                    <label>Summer Days:</label>
+                    <span>{{ temperature.summer_day }}</span>
+                </div>
+                <div class="temp-range">
+                    <label>Summer Nights:</label>
+                    <span>{{ temperature.summer_night }}</span>
+                </div>
+                <div class="temp-range">
+                    <label>Winter Days:</label>
+                    <span>{{ temperature.winter_day }}</span>
+                </div>
+                <div class="temp-range">
+                    <label>Winter Nights:</label>
+                    <span>{{ temperature.winter_night }}</span>
+                </div>
+                {% elif temperature.requirements %}
+                <p>{{ temperature.requirements }}</p>
+                {% endif %}
+                <small class="data-source">Source: {{ temperature.source }}</small>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Light Section -->
+        {% if light %}
+        <section class="culture-section light">
+            <h2>☀️ Light</h2>
+            <div class="section-content">
+                {% if light.footcandles %}
+                <div class="light-level">
+                    <label>Footcandles:</label>
+                    <span>{{ light.footcandles }}</span>
+                </div>
+                {% endif %}
+                {% if light.level %}
+                <div class="light-level">
+                    <label>Level:</label>
+                    <span>{{ light.level }}</span>
+                </div>
+                {% endif %}
+                {% if light.requirements %}
+                <p>{{ light.requirements[:200] }}...</p>
+                {% endif %}
+                <small class="data-source">Source: {{ light.source }}</small>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Water Section -->
+        {% if water %}
+        <section class="culture-section water">
+            <h2>💧 Water</h2>
+            <div class="section-content">
+                {% if water.frequency %}
+                <div class="water-freq">
+                    <label>Frequency:</label>
+                    <span>{{ water.frequency }}</span>
+                </div>
+                {% endif %}
+                {% if water.requirements %}
+                <p>{{ water.requirements[:200] }}...</p>
+                {% elif water.description %}
+                <p>{{ water.description[:200] }}...</p>
+                {% endif %}
+                <small class="data-source">Source: {{ water.source }}</small>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Humidity Section -->
+        {% if humidity %}
+        <section class="culture-section humidity">
+            <h2>💨 Humidity</h2>
+            <div class="section-content">
+                {% if humidity.range %}
+                <div class="humidity-range">
+                    <label>Range:</label>
+                    <span>{{ humidity.range }}</span>
+                </div>
+                {% endif %}
+                {% if humidity.requirements %}
+                <p>{{ humidity.requirements[:150] }}...</p>
+                {% elif humidity.description %}
+                <p>{{ humidity.description[:150] }}...</p>
+                {% endif %}
+                <small class="data-source">Source: {{ humidity.source }}</small>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Potting Section -->
+        {% if potting %}
+        <section class="culture-section potting">
+            <h2>🪴 Potting</h2>
+            <div class="section-content">
+                {% if potting.media %}
+                <div class="potting-media">
+                    <label>Media:</label>
+                    <span>{{ potting.media }}</span>
+                </div>
+                {% endif %}
+                {% if potting.mounting_recommended %}
+                <p class="mounting-note">✓ Mounting recommended</p>
+                {% endif %}
+                {% if potting.requirements %}
+                <p>{{ potting.requirements[:150] }}...</p>
+                {% endif %}
+                <small class="data-source">Source: {{ potting.source }}</small>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Fertilizer Section -->
+        {% if fertilizer %}
+        <section class="culture-section fertilizer">
+            <h2>🌱 Fertilizer</h2>
+            <div class="section-content">
+                {% if fertilizer.recommendation %}
+                <p>{{ fertilizer.recommendation }}</p>
+                {% elif fertilizer.requirements %}
+                <p>{{ fertilizer.requirements[:150] }}...</p>
+                {% endif %}
+                <small class="data-source">Source: {{ fertilizer.source }}</small>
+            </div>
+        </section>
+        {% endif %}
+
+    </div>
+
+    <!-- Monthly Climate Comparison Table -->
+    {% if monthly_comparison and monthly_comparison.grower_location %}
+    <section class="monthly-comparison">
+        <h2>📅 Monthly Climate Comparison</h2>
+        <p class="location-label">Your Location: {{ location_name }}</p>
+        
+        <table class="monthly-table">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Avg High</th>
+                    <th>Avg Low</th>
+                    <th>Precip (mm)</th>
+                    <th>Humidity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for month_data in monthly_comparison.grower_location.months %}
+                <tr>
+                    <td>{{ month_data.month }}</td>
+                    <td>{{ month_data.avg_high }}°F</td>
+                    <td>{{ month_data.avg_low }}°F</td>
+                    <td>{{ month_data.precipitation }}</td>
+                    <td>{{ month_data.humidity }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% if monthly_comparison.note %}
+        <p class="comparison-note"><small>{{ monthly_comparison.note }}</small></p>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    <!-- Footer -->
+    <footer class="sheet-footer">
+        <p>Generated by The Orchid Continuum | {{ generated_date }}</p>
+        <p class="data-attribution">
+            {% if data_sources.baker %}Baker Methodology{% endif %}
+            {% if data_sources.aos %}{{ ' + AOS Guidelines' if data_sources.baker else 'AOS Guidelines' }}{% endif %}
+            {% if data_sources.weather %}{{ ' + Climate Data' if (data_sources.baker or data_sources.aos) else 'Climate Data' }}{% endif %}
+        </p>
+    </footer>
+
+</div>
+{% endblock %}
