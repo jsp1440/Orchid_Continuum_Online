@@ -34,17 +34,12 @@ def main():
     print("STEP 2: Generate culture sheet with environment personalization")
     print("-" * 80)
     
-    # Temporarily monkey-patch _save_to_cache to skip caching for testing
+    # Create generator with caching enabled (testing production path)
     generator = CultureSheetGenerator(
         enable_microclimate=True,
         enable_substrate=True,
         enable_environment_delta=True
     )
-    
-    # Skip caching for now (to avoid JSON serialization issues during testing)
-    def skip_cache(*args, **kwargs):
-        pass
-    generator._save_to_cache = skip_cache
     
     # Test with taxonomy_id=517 (Apostasia Blume)
     culture_sheet = generator.generate_culture_sheet(

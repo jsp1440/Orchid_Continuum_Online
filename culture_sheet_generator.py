@@ -926,6 +926,37 @@ class CultureSheetGenerator:
         """Save generated culture sheet to cache"""
         expires_at = datetime.now() + timedelta(days=30)
         
+        # Sanitize culture_sheet for JSON serialization with cycle detection
+        def sanitize_for_json(obj, seen=None):
+            """Recursively convert non-JSON-serializable objects"""
+            if seen is None:
+                seen = set()
+            
+            # Check for circular reference using object id
+            obj_id = id(obj)
+            if obj_id in seen:
+                return "<circular reference>"
+            
+            if isinstance(obj, dict):
+                seen.add(obj_id)
+                result = {k: sanitize_for_json(v, seen) for k, v in obj.items()}
+                seen.remove(obj_id)
+                return result
+            elif isinstance(obj, list):
+                seen.add(obj_id)
+                result = [sanitize_for_json(item, seen) for item in obj]
+                seen.remove(obj_id)
+                return result
+            elif isinstance(obj, datetime):
+                return obj.isoformat()
+            elif isinstance(obj, (int, float, str, bool, type(None))):
+                return obj
+            else:
+                # Convert other types to string representation
+                return str(obj)
+        
+        sanitized_culture_sheet = sanitize_for_json(culture_sheet)
+        
         self.cur.execute("""
             INSERT INTO culture_sheet_cache (
                 taxonomy_id, location_lat, location_lon,
@@ -935,7 +966,7 @@ class CultureSheetGenerator:
             ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """, (
             taxonomy_id, lat, lon,
-            json.dumps(culture_sheet),
+            json.dumps(sanitized_culture_sheet),
             baker_used, aos_used,
             datetime.now(), expires_at
         ))
