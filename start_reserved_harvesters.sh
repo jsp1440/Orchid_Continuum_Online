@@ -1,6 +1,7 @@
 #!/bin/sh
-# RESERVED VM HARVESTER - Standalone, no Flask, no migrations
+# RESERVED VM HARVESTER - BULLETPROOF SUPERVISOR VERSION
 # Uses /bin/sh for production compatibility
+# Auto-restarts workers if they die
 
 echo "========================================"
 echo "Orchid Continuum Reserved VM Harvester"
@@ -38,33 +39,39 @@ if [ $? -ne 0 ]; then
 fi
 
 echo ""
-echo "Starting 5 GBIF harvester workers..."
+echo "Starting supervised workers..."
 
-# Start workers in background
-python3 workers/gbif_expanded_worker.py gbif-vm-1 &
-echo "  Worker 1 started"
+# Function to run a worker with auto-restart
+run_worker() {
+    WORKER_NAME=$1
+    while true; do
+        echo "[SUPERVISOR] Starting $WORKER_NAME..."
+        python3 workers/gbif_expanded_worker.py "$WORKER_NAME"
+        EXIT_CODE=$?
+        echo "[SUPERVISOR] $WORKER_NAME exited with code $EXIT_CODE, restarting in 10s..."
+        sleep 10
+    done
+}
 
-python3 workers/gbif_expanded_worker.py gbif-vm-2 &
-echo "  Worker 2 started"
+# Start 5 supervised workers in background
+run_worker gbif-vm-1 &
+run_worker gbif-vm-2 &
+run_worker gbif-vm-3 &
+run_worker gbif-vm-4 &
+run_worker gbif-vm-5 &
 
-python3 workers/gbif_expanded_worker.py gbif-vm-3 &
-echo "  Worker 3 started"
-
-python3 workers/gbif_expanded_worker.py gbif-vm-4 &
-echo "  Worker 4 started"
-
-python3 workers/gbif_expanded_worker.py gbif-vm-5 &
-echo "  Worker 5 started"
-
-echo ""
-echo "Starting API Fallback Coordinator..."
-python3 workers/api_fallback_coordinator.py &
-echo "  Coordinator started"
+# Start API Fallback Coordinator with auto-restart
+while true; do
+    echo "[SUPERVISOR] Starting API Fallback Coordinator..."
+    python3 workers/api_fallback_coordinator.py
+    echo "[SUPERVISOR] Coordinator exited, restarting in 10s..."
+    sleep 10
+done &
 
 echo ""
 echo "========================================"
-echo "All harvesters running 24/7"
+echo "All harvesters running with supervision"
 echo "========================================"
 
-# Keep running forever
+# Keep the main process alive
 wait

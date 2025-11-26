@@ -4,8 +4,10 @@ GBIF EXPANDED WORKER - Global Coverage (ALL 247 Countries)
 ===========================================================
 Harvests from GBIF with complete country coverage and automatic fallback
 Designed for maximum coverage with API resilience
+
+BULLETPROOF VERSION: Auto-recovers from ALL crashes
 """
-import os, sys, time, requests, psycopg2, json, hashlib
+import os, sys, time, requests, psycopg2, json, hashlib, traceback
 from psycopg2 import pool
 from datetime import datetime
 
@@ -42,19 +44,35 @@ GBIF_COUNTRIES = [
 
 BATCH_SIZE = 5
 RECLAIM_MINUTES = 7
-REQUEST_DELAY = 0.3  # 300ms between requests
+REQUEST_DELAY = 0.3
 
-pool_obj = pool.SimpleConnectionPool(minconn=1, maxconn=5, dsn=os.environ.get('DATABASE_URL'))
-stats = {'added': 0, 'start': time.time(), 'errors': 0, 'api_failures': 0}
+pool_obj = None
+stats = {'added': 0, 'start': time.time(), 'errors': 0, 'api_failures': 0, 'restarts': 0}
+
+def init_pool():
+    global pool_obj
+    try:
+        pool_obj = pool.SimpleConnectionPool(minconn=1, maxconn=5, dsn=os.environ.get('DATABASE_URL'))
+        return True
+    except Exception as e:
+        print(f"[{WORKER_ID}] Pool init failed: {e}")
+        return False
 
 def get_conn():
+    global pool_obj
+    if pool_obj is None:
+        init_pool()
     return pool_obj.getconn()
 
 def put_conn(c):
-    pool_obj.putconn(c)
+    global pool_obj
+    if pool_obj and c:
+        try:
+            pool_obj.putconn(c)
+        except:
+            pass
 
 def check_api_health():
-    """Test if GBIF API is responding"""
     try:
         resp = requests.get("https://api.gbif.org/v1/occurrence/search", 
                           params={'limit': 1}, timeout=5)
@@ -63,13 +81,12 @@ def check_api_health():
         return False
 
 def fetch_gbif(name, country=None):
-    """Fetch from GBIF with error handling"""
     time.sleep(REQUEST_DELAY)
     
     p = {
         'scientificName': name, 
         'mediaType': 'StillImage', 
-        'limit': 50,  # Increased batch size
+        'limit': 50,
         'hasCoordinate': 'true'
     }
     if country:
@@ -113,18 +130,16 @@ def fetch_gbif(name, country=None):
         return []
 
 def save_image(taxonomy_id, img_data):
-    """Save image with deduplication"""
+    c = None
     try:
         c = get_conn()
         r = c.cursor()
         
-        # Check duplicate by URL
         r.execute("SELECT id FROM orchid_images WHERE image_url = %s", (img_data['url'],))
         if r.fetchone():
             put_conn(c)
             return False
         
-        # Insert
         r.execute("""
             INSERT INTO orchid_images (
                 taxonomy_id, image_url, image_source, gbif_occurrence_key,
@@ -142,12 +157,15 @@ def save_image(taxonomy_id, img_data):
         put_conn(c)
         return True
     except Exception as e:
-        c.rollback()
-        put_conn(c)
+        if c:
+            try:
+                c.rollback()
+            except:
+                pass
+            put_conn(c)
         return False
 
 def harvest_by_country(genus, species, country, taxonomy_id):
-    """Target specific country"""
     imgs = fetch_gbif(f"{genus} {species}", country)
     added = 0
     for img in imgs:
@@ -156,50 +174,100 @@ def harvest_by_country(genus, species, country, taxonomy_id):
     return added
 
 def lease_jobs(n=BATCH_SIZE):
-    """Get pending jobs from queue"""
-    c = get_conn()
+    c = None
     try:
+        c = get_conn()
         r = c.cursor()
         r.execute(f"UPDATE harvest_jobs SET status='pending', lease_owner=NULL WHERE status='leased' AND leased_at < NOW() - INTERVAL '{RECLAIM_MINUTES} minutes'")
         sql = "UPDATE harvest_jobs SET status='leased', lease_owner=%s, leased_at=NOW() WHERE id IN (SELECT id FROM harvest_jobs WHERE status='pending' ORDER BY priority DESC LIMIT %s FOR UPDATE SKIP LOCKED) RETURNING id, taxonomy_id, scientific_name"
         r.execute(sql, (WORKER_ID, n))
         jobs = r.fetchall()
         c.commit()
-        return jobs
-    finally:
         put_conn(c)
+        return jobs
+    except Exception as e:
+        print(f"[{WORKER_ID}] lease_jobs error: {e}")
+        if c:
+            try:
+                c.rollback()
+            except:
+                pass
+            put_conn(c)
+        return []
 
-def main():
-    print(f"[{WORKER_ID}] GBIF Expanded Worker - ALL {len(GBIF_COUNTRIES)} Countries")
-    print(f"[{WORKER_ID}] API Health: {'✅' if check_api_health() else '❌'}")
+def process_jobs():
+    jobs = lease_jobs()
+    if not jobs:
+        print(f"[{WORKER_ID}] No jobs, waiting...")
+        time.sleep(30)
+        return
     
-    while True:
-        jobs = lease_jobs()
-        if not jobs:
-            print(f"[{WORKER_ID}] No jobs, waiting...")
-            time.sleep(30)
-            continue
-        
-        for job_id, taxonomy_id, sci_name in jobs:
-            genus, species = sci_name.split()[:2] if ' ' in sci_name else [sci_name, '']
+    for job_id, taxonomy_id, sci_name in jobs:
+        try:
+            parts = sci_name.split() if sci_name else ['Unknown']
+            genus = parts[0] if parts else 'Unknown'
+            species = parts[1] if len(parts) > 1 else ''
             
             added_total = 0
             for country in GBIF_COUNTRIES:
-                added = harvest_by_country(genus, species, country, taxonomy_id)
-                added_total += added
-                if added > 0:
-                    print(f"[{WORKER_ID}] {genus} {species}: +{added} ({country})")
+                try:
+                    added = harvest_by_country(genus, species, country, taxonomy_id)
+                    added_total += added
+                    if added > 0:
+                        print(f"[{WORKER_ID}] {genus} {species}: +{added} ({country})")
+                except Exception as e:
+                    print(f"[{WORKER_ID}] Country {country} error: {e}")
+                    continue
             
-            # Mark job complete
-            c = get_conn()
+            c = None
             try:
+                c = get_conn()
                 r = c.cursor()
                 r.execute("UPDATE harvest_jobs SET status='complete' WHERE id=%s", (job_id,))
                 c.commit()
                 stats['added'] += added_total
                 print(f"[{WORKER_ID}] Job {job_id} complete: +{added_total} images")
+            except Exception as e:
+                print(f"[{WORKER_ID}] Job complete error: {e}")
             finally:
-                put_conn(c)
+                if c:
+                    put_conn(c)
+        except Exception as e:
+            print(f"[{WORKER_ID}] Job {job_id} failed: {e}")
+            continue
+
+def main():
+    print(f"[{WORKER_ID}] GBIF Expanded Worker - ALL {len(GBIF_COUNTRIES)} Countries")
+    print(f"[{WORKER_ID}] API Health: {'OK' if check_api_health() else 'FAILED'}")
+    
+    while True:
+        try:
+            process_jobs()
+        except Exception as e:
+            print(f"[{WORKER_ID}] Loop error: {e}")
+            time.sleep(10)
+            continue
+
+def run_forever():
+    """
+    BULLETPROOF WRAPPER: Catches ALL exceptions and restarts automatically
+    This ensures the worker NEVER dies permanently
+    """
+    while True:
+        try:
+            print(f"[{WORKER_ID}] Starting worker (restart #{stats['restarts']})...")
+            init_pool()
+            main()
+        except KeyboardInterrupt:
+            print(f"[{WORKER_ID}] Shutdown requested")
+            break
+        except Exception as e:
+            stats['restarts'] += 1
+            print(f"[{WORKER_ID}] CRASH RECOVERED: {e}")
+            print(f"[{WORKER_ID}] Traceback: {traceback.format_exc()}")
+            print(f"[{WORKER_ID}] Restarting in 30 seconds...")
+            time.sleep(30)
+            continue
 
 if __name__ == "__main__":
-    main()
+    run_forever()
