@@ -1,0 +1,36 @@
+============================================================
+🌺 SNOW ORCHIDS COLLECTION - DATABASE SUMMARY
+============================================================
+
+🌸 Fairy Slipper Orchid
+   Scientific Name: Calypso bulbosa
+   Total Images: 640
+   Countries: 129
+   Sources: GBIF, iNaturalist
+
+🌸 Glacier Orchid
+   Scientific Name: Dactylorhiza aristata
+   Total Images: 466
+   Countries: 69
+   Sources: GBIF, iNaturalist
+
+🌸 Phantom Orchid
+   Scientific Name: Cephalanthera austiniae
+   Total Images: 257
+   Countries: 2
+   Sources: GBIF
+
+🌸 Himalayan Spurred Orchid
+   Scientific Name: Habenaria intermedia D.
+   Total Images: 69
+   Countries: 16
+   Sources: GBIF, iNaturalist
+
+🌸 Mount Rainier Orchid
+   Scientific Name: Platanthera elegans ssp.
+   Total Images: 30
+   Countries: 0
+   Sources: GBIF
+
+------------------------------------------------------------
+TOTAL IMAGES: 1462
