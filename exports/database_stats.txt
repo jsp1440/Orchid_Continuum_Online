@@ -1,0 +1,23 @@
+ORCHID CONTINUUM DATABASE STATISTICS
+==================================================
+
+Total Species in Taxonomy: 35,327
+Total Images: 223,829
+Countries Represented: 247
+Data Sources: 13
+
+IMAGES BY SOURCE:
+------------------------------
+  GBIF: 126,355
+  EOL - Botanical Illustration: 95,000
+  Roberta Fox Collection: 875
+  Chris Howard Collection: 450
+  Tropicos - Missouri Botanical Garden: 436
+  iNaturalist: 265
+  EOL: 162
+  Lindenia - Iconographie des Orchidées: 147
+  Roberta Fox - Google Drive: 52
+  iDigBio: 39
+  Chris Howard Shared 2 - Google Drive: 26
+  Reichenbachia - Orchids Illustrated and Described: 12
+  ALA - Atlas of Living Australia: 10
