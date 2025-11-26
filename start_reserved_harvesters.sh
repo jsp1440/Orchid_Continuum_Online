@@ -16,11 +16,33 @@ fi
 
 # Test database connectivity
 echo "Testing database connection..."
+echo "DATABASE_URL prefix: $(echo $DATABASE_URL | cut -c1-50)..."
 python3 -c "
 import psycopg2, os, sys
+db_url = os.environ.get('DATABASE_URL', '')
+if not db_url:
+    print('ERROR: DATABASE_URL not set!')
+    sys.exit(1)
+
+# Show which database we're connecting to
+if '@' in db_url:
+    host = db_url.split('@')[1].split('/')[0]
+    print('Connecting to: {}'.format(host))
+
 try:
-    conn = psycopg2.connect(os.environ['DATABASE_URL'])
+    conn = psycopg2.connect(db_url)
     cur = conn.cursor()
+    
+    # Check if tables exist
+    cur.execute(\"\"\"SELECT table_name FROM information_schema.tables 
+                   WHERE table_schema = 'public' AND table_name IN ('orchid_taxonomy', 'orchid_images')\"\"\")
+    tables = [r[0] for r in cur.fetchall()]
+    print('Found tables: {}'.format(tables))
+    
+    if 'orchid_taxonomy' not in tables:
+        print('ERROR: orchid_taxonomy table missing!')
+        sys.exit(1)
+    
     cur.execute('SELECT COUNT(*) FROM orchid_taxonomy')
     count = cur.fetchone()[0]
     cur.execute('SELECT COUNT(*) FROM orchid_images')
