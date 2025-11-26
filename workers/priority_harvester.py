@@ -41,7 +41,8 @@ class PriorityHarvester:
                 SELECT COUNT(*) as count FROM orchid_images 
                 WHERE taxonomy_id = %s
             """, (spec["taxonomy_id"],))
-            count = cur.fetchone()["count"]
+            row = cur.fetchone()
+            count = row["count"] if row else 0
             results.append({
                 **spec,
                 "current_images": count
