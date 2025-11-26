@@ -8,6 +8,16 @@ echo "Orchid Continuum Reserved VM Harvester"
 echo "========================================"
 echo "Started: $(date)"
 
+# FORCE use of Neon database (bypasses any Replit auto-provisioned DB)
+export DATABASE_URL="postgresql://neondb_owner:npg_feOt1Ek0KLrF@ep-snowy-firefly-afvebui7.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require"
+export PGHOST="ep-snowy-firefly-afvebui7.c-2.us-west-2.aws.neon.tech"
+export PGDATABASE="neondb"
+export PGUSER="neondb_owner"
+export PGPASSWORD="npg_feOt1Ek0KLrF"
+export PGPORT="5432"
+
+echo "Forcing Neon database connection..."
+
 # Verify DATABASE_URL exists
 if [ -z "$DATABASE_URL" ]; then
     echo "ERROR: DATABASE_URL not set"
