@@ -1,6 +1,0 @@
-obs_id,species,common_name,location,latitude,longitude,date,quality,native,threatened,image_url,filename
-324460032,Diuris sulphurea,Tiger Orchid,"Lake Victoria Rd, Eagle Point, VIC, AU",-37.9218,147.6635133333,2025-11-02,research,False,False,https://inaturalist-open-data.s3.amazonaws.com/photos/587265813/original.jpg,324460032_Diuris_sulphurea_1.jpg
-324456424,Thelymitra antennifera,lemon-scented sun orchid,"S. Grampians Bal, AU-VI, AU",-37.6819095706,142.3628604423,2025-09-30,research,False,False,https://inaturalist-open-data.s3.amazonaws.com/photos/587256366/original.jpg,324456424_Thelymitra_antennifera_1.jpg
-324456423,Diuris orientis,Wallflower orchid,"S. Grampians Bal, AU-VI, AU",-37.7737385218,142.3998869802,2025-09-30,research,False,False,https://inaturalist-open-data.s3.amazonaws.com/photos/587256349/original.jpg,324456423_Diuris_orientis_1.jpg
-324456423,Diuris orientis,Wallflower orchid,"S. Grampians Bal, AU-VI, AU",-37.7737385218,142.3998869802,2025-09-30,research,False,False,https://inaturalist-open-data.s3.amazonaws.com/photos/587256354/original.jpg,324456423_Diuris_orientis_2.jpg
-324456423,Diuris orientis,Wallflower orchid,"S. Grampians Bal, AU-VI, AU",-37.7737385218,142.3998869802,2025-09-30,research,False,False,https://inaturalist-open-data.s3.amazonaws.com/photos/587256357/original.jpg,324456423_Diuris_orientis_3.jpg
