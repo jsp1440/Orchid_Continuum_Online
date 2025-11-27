@@ -5,6 +5,7 @@ GBIF EXPANDED WORKER - Global Coverage (ALL 247 Countries)
 Harvests from GBIF with complete country coverage and automatic fallback
 Designed for maximum coverage with API resilience
 Uses O(1) taxonomy lookup via taxonomy_mapper
+ALL database operations through centralized attach_record_to_taxonomy
 
 BULLETPROOF VERSION: Auto-recovers from ALL crashes
 """
@@ -19,7 +20,7 @@ from psycopg2 import pool
 from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id
+from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id, attach_record_to_taxonomy
 
 WORKER_ID = sys.argv[1] if len(sys.argv) > 1 else "gbif-expanded-1"
 
@@ -152,7 +153,7 @@ def fetch_gbif(name, country=None):
                         'observer': rec.get('recordedBy'),
                         'license': m.get('license'),
                         'gbif_key': rec.get('key'),
-                        'occurrence_meta': json.dumps(rec) if rec else None
+                        'type': 'observation'
                     })
         return imgs
     except Exception:
@@ -160,48 +161,34 @@ def fetch_gbif(name, country=None):
         return []
 
 
-def save_image(taxonomy_id, img_data):
-    c = None
-    try:
-        c = get_conn()
-        r = c.cursor()
-        
-        r.execute("SELECT id FROM orchid_images WHERE image_url = %s", (img_data['url'],))
-        if r.fetchone():
-            put_conn(c)
-            return False
-        
-        r.execute("""
-            INSERT INTO orchid_images (
-                taxonomy_id, image_url, image_source, gbif_occurrence_key,
-                country, locality, latitude, longitude, observer_name, image_license,
-                occurrence_metadata, created_at
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
-            ON CONFLICT DO NOTHING
-        """, (
-            taxonomy_id, img_data['url'], img_data['source'], img_data.get('gbif_key'),
-            img_data['country'], img_data['locality'], img_data['lat'], img_data['lon'],
-            img_data['observer'], img_data['license'], img_data.get('occurrence_meta')
-        ))
-        
-        c.commit()
-        put_conn(c)
-        return True
-    except Exception:
-        if c:
-            try:
-                c.rollback()
-            except Exception:
-                pass
-            put_conn(c)
-        return False
+def save_image_via_mapper(taxonomy_id, sci_name, img_data):
+    """Save image using centralized attach_record_to_taxonomy"""
+    record = {
+        'scientific_name': sci_name,
+        'source': img_data['source'],
+        'taxonomy_id': taxonomy_id
+    }
+    
+    result = attach_record_to_taxonomy(record, img_data['url'], metadata={
+        'country': img_data.get('country'),
+        'locality': img_data.get('locality'),
+        'latitude': img_data.get('lat'),
+        'longitude': img_data.get('lon'),
+        'observer_name': img_data.get('observer'),
+        'image_license': img_data.get('license'),
+        'gbif_occurrence_key': str(img_data.get('gbif_key', '')),
+        'image_type': img_data.get('type', 'observation'),
+        'year_observed': img_data.get('year')
+    })
+    
+    return result.get('attached', False)
 
 
-def harvest_by_country(genus, species, country, taxonomy_id):
+def harvest_by_country(genus, species, country, taxonomy_id, sci_name):
     imgs = fetch_gbif(f"{genus} {species}", country)
     added = 0
     for img in imgs:
-        if save_image(taxonomy_id, img):
+        if save_image_via_mapper(taxonomy_id, sci_name, img):
             added += 1
     return added
 
@@ -229,6 +216,42 @@ def lease_jobs(n=BATCH_SIZE):
         return []
 
 
+def complete_job(job_id):
+    c = None
+    try:
+        c = get_conn()
+        r = c.cursor()
+        r.execute("UPDATE harvest_jobs SET status='complete' WHERE id=%s", (job_id,))
+        c.commit()
+    except Exception:
+        if c:
+            try:
+                c.rollback()
+            except Exception:
+                pass
+    finally:
+        if c:
+            put_conn(c)
+
+
+def fail_job(job_id, error_msg):
+    c = None
+    try:
+        c = get_conn()
+        r = c.cursor()
+        r.execute("UPDATE harvest_jobs SET status='failed', last_error=%s WHERE id=%s", (error_msg[:200], job_id))
+        c.commit()
+    except Exception:
+        if c:
+            try:
+                c.rollback()
+            except Exception:
+                pass
+    finally:
+        if c:
+            put_conn(c)
+
+
 def process_jobs():
     jobs = lease_jobs()
     if not jobs:
@@ -241,6 +264,7 @@ def process_jobs():
             taxon = lookup_taxon_by_id(taxonomy_id)
             if not taxon.get('matched'):
                 print(f"[{WORKER_ID}] Invalid taxonomy_id {taxonomy_id}, skipping job {job_id}")
+                fail_job(job_id, 'Invalid taxonomy_id')
                 continue
             
             simple_name = simplify_name(sci_name) if sci_name else 'Unknown'
@@ -251,7 +275,7 @@ def process_jobs():
             added_total = 0
             for country in GBIF_COUNTRIES:
                 try:
-                    added = harvest_by_country(genus, species, country, taxonomy_id)
+                    added = harvest_by_country(genus, species, country, taxonomy_id, sci_name)
                     added_total += added
                     if added > 0:
                         print(f"[{WORKER_ID}] {genus} {species}: +{added} ({country})")
@@ -259,27 +283,19 @@ def process_jobs():
                     print(f"[{WORKER_ID}] Country {country} error: {e}")
                     continue
             
-            c = None
-            try:
-                c = get_conn()
-                r = c.cursor()
-                r.execute("UPDATE harvest_jobs SET status='complete' WHERE id=%s", (job_id,))
-                c.commit()
-                stats['added'] += added_total
-                print(f"[{WORKER_ID}] Job {job_id} complete: +{added_total} images")
-            except Exception as e:
-                print(f"[{WORKER_ID}] Job complete error: {e}")
-            finally:
-                if c:
-                    put_conn(c)
+            complete_job(job_id)
+            stats['added'] += added_total
+            print(f"[{WORKER_ID}] Job {job_id} complete: +{added_total} images")
+            
         except Exception as e:
             print(f"[{WORKER_ID}] Job {job_id} failed: {e}")
+            fail_job(job_id, str(e))
             continue
 
 
 def main():
     print(f"[{WORKER_ID}] GBIF Expanded Worker - ALL {len(GBIF_COUNTRIES)} Countries")
-    print(f"[{WORKER_ID}] Using O(1) taxonomy lookup")
+    print(f"[{WORKER_ID}] Using O(1) taxonomy lookup + centralized attach_record_to_taxonomy")
     print(f"[{WORKER_ID}] API Health: {'OK' if check_api_health() else 'FAILED'}")
     
     while True:

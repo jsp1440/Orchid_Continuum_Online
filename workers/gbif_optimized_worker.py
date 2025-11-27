@@ -3,13 +3,14 @@
 GBIF OPTIMIZED WORKER - High-Performance Version
 =================================================
 Key Optimizations:
-1. Batch database inserts (10+ records at once)
+1. Batch database inserts via taxonomy_mapper
 2. Larger API result pages (100 vs 50)
 3. Parallel country fetching with ThreadPoolExecutor
 4. In-memory URL deduplication cache
 5. Reduced delays (0.15s vs 0.3s)
 6. Connection pooling with larger pool
 7. O(1) taxonomy lookup via taxonomy_mapper
+8. ALL database operations through centralized taxonomy_mapper
 """
 import os
 import sys
@@ -18,12 +19,12 @@ import requests
 import psycopg2
 import json
 import threading
-from psycopg2 import pool, extras
+from psycopg2 import pool
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id
+from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id, attach_record_to_taxonomy
 
 WORKER_ID = sys.argv[1] if len(sys.argv) > 1 else "opt-1"
 
@@ -45,9 +46,6 @@ stats = {'added': 0, 'start': time.time(), 'fetched': 0, 'batches': 0}
 
 seen_urls = set()
 seen_lock = threading.Lock()
-
-insert_buffer = []
-buffer_lock = threading.Lock()
 
 
 def init_pool():
@@ -118,7 +116,9 @@ def fetch_gbif(name, country=None):
                         'lon': rec.get('decimalLongitude'),
                         'observer': rec.get('recordedBy'),
                         'license': m.get('license'),
-                        'gbif_key': rec.get('key')
+                        'gbif_key': rec.get('key'),
+                        'source': 'GBIF',
+                        'type': 'observation'
                     })
         
         stats['fetched'] += len(images)
@@ -127,74 +127,51 @@ def fetch_gbif(name, country=None):
         return []
 
 
-def flush_buffer(taxonomy_id):
-    global insert_buffer
+def save_images_via_mapper(taxonomy_id, sci_name, images):
+    """Save images using centralized attach_record_to_taxonomy"""
+    saved = 0
     
-    with buffer_lock:
-        if not insert_buffer:
-            return 0
-        batch = insert_buffer.copy()
-        insert_buffer = []
+    record = {
+        'scientific_name': sci_name,
+        'source': 'GBIF',
+        'taxonomy_id': taxonomy_id
+    }
     
-    if not batch:
-        return 0
+    for img in images:
+        result = attach_record_to_taxonomy(record, img['url'], metadata={
+            'country': img.get('country'),
+            'locality': img.get('locality'),
+            'latitude': img.get('lat'),
+            'longitude': img.get('lon'),
+            'observer_name': img.get('observer'),
+            'image_license': img.get('license'),
+            'gbif_occurrence_key': str(img.get('gbif_key', '')),
+            'image_type': img.get('type', 'observation')
+        })
+        
+        if result.get('attached'):
+            saved += 1
     
-    c = None
-    try:
-        c = get_conn()
-        cur = c.cursor()
-        
-        values = [(
-            taxonomy_id,
-            img['url'],
-            'GBIF',
-            img.get('gbif_key'),
-            img.get('country'),
-            img.get('locality'),
-            img.get('lat'),
-            img.get('lon'),
-            img.get('observer'),
-            img.get('license')
-        ) for img in batch]
-        
-        extras.execute_batch(cur, """
-            INSERT INTO orchid_images (
-                taxonomy_id, image_url, image_source, gbif_occurrence_key,
-                country, locality, latitude, longitude, observer_name, image_license
-            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-            ON CONFLICT (image_url) DO NOTHING
-        """, values, page_size=50)
-        
-        c.commit()
-        added = cur.rowcount
-        stats['added'] += added
-        stats['batches'] += 1
-        put_conn(c)
-        return added
-    except Exception:
-        if c:
-            try:
-                c.rollback()
-            except Exception:
-                pass
-            put_conn(c)
-        return 0
+    return saved
 
 
-def harvest_species(taxonomy_id, sci_name):
+def harvest_species(job_id, taxonomy_id, sci_name):
+    """Harvest species images. Returns (added_count, success_bool)"""
     taxon = lookup_taxon_by_id(taxonomy_id)
     if not taxon.get('matched'):
-        print(f"[{WORKER_ID}] Invalid taxonomy_id {taxonomy_id}, skipping")
-        return 0
+        print(f"[{WORKER_ID}] Invalid taxonomy_id {taxonomy_id}, failing job {job_id}")
+        fail_job(job_id, 'Invalid taxonomy_id')
+        return 0, False
     
     parts = sci_name.split() if sci_name else ['Unknown']
     genus = parts[0]
     species = parts[1] if len(parts) > 1 else ''
     name = f"{genus} {species}".strip()
     
+    all_images = []
+    
     global_images = fetch_gbif(name)
-    with buffer_lock:
-        insert_buffer.extend(global_images)
+    all_images.extend(global_images)
     
     def fetch_country(country):
         return fetch_gbif(name, country)
@@ -205,13 +182,15 @@ def harvest_species(taxonomy_id, sci_name):
         for future in as_completed(futures):
             try:
                 images = future.result()
-                with buffer_lock:
-                    insert_buffer.extend(images)
+                all_images.extend(images)
             except Exception:
                 pass
     
-    added = flush_buffer(taxonomy_id)
-    return added
+    added = save_images_via_mapper(taxonomy_id, sci_name, all_images)
+    stats['added'] += added
+    stats['batches'] += 1
+    
+    return added, True
 
 
 def lease_jobs(n=BATCH_SIZE):
@@ -270,8 +249,26 @@ def complete_job(job_id):
             put_conn(c)
 
 
+def fail_job(job_id, error_msg):
+    c = None
+    try:
+        c = get_conn()
+        cur = c.cursor()
+        cur.execute("UPDATE harvest_jobs SET status='failed', last_error=%s WHERE id=%s", (error_msg[:200], job_id))
+        c.commit()
+        put_conn(c)
+    except Exception:
+        if c:
+            try:
+                c.rollback()
+            except Exception:
+                pass
+            put_conn(c)
+
+
 def main():
     print(f"[{WORKER_ID}] OPTIMIZED WORKER starting with O(1) taxonomy lookup...")
+    print(f"[{WORKER_ID}] Using centralized attach_record_to_taxonomy for ALL inserts")
     init_pool()
     
     while True:
@@ -285,19 +282,20 @@ def main():
             
             with ThreadPoolExecutor(max_workers=3) as executor:
                 futures = {
-                    executor.submit(harvest_species, job[1], job[2]): job
+                    executor.submit(harvest_species, job[0], job[1], job[2]): job
                     for job in jobs
                 }
                 
                 for future in as_completed(futures):
                     job = futures[future]
                     try:
-                        added = future.result()
-                        complete_job(job[0])
-                        if added > 0:
-                            print(f"[{WORKER_ID}] {job[2]}: +{added}")
-                    except Exception:
-                        pass
+                        added, success = future.result()
+                        if success:
+                            complete_job(job[0])
+                            if added > 0:
+                                print(f"[{WORKER_ID}] {job[2]}: +{added}")
+                    except Exception as e:
+                        fail_job(job[0], str(e))
             
             elapsed = time.time() - stats['start']
             rate = stats['added'] / (elapsed / 3600) if elapsed > 0 else 0

@@ -4,7 +4,7 @@ MULTI-SOURCE ORCHID HARVESTER for Julius AI
 ============================================
 Fetches orchid images from GBIF, EOL, Tropicos, and BHL
 Uses O(1) taxonomy lookup via taxonomy_mapper
-Automatically adds new metadata fields to JSONB columns
+ALL database operations through centralized attach_record_to_taxonomy
 """
 import os
 import sys
@@ -17,7 +17,7 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, List, Optional
 
-from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id
+from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id, attach_record_to_taxonomy
 
 WORKER_ID = sys.argv[1] if len(sys.argv) > 1 else "julius-multi-1"
 BATCH_SIZE = 8
@@ -100,12 +100,10 @@ def fetch_gbif(name, country=None):
                         'lon': rec.get('decimalLongitude'),
                         'date': date,
                         'year': rec.get('year'),
-                        'occurrence_metadata': {
-                            'gbif_key': str(rec.get('key', '')),
-                            'basis_of_record': rec.get('basisOfRecord'),
-                            'recorded_by': rec.get('recordedBy'),
-                            'institution': rec.get('institutionCode')
-                        }
+                        'gbif_key': str(rec.get('key', '')),
+                        'basis_of_record': rec.get('basisOfRecord'),
+                        'recorded_by': rec.get('recordedBy'),
+                        'institution': rec.get('institutionCode')
                     })
         return imgs
     except Exception:
@@ -145,13 +143,11 @@ def fetch_eol(name):
                         'url': url,
                         'source': 'EOL',
                         'type': 'observation',
-                        'eol_metadata': {
-                            'page_id': str(page_id),
-                            'data_object_id': obj.get('dataObjectVersionID'),
-                            'license': obj.get('license', ''),
-                            'rights_holder': obj.get('rightsHolder', ''),
-                            'description': obj.get('description', '')[:500] if obj.get('description') else ''
-                        }
+                        'page_id': str(page_id),
+                        'data_object_id': obj.get('dataObjectVersionID'),
+                        'license': obj.get('license', ''),
+                        'rights_holder': obj.get('rightsHolder', ''),
+                        'description': obj.get('description', '')[:500] if obj.get('description') else ''
                     })
         
         return imgs
@@ -195,12 +191,10 @@ def fetch_tropicos(name):
                         'url': url,
                         'source': 'Tropicos',
                         'type': 'herbarium',
-                        'tropicos_metadata': {
-                            'name_id': str(name_id),
-                            'specimen_id': img.get('SpecimenId'),
-                            'detail_url': img.get('DetailUrl'),
-                            'copyright': img.get('CopyrightOwner', '')
-                        }
+                        'name_id': str(name_id),
+                        'specimen_id': img.get('SpecimenId'),
+                        'detail_url': img.get('DetailUrl'),
+                        'copyright': img.get('CopyrightOwner', '')
                     })
         
         return imgs
@@ -242,11 +236,9 @@ def fetch_bhl(name):
                             'url': img_url,
                             'source': 'BHL',
                             'type': 'botanical_plate',
-                            'media_metadata': {
-                                'page_id': str(page_id),
-                                'title_id': result.get('TitleID'),
-                                'item_id': result.get('ItemID')
-                            }
+                            'page_id': str(page_id),
+                            'title_id': result.get('TitleID'),
+                            'item_id': result.get('ItemID')
                         })
             
             time.sleep(0.3)
@@ -291,12 +283,10 @@ def fetch_ala(name):
                     'lat': occ.get('decimalLatitude'),
                     'lon': occ.get('decimalLongitude'),
                     'year': occ.get('year'),
-                    'occurrence_metadata': {
-                        'ala_uuid': occ.get('uuid', ''),
-                        'basis_of_record': occ.get('basisOfRecord'),
-                        'collector': occ.get('recordedBy'),
-                        'state': occ.get('stateProvince')
-                    }
+                    'ala_uuid': occ.get('uuid', ''),
+                    'basis_of_record': occ.get('basisOfRecord'),
+                    'collector': occ.get('recordedBy'),
+                    'state': occ.get('stateProvince')
                 })
         
         return imgs
@@ -353,12 +343,10 @@ def fetch_inaturalist(name):
                     'lon': lon,
                     'date': obs.get('observed_on'),
                     'year': obs.get('observed_on_details', {}).get('year'),
-                    'occurrence_metadata': {
-                        'inaturalist_id': str(obs.get('id', '')),
-                        'quality_grade': obs.get('quality_grade'),
-                        'observer': obs.get('user', {}).get('login'),
-                        'num_identification_agreements': obs.get('num_identification_agreements', 0)
-                    }
+                    'inaturalist_id': str(obs.get('id', '')),
+                    'quality_grade': obs.get('quality_grade'),
+                    'observer': obs.get('user', {}).get('login'),
+                    'num_agreements': obs.get('num_identification_agreements', 0)
                 })
         
         return imgs[:10]
@@ -421,13 +409,11 @@ def fetch_idigbio(name):
                         'country': index_terms.get('country'),
                         'lat': geopoint.get('lat') if isinstance(geopoint, dict) else None,
                         'lon': geopoint.get('lon') if isinstance(geopoint, dict) else None,
-                        'occurrence_metadata': {
-                            'idigbio_uuid': uuid,
-                            'institution': index_terms.get('institutioncode'),
-                            'catalog_number': index_terms.get('catalognumber'),
-                            'collector': index_terms.get('collector'),
-                            'collection_date': index_terms.get('datecollected')
-                        }
+                        'idigbio_uuid': uuid,
+                        'institution': index_terms.get('institutioncode'),
+                        'catalog_number': index_terms.get('catalognumber'),
+                        'collector': index_terms.get('collector'),
+                        'collection_date': index_terms.get('datecollected')
                     })
             
             time.sleep(0.2)
@@ -440,52 +426,101 @@ def fetch_idigbio(name):
         return []
 
 
-def save(img_data, tid):
+def save_via_mapper(img_data, taxonomy_id, sci_name):
+    """Save using centralized attach_record_to_taxonomy"""
+    record = {
+        'scientific_name': sci_name,
+        'source': img_data['source'],
+        'taxonomy_id': taxonomy_id
+    }
+    
+    metadata = {
+        'country': img_data.get('country'),
+        'latitude': img_data.get('lat'),
+        'longitude': img_data.get('lon'),
+        'observation_date': img_data.get('date'),
+        'year_observed': img_data.get('year'),
+        'image_type': img_data.get('type', 'observation')
+    }
+    
+    if img_data.get('gbif_key'):
+        metadata['gbif_occurrence_key'] = img_data['gbif_key']
+        metadata['occurrence_metadata'] = json.dumps({
+            'basis_of_record': img_data.get('basis_of_record'),
+            'recorded_by': img_data.get('recorded_by'),
+            'institution': img_data.get('institution')
+        })
+    
+    if img_data.get('page_id') and img_data['source'] == 'EOL':
+        metadata['eol_metadata'] = json.dumps({
+            'page_id': img_data.get('page_id'),
+            'data_object_id': img_data.get('data_object_id'),
+            'license': img_data.get('license'),
+            'rights_holder': img_data.get('rights_holder'),
+            'description': img_data.get('description')
+        })
+    
+    if img_data.get('name_id') and img_data['source'] == 'Tropicos':
+        metadata['tropicos_metadata'] = json.dumps({
+            'name_id': img_data.get('name_id'),
+            'specimen_id': img_data.get('specimen_id'),
+            'detail_url': img_data.get('detail_url'),
+            'copyright': img_data.get('copyright')
+        })
+    
+    if img_data.get('page_id') and img_data['source'] == 'BHL':
+        metadata['media_metadata'] = json.dumps({
+            'page_id': img_data.get('page_id'),
+            'title_id': img_data.get('title_id'),
+            'item_id': img_data.get('item_id')
+        })
+    
+    if img_data.get('inaturalist_id'):
+        metadata['occurrence_metadata'] = json.dumps({
+            'inaturalist_id': img_data.get('inaturalist_id'),
+            'quality_grade': img_data.get('quality_grade'),
+            'observer': img_data.get('observer'),
+            'num_identification_agreements': img_data.get('num_agreements', 0)
+        })
+    
+    if img_data.get('idigbio_uuid'):
+        metadata['occurrence_metadata'] = json.dumps({
+            'idigbio_uuid': img_data.get('idigbio_uuid'),
+            'institution': img_data.get('institution'),
+            'catalog_number': img_data.get('catalog_number'),
+            'collector': img_data.get('collector'),
+            'collection_date': img_data.get('collection_date')
+        })
+    
+    if img_data.get('ala_uuid'):
+        metadata['occurrence_metadata'] = json.dumps({
+            'ala_uuid': img_data.get('ala_uuid'),
+            'basis_of_record': img_data.get('basis_of_record'),
+            'collector': img_data.get('collector'),
+            'state': img_data.get('state')
+        })
+    
+    result = attach_record_to_taxonomy(record, img_data['url'], metadata=metadata)
+    
+    return result.get('attached', False)
+
+
+def complete_job(job_id):
     c = get_conn()
     try:
         r = c.cursor()
-        
-        sql = """
-        INSERT INTO orchid_images (
-            taxonomy_id, image_url, image_source, image_type,
-            country, latitude, longitude, observation_date, year_observed,
-            gbif_occurrence_key, occurrence_metadata, eol_metadata, tropicos_metadata,
-            created_at, updated_at
-        ) VALUES (
-            %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW()
-        )
-        ON CONFLICT (image_url) DO NOTHING
-        RETURNING id
-        """
-        
-        occurrence_meta = json.dumps(img_data.get('occurrence_metadata')) if img_data.get('occurrence_metadata') else None
-        eol_meta = json.dumps(img_data.get('eol_metadata')) if img_data.get('eol_metadata') else None
-        tropicos_meta = json.dumps(img_data.get('tropicos_metadata')) if img_data.get('tropicos_metadata') else None
-        
-        gbif_key = img_data.get('occurrence_metadata', {}).get('gbif_key') if img_data.get('occurrence_metadata') else None
-        
-        r.execute(sql, (
-            tid,
-            img_data['url'],
-            img_data['source'],
-            img_data['type'],
-            img_data.get('country'),
-            img_data.get('lat'),
-            img_data.get('lon'),
-            img_data.get('date'),
-            img_data.get('year'),
-            gbif_key,
-            occurrence_meta,
-            eol_meta,
-            tropicos_meta
-        ))
-        
-        result = r.fetchone()
+        r.execute("UPDATE harvest_jobs SET status='completed', completed_at=NOW() WHERE id=%s", (job_id,))
         c.commit()
-        return result is not None
-    except Exception:
-        c.rollback()
-        return False
+    finally:
+        put_conn(c)
+
+
+def fail_job(job_id, error_msg):
+    c = get_conn()
+    try:
+        r = c.cursor()
+        r.execute("UPDATE harvest_jobs SET status='failed', last_error=%s WHERE id=%s", (error_msg[:200], job_id))
+        c.commit()
     finally:
         put_conn(c)
 
@@ -496,13 +531,7 @@ def work(job):
         taxon = lookup_taxon_by_id(tid)
         if not taxon.get('matched'):
             print(f"[{WORKER_ID}] Invalid taxonomy_id {tid}, skipping job {jid}")
-            c = get_conn()
-            try:
-                r = c.cursor()
-                r.execute("UPDATE harvest_jobs SET status='failed', last_error='Invalid taxonomy_id' WHERE id=%s", (jid,))
-                c.commit()
-            finally:
-                put_conn(c)
+            fail_job(jid, 'Invalid taxonomy_id')
             return 0
         
         simple_name = simplify_name(name) if name else 'Unknown'
@@ -535,20 +564,13 @@ def work(job):
         
         saved = 0
         for img in all_imgs[:40]:
-            if save(img, tid):
+            if save_via_mapper(img, tid, name):
                 saved += 1
                 source = img['source']
                 stats['by_source'][source] = stats['by_source'].get(source, 0) + 1
         
         stats['added'] += saved
-        
-        c = get_conn()
-        try:
-            r = c.cursor()
-            r.execute("UPDATE harvest_jobs SET status='completed', completed_at=NOW() WHERE id=%s", (jid,))
-            c.commit()
-        finally:
-            put_conn(c)
+        complete_job(jid)
         
         if saved > 0:
             rate = stats['added'] / ((time.time() - stats['start']) / 60)
@@ -558,17 +580,11 @@ def work(job):
         return saved
         
     except Exception as e:
-        c = get_conn()
-        try:
-            r = c.cursor()
-            r.execute("UPDATE harvest_jobs SET status='failed', last_error=%s WHERE id=%s", (str(e)[:200], jid))
-            c.commit()
-        finally:
-            put_conn(c)
+        fail_job(jid, str(e))
         return 0
 
 
-print(f"MULTI-SOURCE WORKER: {WORKER_ID} (O(1) taxonomy lookup)")
+print(f"MULTI-SOURCE WORKER: {WORKER_ID} (O(1) taxonomy + centralized attach)")
 sources_status = []
 sources_status.append("GBIF (22 countries)")
 sources_status.append("EOL")

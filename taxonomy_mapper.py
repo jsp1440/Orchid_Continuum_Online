@@ -8,6 +8,7 @@ NO linear scanning. NO alphabetical iteration. Direct lookups only.
 
 import os
 import re
+import json
 import logging
 from typing import Dict, Optional, Tuple, Any, List
 from sqlalchemy import create_engine, text
@@ -261,18 +262,32 @@ class TaxonomyMapper:
         
         return {'matched': False, 'reason': 'unmatched_taxon', 'input_gbif_key': gbif_key}
     
-    def attach_to_taxonomy(self, record: Dict, image_url: Optional[str] = None) -> Dict:
+    def attach_to_taxonomy(self, record: Dict, image_url: Optional[str] = None, metadata: Optional[Dict] = None) -> Dict:
         """
         Attach an orchid record to the correct taxonomy node.
         Returns the taxonomy node with attachment status.
-        """
-        name = record.get('scientific_name') or record.get('name') or ''
-        if not name:
-            genus = record.get('genus', '')
-            species = record.get('species', '')
-            name = f"{genus} {species}".strip()
         
-        taxon = self.lookup(name)
+        Args:
+            record: Dict with scientific_name, source, and optionally genus/species
+            image_url: URL of the image to attach
+            metadata: Optional dict with additional image metadata fields:
+                - country, locality, latitude, longitude
+                - observation_date, year_observed
+                - observer_name, image_license, image_type
+                - gbif_occurrence_key, occurrence_metadata
+                - eol_metadata, tropicos_metadata, media_metadata
+        """
+        if record.get('taxonomy_id'):
+            taxonomy_id = record['taxonomy_id']
+            taxon = self.lookup_by_id(taxonomy_id)
+        else:
+            name = record.get('scientific_name') or record.get('name') or ''
+            if not name:
+                genus = record.get('genus', '')
+                species = record.get('species', '')
+                name = f"{genus} {species}".strip()
+            
+            taxon = self.lookup(name)
         
         if not taxon.get('matched'):
             return {
@@ -285,15 +300,51 @@ class TaxonomyMapper:
         taxonomy_id = taxon['id']
         
         if image_url:
+            meta = metadata or {}
+            
+            def serialize_json(val):
+                """Serialize dict/list to JSON string for JSONB columns"""
+                if val is None:
+                    return None
+                if isinstance(val, (dict, list)):
+                    return json.dumps(val)
+                return val
+            
             with self.engine.connect() as conn:
                 conn.execute(text("""
-                    INSERT INTO orchid_images (taxonomy_id, image_url, image_source, created_at)
-                    VALUES (:taxonomy_id, :url, :source, NOW())
+                    INSERT INTO orchid_images (
+                        taxonomy_id, image_url, image_source, image_type,
+                        country, locality, latitude, longitude,
+                        observation_date, year_observed, observer_name, image_license,
+                        gbif_occurrence_key, occurrence_metadata, eol_metadata, 
+                        tropicos_metadata, media_metadata, created_at, updated_at
+                    )
+                    VALUES (
+                        :taxonomy_id, :url, :source, :image_type,
+                        :country, :locality, :latitude, :longitude,
+                        :observation_date, :year_observed, :observer_name, :image_license,
+                        :gbif_occurrence_key, :occurrence_metadata, :eol_metadata,
+                        :tropicos_metadata, :media_metadata, NOW(), NOW()
+                    )
                     ON CONFLICT (image_url) DO NOTHING
                 """), {
                     'taxonomy_id': taxonomy_id,
                     'url': image_url,
-                    'source': record.get('source', 'unknown')
+                    'source': record.get('source', 'unknown'),
+                    'image_type': meta.get('image_type'),
+                    'country': meta.get('country'),
+                    'locality': meta.get('locality'),
+                    'latitude': meta.get('latitude'),
+                    'longitude': meta.get('longitude'),
+                    'observation_date': meta.get('observation_date') or meta.get('date'),
+                    'year_observed': meta.get('year_observed') or meta.get('year'),
+                    'observer_name': meta.get('observer_name') or meta.get('observer'),
+                    'image_license': meta.get('image_license') or meta.get('license'),
+                    'gbif_occurrence_key': meta.get('gbif_occurrence_key'),
+                    'occurrence_metadata': serialize_json(meta.get('occurrence_metadata')),
+                    'eol_metadata': serialize_json(meta.get('eol_metadata')),
+                    'tropicos_metadata': serialize_json(meta.get('tropicos_metadata')),
+                    'media_metadata': serialize_json(meta.get('media_metadata'))
                 })
                 conn.commit()
         
@@ -429,9 +480,16 @@ def lookup_taxon_by_gbif_key(gbif_key: int) -> Dict:
     return get_mapper().lookup_by_gbif_key(gbif_key)
 
 
-def attach_record_to_taxonomy(record: Dict, image_url: Optional[str] = None) -> Dict:
-    """Attach orchid record to correct taxonomy node"""
-    return get_mapper().attach_to_taxonomy(record, image_url)
+def attach_record_to_taxonomy(record: Dict, image_url: Optional[str] = None, metadata: Optional[Dict] = None) -> Dict:
+    """
+    Attach orchid record to correct taxonomy node.
+    
+    Args:
+        record: Dict with scientific_name, source, and optionally taxonomy_id/genus/species
+        image_url: URL of the image to attach
+        metadata: Optional dict with additional image metadata fields
+    """
+    return get_mapper().attach_to_taxonomy(record, image_url, metadata)
 
 
 def batch_lookup_taxa(names: list) -> Dict[str, Dict]:

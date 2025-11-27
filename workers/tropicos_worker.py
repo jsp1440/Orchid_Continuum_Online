@@ -4,6 +4,7 @@ TROPICOS-ONLY WORKER - Missouri Botanical Garden
 =================================================
 Dedicated worker for Tropicos API (REQUIRES API KEY)
 Uses O(1) taxonomy lookup via taxonomy_mapper
+ALL database operations through centralized attach_record_to_taxonomy
 Run 2 workers: python workers/tropicos_worker.py tropicos-1 ... tropicos-2
 """
 import os
@@ -15,7 +16,7 @@ import json
 from psycopg2 import pool
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id
+from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id, attach_record_to_taxonomy
 
 WORKER_ID = sys.argv[1] if len(sys.argv) > 1 else "tropicos-1"
 BATCH_SIZE = 6
@@ -105,15 +106,13 @@ def fetch_tropicos(name):
                         'url': url,
                         'source': 'Tropicos - Missouri Botanical Garden',
                         'type': 'herbarium',
-                        'tropicos_metadata': {
-                            'name_id': str(name_id),
-                            'image_id': str(img.get('ImageId', '')),
-                            'specimen_id': str(img.get('SpecimenId', '')),
-                            'detail_url': img.get('DetailUrl'),
-                            'license': img.get('LicenseName', ''),
-                            'copyright': img.get('Copyright', ''),
-                            'photographer': img.get('Photographer', '')
-                        }
+                        'name_id': str(name_id),
+                        'image_id': str(img.get('ImageId', '')),
+                        'specimen_id': str(img.get('SpecimenId', '')),
+                        'detail_url': img.get('DetailUrl'),
+                        'license': img.get('LicenseName', ''),
+                        'copyright': img.get('Copyright', ''),
+                        'photographer': img.get('Photographer', '')
                     })
         
         return imgs
@@ -122,36 +121,46 @@ def fetch_tropicos(name):
         return []
 
 
-def save(img_data, tid):
+def save_via_mapper(img_data, taxonomy_id, sci_name):
+    """Save using centralized attach_record_to_taxonomy"""
+    record = {
+        'scientific_name': sci_name,
+        'source': img_data['source'],
+        'taxonomy_id': taxonomy_id
+    }
+    
+    result = attach_record_to_taxonomy(record, img_data['url'], metadata={
+        'image_type': img_data.get('type', 'herbarium'),
+        'tropicos_metadata': json.dumps({
+            'name_id': img_data.get('name_id'),
+            'image_id': img_data.get('image_id'),
+            'specimen_id': img_data.get('specimen_id'),
+            'detail_url': img_data.get('detail_url'),
+            'license': img_data.get('license'),
+            'copyright': img_data.get('copyright'),
+            'photographer': img_data.get('photographer')
+        })
+    })
+    
+    return result.get('attached', False)
+
+
+def complete_job(job_id):
     c = get_conn()
     try:
         r = c.cursor()
-        
-        tropicos_meta = json.dumps(img_data.get('tropicos_metadata')) if img_data.get('tropicos_metadata') else None
-        
-        sql = """
-        INSERT INTO orchid_images (
-            taxonomy_id, image_url, image_source, image_type,
-            tropicos_metadata, created_at, updated_at
-        ) VALUES (
-            %s, %s, %s, %s, %s, NOW(), NOW()
-        )
-        ON CONFLICT (image_url) DO NOTHING
-        RETURNING id
-        """
-        
-        r.execute(sql, (
-            tid, img_data['url'], img_data['source'], img_data['type'],
-            tropicos_meta
-        ))
-        
-        result = r.fetchone()
+        r.execute("UPDATE harvest_jobs SET status='completed', completed_at=NOW() WHERE id=%s", (job_id,))
         c.commit()
-        return result is not None
-    except Exception:
-        c.rollback()
-        stats['errors'] += 1
-        return False
+    finally:
+        put_conn(c)
+
+
+def fail_job(job_id, error_msg):
+    c = get_conn()
+    try:
+        r = c.cursor()
+        r.execute("UPDATE harvest_jobs SET status='failed', last_error=%s WHERE id=%s", (error_msg[:200], job_id))
+        c.commit()
     finally:
         put_conn(c)
 
@@ -162,31 +171,18 @@ def work(job):
         taxon = lookup_taxon_by_id(tid)
         if not taxon.get('matched'):
             print(f"[{WORKER_ID}] Invalid taxonomy_id {tid}, skipping")
-            c = get_conn()
-            try:
-                r = c.cursor()
-                r.execute("UPDATE harvest_jobs SET status='failed', last_error='Invalid taxonomy_id' WHERE id=%s", (jid,))
-                c.commit()
-            finally:
-                put_conn(c)
+            fail_job(jid, 'Invalid taxonomy_id')
             return 0
         
         imgs = fetch_tropicos(name)
         
         saved = 0
         for img in imgs:
-            if save(img, tid):
+            if save_via_mapper(img, tid, name):
                 saved += 1
         
         stats['added'] += saved
-        
-        c = get_conn()
-        try:
-            r = c.cursor()
-            r.execute("UPDATE harvest_jobs SET status='completed', completed_at=NOW() WHERE id=%s", (jid,))
-            c.commit()
-        finally:
-            put_conn(c)
+        complete_job(jid)
         
         if saved > 0:
             rate = stats['added'] / ((time.time() - stats['start']) / 60)
@@ -195,13 +191,7 @@ def work(job):
         return saved
         
     except Exception as e:
-        c = get_conn()
-        try:
-            r = c.cursor()
-            r.execute("UPDATE harvest_jobs SET status='failed', last_error=%s WHERE id=%s", (str(e)[:200], jid))
-            c.commit()
-        finally:
-            put_conn(c)
+        fail_job(jid, str(e))
         stats['errors'] += 1
         return 0
 
@@ -210,7 +200,7 @@ if not TROPICOS_API_KEY:
     print(f"TROPICOS_API_KEY not set! Worker will not start.")
     sys.exit(1)
 
-print(f"TROPICOS WORKER: {WORKER_ID} (O(1) taxonomy lookup)")
+print(f"TROPICOS WORKER: {WORKER_ID} (O(1) taxonomy + centralized attach)")
 
 while True:
     jobs = lease()

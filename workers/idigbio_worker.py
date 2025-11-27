@@ -4,6 +4,7 @@ IDIGBIO-ONLY WORKER - Digitized Herbarium Specimens
 ====================================================
 Dedicated worker for iDigBio API (NO API KEY NEEDED)
 Uses O(1) taxonomy lookup via taxonomy_mapper
+ALL database operations through centralized attach_record_to_taxonomy
 Run 2 workers: python workers/idigbio_worker.py idigbio-1 ... idigbio-2
 """
 import os
@@ -15,7 +16,7 @@ import json
 from psycopg2 import pool
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id
+from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id, attach_record_to_taxonomy
 
 WORKER_ID = sys.argv[1] if len(sys.argv) > 1 else "idigbio-1"
 BATCH_SIZE = 5
@@ -122,14 +123,12 @@ def fetch_idigbio(name):
                         'country': index_terms.get('country'),
                         'lat': geopoint.get('lat') if isinstance(geopoint, dict) else None,
                         'lon': geopoint.get('lon') if isinstance(geopoint, dict) else None,
-                        'occurrence_metadata': {
-                            'idigbio_uuid': uuid,
-                            'media_id': media_id,
-                            'institution': index_terms.get('institutioncode'),
-                            'catalog_number': index_terms.get('catalognumber'),
-                            'collector': index_terms.get('collector'),
-                            'collection_date': index_terms.get('datecollected')
-                        }
+                        'idigbio_uuid': uuid,
+                        'media_id': media_id,
+                        'institution': index_terms.get('institutioncode'),
+                        'catalog_number': index_terms.get('catalognumber'),
+                        'collector': index_terms.get('collector'),
+                        'collection_date': index_terms.get('datecollected')
                     })
             
             time.sleep(0.2)
@@ -143,38 +142,48 @@ def fetch_idigbio(name):
         return []
 
 
-def save(img_data, tid):
+def save_via_mapper(img_data, taxonomy_id, sci_name):
+    """Save using centralized attach_record_to_taxonomy"""
+    record = {
+        'scientific_name': sci_name,
+        'source': img_data['source'],
+        'taxonomy_id': taxonomy_id
+    }
+    
+    result = attach_record_to_taxonomy(record, img_data['url'], metadata={
+        'country': img_data.get('country'),
+        'latitude': img_data.get('lat'),
+        'longitude': img_data.get('lon'),
+        'image_type': img_data.get('type', 'herbarium'),
+        'occurrence_metadata': json.dumps({
+            'idigbio_uuid': img_data.get('idigbio_uuid'),
+            'media_id': img_data.get('media_id'),
+            'institution': img_data.get('institution'),
+            'catalog_number': img_data.get('catalog_number'),
+            'collector': img_data.get('collector'),
+            'collection_date': img_data.get('collection_date')
+        })
+    })
+    
+    return result.get('attached', False)
+
+
+def complete_job(job_id):
     c = get_conn()
     try:
         r = c.cursor()
-        
-        occurrence_meta = json.dumps(img_data.get('occurrence_metadata')) if img_data.get('occurrence_metadata') else None
-        
-        sql = """
-        INSERT INTO orchid_images (
-            taxonomy_id, image_url, image_source, image_type,
-            country, latitude, longitude, occurrence_metadata, 
-            created_at, updated_at
-        ) VALUES (
-            %s, %s, %s, %s, %s, %s, %s, %s, NOW(), NOW()
-        )
-        ON CONFLICT (image_url) DO NOTHING
-        RETURNING id
-        """
-        
-        r.execute(sql, (
-            tid, img_data['url'], img_data['source'], img_data['type'],
-            img_data.get('country'), img_data.get('lat'), img_data.get('lon'),
-            occurrence_meta
-        ))
-        
-        result = r.fetchone()
+        r.execute("UPDATE harvest_jobs SET status='completed', completed_at=NOW() WHERE id=%s", (job_id,))
         c.commit()
-        return result is not None
-    except Exception:
-        c.rollback()
-        stats['errors'] += 1
-        return False
+    finally:
+        put_conn(c)
+
+
+def fail_job(job_id, error_msg):
+    c = get_conn()
+    try:
+        r = c.cursor()
+        r.execute("UPDATE harvest_jobs SET status='failed', last_error=%s WHERE id=%s", (error_msg[:200], job_id))
+        c.commit()
     finally:
         put_conn(c)
 
@@ -185,31 +194,18 @@ def work(job):
         taxon = lookup_taxon_by_id(tid)
         if not taxon.get('matched'):
             print(f"[{WORKER_ID}] Invalid taxonomy_id {tid}, skipping")
-            c = get_conn()
-            try:
-                r = c.cursor()
-                r.execute("UPDATE harvest_jobs SET status='failed', last_error='Invalid taxonomy_id' WHERE id=%s", (jid,))
-                c.commit()
-            finally:
-                put_conn(c)
+            fail_job(jid, 'Invalid taxonomy_id')
             return 0
         
         imgs = fetch_idigbio(name)
         
         saved = 0
         for img in imgs:
-            if save(img, tid):
+            if save_via_mapper(img, tid, name):
                 saved += 1
         
         stats['added'] += saved
-        
-        c = get_conn()
-        try:
-            r = c.cursor()
-            r.execute("UPDATE harvest_jobs SET status='completed', completed_at=NOW() WHERE id=%s", (jid,))
-            c.commit()
-        finally:
-            put_conn(c)
+        complete_job(jid)
         
         if saved > 0:
             rate = stats['added'] / ((time.time() - stats['start']) / 60)
@@ -218,18 +214,12 @@ def work(job):
         return saved
         
     except Exception as e:
-        c = get_conn()
-        try:
-            r = c.cursor()
-            r.execute("UPDATE harvest_jobs SET status='failed', last_error=%s WHERE id=%s", (str(e)[:200], jid))
-            c.commit()
-        finally:
-            put_conn(c)
+        fail_job(jid, str(e))
         stats['errors'] += 1
         return 0
 
 
-print(f"IDIGBIO WORKER: {WORKER_ID} (O(1) taxonomy lookup)")
+print(f"IDIGBIO WORKER: {WORKER_ID} (O(1) taxonomy + centralized attach)")
 
 while True:
     jobs = lease()
