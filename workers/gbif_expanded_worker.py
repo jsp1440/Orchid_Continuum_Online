@@ -4,16 +4,25 @@ GBIF EXPANDED WORKER - Global Coverage (ALL 247 Countries)
 ===========================================================
 Harvests from GBIF with complete country coverage and automatic fallback
 Designed for maximum coverage with API resilience
+Uses O(1) taxonomy lookup via taxonomy_mapper
 
 BULLETPROOF VERSION: Auto-recovers from ALL crashes
 """
-import os, sys, time, requests, psycopg2, json, hashlib, traceback
+import os
+import sys
+import time
+import requests
+import psycopg2
+import json
+import traceback
 from psycopg2 import pool
 from datetime import datetime
 
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id
+
 WORKER_ID = sys.argv[1] if len(sys.argv) > 1 else "gbif-expanded-1"
 
-# ALL 247 countries covered by GBIF (ISO 3166-1 alpha-2 codes)
 GBIF_COUNTRIES = [
     'AD', 'AE', 'AF', 'AG', 'AI', 'AL', 'AM', 'AO', 'AQ', 'AR', 'AS', 'AT', 'AU', 'AW', 'AX', 'AZ',
     'BA', 'BB', 'BD', 'BE', 'BF', 'BG', 'BH', 'BI', 'BJ', 'BL', 'BM', 'BN', 'BO', 'BQ', 'BR', 'BS', 'BT', 'BV', 'BW', 'BY', 'BZ',
@@ -49,6 +58,7 @@ REQUEST_DELAY = 0.3
 pool_obj = None
 stats = {'added': 0, 'start': time.time(), 'errors': 0, 'api_failures': 0, 'restarts': 0}
 
+
 def init_pool():
     global pool_obj
     try:
@@ -58,27 +68,47 @@ def init_pool():
         print(f"[{WORKER_ID}] Pool init failed: {e}")
         return False
 
+
 def get_conn():
     global pool_obj
     if pool_obj is None:
         init_pool()
     return pool_obj.getconn()
 
+
 def put_conn(c):
     global pool_obj
     if pool_obj and c:
         try:
             pool_obj.putconn(c)
-        except:
+        except Exception:
             pass
+
 
 def check_api_health():
     try:
         resp = requests.get("https://api.gbif.org/v1/occurrence/search", 
                           params={'limit': 1}, timeout=5)
         return resp.status_code == 200
-    except:
+    except Exception:
         return False
+
+
+def simplify_name(full_name):
+    parts = full_name.split()
+    if len(parts) < 2:
+        return full_name
+    
+    genus = parts[0]
+    
+    if parts[1] == 'x' and len(parts) >= 3:
+        return f"{genus} {parts[2]}"
+    
+    if len(parts) >= 3 and parts[2] in ('ssp.', 'subsp.', 'var.', 'f.', 'forma'):
+        return f"{genus} {parts[1]}"
+    
+    return f"{genus} {parts[1]}"
+
 
 def fetch_gbif(name, country=None):
     time.sleep(REQUEST_DELAY)
@@ -125,9 +155,10 @@ def fetch_gbif(name, country=None):
                         'occurrence_meta': json.dumps(rec) if rec else None
                     })
         return imgs
-    except Exception as e:
+    except Exception:
         stats['errors'] += 1
         return []
+
 
 def save_image(taxonomy_id, img_data):
     c = None
@@ -156,14 +187,15 @@ def save_image(taxonomy_id, img_data):
         c.commit()
         put_conn(c)
         return True
-    except Exception as e:
+    except Exception:
         if c:
             try:
                 c.rollback()
-            except:
+            except Exception:
                 pass
             put_conn(c)
         return False
+
 
 def harvest_by_country(genus, species, country, taxonomy_id):
     imgs = fetch_gbif(f"{genus} {species}", country)
@@ -172,6 +204,7 @@ def harvest_by_country(genus, species, country, taxonomy_id):
         if save_image(taxonomy_id, img):
             added += 1
     return added
+
 
 def lease_jobs(n=BATCH_SIZE):
     c = None
@@ -190,10 +223,11 @@ def lease_jobs(n=BATCH_SIZE):
         if c:
             try:
                 c.rollback()
-            except:
+            except Exception:
                 pass
             put_conn(c)
         return []
+
 
 def process_jobs():
     jobs = lease_jobs()
@@ -204,7 +238,13 @@ def process_jobs():
     
     for job_id, taxonomy_id, sci_name in jobs:
         try:
-            parts = sci_name.split() if sci_name else ['Unknown']
+            taxon = lookup_taxon_by_id(taxonomy_id)
+            if not taxon.get('matched'):
+                print(f"[{WORKER_ID}] Invalid taxonomy_id {taxonomy_id}, skipping job {job_id}")
+                continue
+            
+            simple_name = simplify_name(sci_name) if sci_name else 'Unknown'
+            parts = simple_name.split()
             genus = parts[0] if parts else 'Unknown'
             species = parts[1] if len(parts) > 1 else ''
             
@@ -236,8 +276,10 @@ def process_jobs():
             print(f"[{WORKER_ID}] Job {job_id} failed: {e}")
             continue
 
+
 def main():
     print(f"[{WORKER_ID}] GBIF Expanded Worker - ALL {len(GBIF_COUNTRIES)} Countries")
+    print(f"[{WORKER_ID}] Using O(1) taxonomy lookup")
     print(f"[{WORKER_ID}] API Health: {'OK' if check_api_health() else 'FAILED'}")
     
     while True:
@@ -248,11 +290,8 @@ def main():
             time.sleep(10)
             continue
 
+
 def run_forever():
-    """
-    BULLETPROOF WRAPPER: Catches ALL exceptions and restarts automatically
-    This ensures the worker NEVER dies permanently
-    """
     while True:
         try:
             print(f"[{WORKER_ID}] Starting worker (restart #{stats['restarts']})...")
@@ -268,6 +307,7 @@ def run_forever():
             print(f"[{WORKER_ID}] Restarting in 30 seconds...")
             time.sleep(30)
             continue
+
 
 if __name__ == "__main__":
     run_forever()

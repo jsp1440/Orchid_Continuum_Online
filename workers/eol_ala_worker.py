@@ -3,10 +3,19 @@
 EOL+ALA COMBO WORKER - Encyclopedia of Life + Atlas of Living Australia
 ========================================================================
 Dedicated worker for EOL and ALA APIs (NO API KEY NEEDED)
+Uses O(1) taxonomy lookup via taxonomy_mapper
 Run 1 worker: python workers/eol_ala_worker.py eol-ala-1
 """
-import os, sys, time, requests, psycopg2, json
+import os
+import sys
+import time
+import requests
+import psycopg2
+import json
 from psycopg2 import pool
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id
 
 WORKER_ID = sys.argv[1] if len(sys.argv) > 1 else "eol-ala-1"
 BATCH_SIZE = 6
@@ -16,11 +25,14 @@ REQUEST_DELAY = 0.5
 pool_obj = pool.SimpleConnectionPool(minconn=1, maxconn=5, dsn=os.environ.get('DATABASE_URL'))
 stats = {'added': 0, 'start': time.time(), 'by_source': {}, 'errors': 0}
 
+
 def get_conn():
     return pool_obj.getconn()
 
+
 def put_conn(c):
     pool_obj.putconn(c)
+
 
 def lease(n=BATCH_SIZE):
     c = get_conn()
@@ -35,36 +47,30 @@ def lease(n=BATCH_SIZE):
     finally:
         put_conn(c)
 
+
 def simplify_name(full_name):
-    """Extract binomial name (Genus species) handling hybrids, subspecies, and authors"""
     parts = full_name.split()
     if len(parts) < 2:
         return full_name
     
     genus = parts[0]
     
-    # Handle hybrid marker
     if parts[1] == 'x' and len(parts) >= 3:
         return f"{genus} {parts[2]}"
     
-    # Handle subspecies/variety markers
     if len(parts) >= 3 and parts[2] in ('ssp.', 'subsp.', 'var.', 'f.', 'forma'):
         return f"{genus} {parts[1]}"
     
-    # Normal case - just genus and species
     return f"{genus} {parts[1]}"
 
+
 def fetch_eol(name):
-    """Fetch from EOL - DISABLED due to timeout issues"""
-    # EOL API is extremely unreliable with frequent timeouts
-    # Disabling until API stability improves
     return []
 
+
 def fetch_ala(name):
-    """Fetch from ALA"""
     time.sleep(REQUEST_DELAY)
     
-    # Strip author names - ALA prefers binomial (Genus species)
     simple_name = simplify_name(name)
     
     try:
@@ -90,7 +96,6 @@ def fetch_ala(name):
                     img_url = images[0]
             
             if img_url:
-                # ALA returns UUIDs - construct full image URL
                 if not img_url.startswith('http'):
                     img_url = f"https://images.ala.org.au/image/details?imageId={img_url}"
                 
@@ -111,9 +116,10 @@ def fetch_ala(name):
                 })
         
         return imgs
-    except Exception as e:
+    except Exception:
         stats['errors'] += 1
         return []
+
 
 def save(img_data, tid):
     c = get_conn()
@@ -144,19 +150,31 @@ def save(img_data, tid):
         result = r.fetchone()
         c.commit()
         return result is not None
-    except Exception as e:
+    except Exception:
         c.rollback()
         stats['errors'] += 1
         return False
     finally:
         put_conn(c)
 
+
 def work(job):
     jid, tid, name = job
     try:
+        taxon = lookup_taxon_by_id(tid)
+        if not taxon.get('matched'):
+            print(f"[{WORKER_ID}] Invalid taxonomy_id {tid}, skipping")
+            c = get_conn()
+            try:
+                r = c.cursor()
+                r.execute("UPDATE harvest_jobs SET status='failed', last_error='Invalid taxonomy_id' WHERE id=%s", (jid,))
+                c.commit()
+            finally:
+                put_conn(c)
+            return 0
+        
         all_imgs = []
         
-        # Fetch from both sources
         all_imgs.extend(fetch_eol(name))
         all_imgs.extend(fetch_ala(name))
         
@@ -195,7 +213,8 @@ def work(job):
         stats['errors'] += 1
         return 0
 
-print(f"🌎 EOL+ALA WORKER: {WORKER_ID}")
+
+print(f"EOL+ALA WORKER: {WORKER_ID} (O(1) taxonomy lookup)")
 
 while True:
     jobs = lease()

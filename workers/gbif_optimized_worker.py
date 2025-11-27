@@ -9,22 +9,31 @@ Key Optimizations:
 4. In-memory URL deduplication cache
 5. Reduced delays (0.15s vs 0.3s)
 6. Connection pooling with larger pool
+7. O(1) taxonomy lookup via taxonomy_mapper
 """
-import os, sys, time, requests, psycopg2, json, hashlib, threading
+import os
+import sys
+import time
+import requests
+import psycopg2
+import json
+import threading
 from psycopg2 import pool, extras
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id
+
 WORKER_ID = sys.argv[1] if len(sys.argv) > 1 else "opt-1"
 
-# Top 50 countries with most orchid biodiversity (focus resources)
 TOP_COUNTRIES = [
-    'EC', 'CO', 'PE', 'BR', 'MX', 'VE', 'CR', 'PA', 'BO', 'GT',  # Americas
-    'MY', 'ID', 'PH', 'TH', 'VN', 'IN', 'CN', 'MM', 'NP', 'LK',  # Asia
-    'MG', 'TZ', 'KE', 'ZA', 'CD', 'CM', 'NG', 'GH', 'ET', 'UG',  # Africa
-    'AU', 'NZ', 'PG', 'NC', 'FJ', 'SB',                          # Oceania
-    'US', 'JP', 'TW', 'GB', 'ES', 'FR', 'IT', 'DE', 'GR', 'TR',  # Temperate
-    'CU', 'JM', 'HT', 'DO', 'PR'                                  # Caribbean
+    'EC', 'CO', 'PE', 'BR', 'MX', 'VE', 'CR', 'PA', 'BO', 'GT',
+    'MY', 'ID', 'PH', 'TH', 'VN', 'IN', 'CN', 'MM', 'NP', 'LK',
+    'MG', 'TZ', 'KE', 'ZA', 'CD', 'CM', 'NG', 'GH', 'ET', 'UG',
+    'AU', 'NZ', 'PG', 'NC', 'FJ', 'SB',
+    'US', 'JP', 'TW', 'GB', 'ES', 'FR', 'IT', 'DE', 'GR', 'TR',
+    'CU', 'JM', 'HT', 'DO', 'PR'
 ]
 
 BATCH_SIZE = 8
@@ -34,18 +43,18 @@ API_LIMIT = 100
 pool_obj = None
 stats = {'added': 0, 'start': time.time(), 'fetched': 0, 'batches': 0}
 
-# URL dedup cache
 seen_urls = set()
 seen_lock = threading.Lock()
 
-# Insert buffer for batch operations
 insert_buffer = []
 buffer_lock = threading.Lock()
+
 
 def init_pool():
     global pool_obj
     db_url = os.environ.get('DATABASE_URL')
     pool_obj = pool.ThreadedConnectionPool(minconn=2, maxconn=8, dsn=db_url)
+
 
 def get_conn():
     global pool_obj
@@ -53,15 +62,16 @@ def get_conn():
         init_pool()
     return pool_obj.getconn()
 
+
 def put_conn(c):
     if pool_obj and c:
         try:
             pool_obj.putconn(c)
-        except:
+        except Exception:
             pass
 
+
 def fetch_gbif(name, country=None):
-    """Fetch images from GBIF with larger page size"""
     time.sleep(REQUEST_DELAY)
     
     params = {
@@ -93,7 +103,6 @@ def fetch_gbif(name, country=None):
                 if m.get('type') == 'StillImage' and m.get('identifier'):
                     url = m['identifier']
                     
-                    # Check in-memory cache first
                     with seen_lock:
                         if url in seen_urls:
                             continue
@@ -114,11 +123,11 @@ def fetch_gbif(name, country=None):
         
         stats['fetched'] += len(images)
         return images
-    except:
+    except Exception:
         return []
 
+
 def flush_buffer(taxonomy_id):
-    """Batch insert buffered images"""
     global insert_buffer
     
     with buffer_lock:
@@ -162,28 +171,31 @@ def flush_buffer(taxonomy_id):
         stats['batches'] += 1
         put_conn(c)
         return added
-    except Exception as e:
+    except Exception:
         if c:
             try:
                 c.rollback()
-            except:
+            except Exception:
                 pass
             put_conn(c)
         return 0
 
+
 def harvest_species(taxonomy_id, sci_name):
-    """Harvest images for a species using parallel country fetching"""
+    taxon = lookup_taxon_by_id(taxonomy_id)
+    if not taxon.get('matched'):
+        print(f"[{WORKER_ID}] Invalid taxonomy_id {taxonomy_id}, skipping")
+        return 0
+    
     parts = sci_name.split() if sci_name else ['Unknown']
     genus = parts[0]
     species = parts[1] if len(parts) > 1 else ''
     name = f"{genus} {species}".strip()
     
-    # First, fetch without country filter (global)
     global_images = fetch_gbif(name)
     with buffer_lock:
         insert_buffer.extend(global_images)
     
-    # Then parallel fetch from top biodiversity countries
     def fetch_country(country):
         return fetch_gbif(name, country)
     
@@ -195,28 +207,25 @@ def harvest_species(taxonomy_id, sci_name):
                 images = future.result()
                 with buffer_lock:
                     insert_buffer.extend(images)
-            except:
+            except Exception:
                 pass
     
-    # Flush batch
     added = flush_buffer(taxonomy_id)
     return added
 
+
 def lease_jobs(n=BATCH_SIZE):
-    """Lease multiple jobs at once"""
     c = None
     try:
         c = get_conn()
         cur = c.cursor()
         
-        # Reclaim stale jobs
         cur.execute("""
             UPDATE harvest_jobs 
             SET status='pending', lease_owner=NULL 
             WHERE status='leased' AND leased_at < NOW() - INTERVAL '5 minutes'
         """)
         
-        # Lease new jobs
         cur.execute("""
             UPDATE harvest_jobs 
             SET status='leased', lease_owner=%s, leased_at=NOW() 
@@ -234,17 +243,17 @@ def lease_jobs(n=BATCH_SIZE):
         c.commit()
         put_conn(c)
         return jobs
-    except Exception as e:
+    except Exception:
         if c:
             try:
                 c.rollback()
-            except:
+            except Exception:
                 pass
             put_conn(c)
         return []
 
+
 def complete_job(job_id):
-    """Mark job as complete"""
     c = None
     try:
         c = get_conn()
@@ -252,16 +261,17 @@ def complete_job(job_id):
         cur.execute("UPDATE harvest_jobs SET status='completed' WHERE id=%s", (job_id,))
         c.commit()
         put_conn(c)
-    except:
+    except Exception:
         if c:
             try:
                 c.rollback()
-            except:
+            except Exception:
                 pass
             put_conn(c)
 
+
 def main():
-    print(f"[{WORKER_ID}] OPTIMIZED WORKER starting...")
+    print(f"[{WORKER_ID}] OPTIMIZED WORKER starting with O(1) taxonomy lookup...")
     init_pool()
     
     while True:
@@ -273,7 +283,6 @@ def main():
                 time.sleep(30)
                 continue
             
-            # Process jobs with parallel species handling
             with ThreadPoolExecutor(max_workers=3) as executor:
                 futures = {
                     executor.submit(harvest_species, job[1], job[2]): job
@@ -287,10 +296,9 @@ def main():
                         complete_job(job[0])
                         if added > 0:
                             print(f"[{WORKER_ID}] {job[2]}: +{added}")
-                    except Exception as e:
+                    except Exception:
                         pass
             
-            # Stats
             elapsed = time.time() - stats['start']
             rate = stats['added'] / (elapsed / 3600) if elapsed > 0 else 0
             print(f"[{WORKER_ID}] Total: {stats['added']:,} | Rate: {rate:,.0f}/hr | Batches: {stats['batches']}")
@@ -301,6 +309,7 @@ def main():
         except Exception as e:
             print(f"[{WORKER_ID}] Error: {e}")
             time.sleep(10)
+
 
 if __name__ == "__main__":
     main()

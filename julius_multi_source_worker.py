@@ -3,46 +3,53 @@
 MULTI-SOURCE ORCHID HARVESTER for Julius AI
 ============================================
 Fetches orchid images from GBIF, EOL, Tropicos, and BHL
+Uses O(1) taxonomy lookup via taxonomy_mapper
 Automatically adds new metadata fields to JSONB columns
 """
-import os, sys, time, requests, psycopg2, json
+import os
+import sys
+import time
+import requests
+import psycopg2
+import json
 from psycopg2 import pool
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, List, Optional
 
+from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id
+
 WORKER_ID = sys.argv[1] if len(sys.argv) > 1 else "julius-multi-1"
-BATCH_SIZE = 8  # JULIUS OPTIMIZATION v2: 8 reduces lock contention with many workers
-THREAD_COUNT = 12  # JULIUS OPTIMIZATION v2: 12 threads optimal for I/O-bound tasks
-RECLAIM_MINUTES = 7  # JULIUS OPTIMIZATION v2: 7 min reduces lease churn
-pool_obj = pool.SimpleConnectionPool(minconn=1, maxconn=15, dsn=os.environ.get('DATABASE_URL'))  # More connections for threads
+BATCH_SIZE = 8
+THREAD_COUNT = 12
+RECLAIM_MINUTES = 7
+
+pool_obj = pool.SimpleConnectionPool(minconn=1, maxconn=15, dsn=os.environ.get('DATABASE_URL'))
 stats = {'added': 0, 'start': time.time(), 'by_source': {}, 'errors': 0}
 
-# Regional targeting for each source - GLOBAL ORCHID HOTSPOTS
-# Asia-Pacific: AU, PG, ID, MY, PH, TH, VN, CN, NZ
-# Americas: BR, CO, EC, PE, CR, PA (orchid megadiversity!)
-# Africa: MG (Madagascar!), ZA, TZ, KE, CM, CD, RE
 GBIF_COUNTRIES = [
-    'AU', 'PG', 'ID', 'MY', 'PH', 'TH', 'VN', 'CN', 'NZ',  # Asia-Pacific (9)
-    'BR', 'CO', 'EC', 'PE', 'CR', 'PA',                     # Americas (6) - added Peru!
-    'MG', 'ZA', 'TZ', 'KE', 'CM', 'CD', 'RE'               # Africa (7) - 22 total
+    'AU', 'PG', 'ID', 'MY', 'PH', 'TH', 'VN', 'CN', 'NZ',
+    'BR', 'CO', 'EC', 'PE', 'CR', 'PA',
+    'MG', 'ZA', 'TZ', 'KE', 'CM', 'CD', 'RE'
 ]
+
 TROPICOS_API_KEY = os.environ.get('TROPICOS_API_KEY', '')
 BHL_API_KEY = os.environ.get('BHL_API_KEY', '')
-ALA_API_KEY = os.environ.get('ALA_API_KEY', '')  # Optional - ALA works without key
+ALA_API_KEY = os.environ.get('ALA_API_KEY', '')
+
 
 def get_conn():
     return pool_obj.getconn()
 
+
 def put_conn(c):
     pool_obj.putconn(c)
 
+
 def lease(n=BATCH_SIZE):
-    """Lease jobs from queue"""
     c = get_conn()
     try:
         r = c.cursor()
-        # JULIUS OPTIMIZATION v2: Use RECLAIM_MINUTES variable
         r.execute(f"UPDATE harvest_jobs SET status='pending', lease_owner=NULL WHERE status='leased' AND leased_at < NOW() - INTERVAL '{RECLAIM_MINUTES} minutes'")
         sql = "UPDATE harvest_jobs SET status='leased', lease_owner=%s, leased_at=NOW() WHERE id IN (SELECT id FROM harvest_jobs WHERE status='pending' ORDER BY priority DESC LIMIT %s FOR UPDATE SKIP LOCKED) RETURNING id, taxonomy_id, scientific_name"
         r.execute(sql, (WORKER_ID, n))
@@ -52,11 +59,24 @@ def lease(n=BATCH_SIZE):
     finally:
         put_conn(c)
 
-# ============================================================================
-# GBIF ADAPTER
-# ============================================================================
+
+def simplify_name(full_name):
+    parts = full_name.split()
+    if len(parts) < 2:
+        return full_name
+    
+    genus = parts[0]
+    
+    if parts[1] == 'x' and len(parts) >= 3:
+        return f"{genus} {parts[2]}"
+    
+    if len(parts) >= 3 and parts[2] in ('ssp.', 'subsp.', 'var.', 'f.', 'forma'):
+        return f"{genus} {parts[1]}"
+    
+    return f"{genus} {parts[1]}"
+
+
 def fetch_gbif(name, country=None):
-    """Fetch from GBIF API"""
     p = {'scientificName': name, 'mediaType': 'StillImage', 'limit': 5, 'hasCoordinate': 'true'}
     if country:
         p['country'] = country
@@ -88,16 +108,12 @@ def fetch_gbif(name, country=None):
                         }
                     })
         return imgs
-    except:
+    except Exception:
         return []
 
-# ============================================================================
-# EOL ADAPTER
-# ============================================================================
+
 def fetch_eol(name):
-    """Fetch from Encyclopedia of Life API"""
     try:
-        # Search for species
         search_url = "https://eol.org/api/search/1.0.json"
         params = {'q': name, 'page': 1, 'exact': True}
         resp = requests.get(search_url, params=params, timeout=10)
@@ -112,7 +128,6 @@ def fetch_eol(name):
         if not page_id:
             return []
         
-        # Get page data with images
         page_url = f"https://eol.org/api/pages/1.0/{page_id}.json"
         params = {'images': 5, 'videos': 0, 'details': True}
         resp = requests.get(page_url, params=params, timeout=15)
@@ -135,24 +150,20 @@ def fetch_eol(name):
                             'data_object_id': obj.get('dataObjectVersionID'),
                             'license': obj.get('license', ''),
                             'rights_holder': obj.get('rightsHolder', ''),
-                            'description': obj.get('description', '')[:500]
+                            'description': obj.get('description', '')[:500] if obj.get('description') else ''
                         }
                     })
         
         return imgs
-    except:
+    except Exception:
         return []
 
-# ============================================================================
-# TROPICOS ADAPTER
-# ============================================================================
+
 def fetch_tropicos(name):
-    """Fetch from Tropicos (Missouri Botanical Garden) API"""
     if not TROPICOS_API_KEY:
         return []
     
     try:
-        # Search for species
         search_url = "http://services.tropicos.org/Name/Search"
         params = {'apikey': TROPICOS_API_KEY, 'name': name, 'type': 'wildcard', 'format': 'json'}
         resp = requests.get(search_url, params=params, timeout=15)
@@ -167,7 +178,6 @@ def fetch_tropicos(name):
         if not name_id:
             return []
         
-        # Get images
         images_url = f"http://services.tropicos.org/Name/{name_id}/Images"
         params = {'apikey': TROPICOS_API_KEY, 'format': 'json', 'pagesize': 5}
         resp = requests.get(images_url, params=params, timeout=15)
@@ -194,19 +204,15 @@ def fetch_tropicos(name):
                     })
         
         return imgs
-    except:
+    except Exception:
         return []
 
-# ============================================================================
-# BHL ADAPTER (Biodiversity Heritage Library - Botanical Plates)
-# ============================================================================
+
 def fetch_bhl(name):
-    """Fetch botanical plates from BHL API"""
     if not BHL_API_KEY:
         return []
     
     try:
-        # Search for the name
         search_url = "https://www.biodiversitylibrary.org/api3"
         params = {'op': 'NameSearch', 'name': name, 'apikey': BHL_API_KEY, 'format': 'json'}
         resp = requests.get(search_url, params=params, timeout=15)
@@ -218,13 +224,11 @@ def fetch_bhl(name):
             return []
         
         imgs = []
-        # Get first few results
         for result in data['Result'][:3]:
             page_id = result.get('PageID')
             if not page_id:
                 continue
             
-            # Get page metadata with image URL
             page_url = "https://www.biodiversitylibrary.org/api3"
             page_params = {'op': 'GetPageMetadata', 'pageid': page_id, 'apikey': BHL_API_KEY, 'format': 'json'}
             page_resp = requests.get(page_url, params=page_params, timeout=10)
@@ -245,22 +249,18 @@ def fetch_bhl(name):
                             }
                         })
             
-            time.sleep(0.3)  # BHL rate limit
+            time.sleep(0.3)
             
-            if len(imgs) >= 3:  # Max 3 plates per species
+            if len(imgs) >= 3:
                 break
         
         return imgs
-    except:
+    except Exception:
         return []
 
-# ============================================================================
-# ALA ADAPTER (Atlas of Living Australia - Australian Orchids)
-# ============================================================================
+
 def fetch_ala(name):
-    """Fetch from Atlas of Living Australia API"""
     try:
-        # ALA Biocache API
         search_url = "https://biocache.ala.org.au/ws/occurrences/search"
         params = {
             'q': f'scientificName:"{name}"',
@@ -276,10 +276,8 @@ def fetch_ala(name):
         imgs = []
         
         for occ in data.get('occurrences', []):
-            # Get image URL
             img_url = occ.get('image')
             if not img_url:
-                # Try images array
                 images = occ.get('images', [])
                 if images and len(images) > 0:
                     img_url = images[0]
@@ -302,20 +300,16 @@ def fetch_ala(name):
                 })
         
         return imgs
-    except:
+    except Exception:
         return []
 
-# ============================================================================
-# INATURALIST ADAPTER (Community Observations - NO API KEY NEEDED)
-# ============================================================================
+
 def fetch_inaturalist(name):
-    """Fetch from iNaturalist community observations"""
     try:
-        # iNaturalist API - search by scientific name
         search_url = "https://api.inaturalist.org/v1/observations"
         params = {
             'taxon_name': name,
-            'quality_grade': 'research',  # Only verified observations
+            'quality_grade': 'research',
             'photos': 'true',
             'per_page': 20
         }
@@ -328,27 +322,35 @@ def fetch_inaturalist(name):
         imgs = []
         
         for obs in data.get('results', []):
-            # Get photos
             photos = obs.get('photos', [])
             if not photos:
                 continue
             
-            # Use first photo (usually best quality)
             photo = photos[0]
             img_url = photo.get('url')
             
-            # Get large version
             if img_url:
                 img_url = img_url.replace('square', 'large')
             
             if img_url:
+                location = obs.get('location')
+                lat = None
+                lon = None
+                if location and ',' in location:
+                    parts = location.split(',')
+                    try:
+                        lat = float(parts[0])
+                        lon = float(parts[1])
+                    except (ValueError, IndexError):
+                        pass
+                
                 imgs.append({
                     'url': img_url,
                     'source': 'iNaturalist',
                     'type': 'observation',
                     'country': obs.get('place_guess', '').split(',')[-1].strip() if obs.get('place_guess') else None,
-                    'lat': obs.get('location') and float(obs['location'].split(',')[0]),
-                    'lon': obs.get('location') and float(obs['location'].split(',')[1]) if obs.get('location') and ',' in obs['location'] else None,
+                    'lat': lat,
+                    'lon': lon,
                     'date': obs.get('observed_on'),
                     'year': obs.get('observed_on_details', {}).get('year'),
                     'occurrence_metadata': {
@@ -359,17 +361,13 @@ def fetch_inaturalist(name):
                     }
                 })
         
-        return imgs[:10]  # Max 10 images from iNaturalist per species
-    except:
+        return imgs[:10]
+    except Exception:
         return []
 
-# ============================================================================
-# IDIGBIO ADAPTER (Digitized Herbarium Specimens - NO API KEY NEEDED)
-# ============================================================================
+
 def fetch_idigbio(name):
-    """Fetch from iDigBio digitized herbarium collections"""
     try:
-        # iDigBio Search API
         search_url = "https://search.idigbio.org/v2/search/records"
         
         query = {
@@ -397,19 +395,16 @@ def fetch_idigbio(name):
             if not uuid:
                 continue
             
-            # Get media record for images
             media_url = f"https://search.idigbio.org/v2/view/records/{uuid}"
             media_resp = requests.get(media_url, timeout=10)
             
             if media_resp.status_code == 200:
                 media_data = media_resp.json()
                 
-                # Extract image URL
                 img_url = None
                 if media_data.get('data', {}).get('ac:accessURI'):
                     img_url = media_data['data']['ac:accessURI']
                 elif media_data.get('mediarecords'):
-                    # Try media records
                     for media in media_data['mediarecords']:
                         if media.get('accessuri'):
                             img_url = media['accessuri']
@@ -435,26 +430,21 @@ def fetch_idigbio(name):
                         }
                     })
             
-            time.sleep(0.2)  # Be nice to iDigBio
+            time.sleep(0.2)
             
-            if len(imgs) >= 5:  # Max 5 herbarium specimens per species
+            if len(imgs) >= 5:
                 break
         
         return imgs
-    except:
+    except Exception:
         return []
 
-# ============================================================================
-# SAVE FUNCTION - Handles all sources with dynamic JSONB metadata
-# ============================================================================
+
 def save(img_data, tid):
-    """Save image with source-specific metadata in JSONB columns"""
     c = get_conn()
     try:
         r = c.cursor()
         
-        # JULIUS OPTIMIZATION: Use ON CONFLICT instead of SELECT then INSERT
-        # This is faster and race-condition-proof
         sql = """
         INSERT INTO orchid_images (
             taxonomy_id, image_url, image_source, image_type,
@@ -468,7 +458,6 @@ def save(img_data, tid):
         RETURNING id
         """
         
-        # Extract values
         occurrence_meta = json.dumps(img_data.get('occurrence_metadata')) if img_data.get('occurrence_metadata') else None
         eol_meta = json.dumps(img_data.get('eol_metadata')) if img_data.get('eol_metadata') else None
         tropicos_meta = json.dumps(img_data.get('tropicos_metadata')) if img_data.get('tropicos_metadata') else None
@@ -491,60 +480,61 @@ def save(img_data, tid):
             tropicos_meta
         ))
         
-        # JULIUS OPTIMIZATION: RETURNING id is None if conflict, not None if inserted
         result = r.fetchone()
         c.commit()
         return result is not None
-    except Exception as e:
+    except Exception:
         c.rollback()
         return False
     finally:
         put_conn(c)
 
-# ============================================================================
-# WORKER LOGIC - Multi-source fetching
-# ============================================================================
+
 def work(job):
-    """Process one job across multiple sources"""
     jid, tid, name = job
     try:
+        taxon = lookup_taxon_by_id(tid)
+        if not taxon.get('matched'):
+            print(f"[{WORKER_ID}] Invalid taxonomy_id {tid}, skipping job {jid}")
+            c = get_conn()
+            try:
+                r = c.cursor()
+                r.execute("UPDATE harvest_jobs SET status='failed', last_error='Invalid taxonomy_id' WHERE id=%s", (jid,))
+                c.commit()
+            finally:
+                put_conn(c)
+            return 0
+        
+        simple_name = simplify_name(name) if name else 'Unknown'
         all_imgs = []
         
-        # 1. GBIF (baseline + regional)
-        all_imgs.extend(fetch_gbif(name))
-        for country in GBIF_COUNTRIES[:6]:  # Top 6 countries
-            all_imgs.extend(fetch_gbif(name, country))
+        all_imgs.extend(fetch_gbif(simple_name))
+        for country in GBIF_COUNTRIES[:6]:
+            all_imgs.extend(fetch_gbif(simple_name, country))
             time.sleep(0.08)
         
-        # 2. EOL
-        all_imgs.extend(fetch_eol(name))
+        all_imgs.extend(fetch_eol(simple_name))
         time.sleep(0.5)
         
-        # 3. ALA (Atlas of Living Australia)
-        all_imgs.extend(fetch_ala(name))
+        all_imgs.extend(fetch_ala(simple_name))
         time.sleep(0.5)
         
-        # 4. iNaturalist (community observations)
-        all_imgs.extend(fetch_inaturalist(name))
+        all_imgs.extend(fetch_inaturalist(simple_name))
         time.sleep(0.5)
         
-        # 5. iDigBio (herbarium specimens)
-        all_imgs.extend(fetch_idigbio(name))
+        all_imgs.extend(fetch_idigbio(simple_name))
         time.sleep(0.5)
         
-        # 6. Tropicos (if API key available)
         if TROPICOS_API_KEY:
-            all_imgs.extend(fetch_tropicos(name))
+            all_imgs.extend(fetch_tropicos(simple_name))
             time.sleep(0.5)
         
-        # 7. BHL (if API key available)
         if BHL_API_KEY:
-            all_imgs.extend(fetch_bhl(name))
+            all_imgs.extend(fetch_bhl(simple_name))
             time.sleep(0.5)
         
-        # Save images and track by source
         saved = 0
-        for img in all_imgs[:40]:  # Max 40 images per species per cycle
+        for img in all_imgs[:40]:
             if save(img, tid):
                 saved += 1
                 source = img['source']
@@ -552,7 +542,6 @@ def work(job):
         
         stats['added'] += saved
         
-        # Mark job complete
         c = get_conn()
         try:
             r = c.cursor()
@@ -578,34 +567,25 @@ def work(job):
             put_conn(c)
         return 0
 
-# ============================================================================
-# MAIN LOOP
-# ============================================================================
-print(f"🌺 MULTI-SOURCE WORKER: {WORKER_ID}")
+
+print(f"MULTI-SOURCE WORKER: {WORKER_ID} (O(1) taxonomy lookup)")
 sources_status = []
-sources_status.append("GBIF (13 countries)")
+sources_status.append("GBIF (22 countries)")
 sources_status.append("EOL")
 sources_status.append("ALA (Australia)")
 sources_status.append("iNaturalist")
 sources_status.append("iDigBio (herbarium)")
-sources_status.append(f"Tropicos{'✓' if TROPICOS_API_KEY else '✗'}")
-sources_status.append(f"BHL{'✓' if BHL_API_KEY else '✗'}")
-print(f"Sources: {', '.join(sources_status)}")
-print(f"Started: {datetime.now().strftime('%I:%M:%S %p')}\n")
-
-executor = ThreadPoolExecutor(max_workers=THREAD_COUNT)
-cycle = 0
+if TROPICOS_API_KEY:
+    sources_status.append("Tropicos")
+if BHL_API_KEY:
+    sources_status.append("BHL")
+print(f"[{WORKER_ID}] Sources: {', '.join(sources_status)}")
 
 while True:
-    cycle += 1
-    jobs = lease(BATCH_SIZE)
-    
+    jobs = lease()
     if not jobs:
-        print(f"[{WORKER_ID}] No jobs, sleeping...")
-        time.sleep(30)
+        time.sleep(5)
         continue
     
-    print(f"[{WORKER_ID}] Cycle {cycle}: Processing {len(jobs)} jobs...")
-    results = [executor.submit(work, j).result() for j in jobs]
-    print(f"[{WORKER_ID}] Cycle {cycle} done: {sum(results)} images\n")
-    time.sleep(2)
+    for job in jobs:
+        work(job)

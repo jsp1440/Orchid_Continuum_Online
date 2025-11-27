@@ -3,10 +3,19 @@
 TROPICOS-ONLY WORKER - Missouri Botanical Garden
 =================================================
 Dedicated worker for Tropicos API (REQUIRES API KEY)
+Uses O(1) taxonomy lookup via taxonomy_mapper
 Run 2 workers: python workers/tropicos_worker.py tropicos-1 ... tropicos-2
 """
-import os, sys, time, requests, psycopg2, json
+import os
+import sys
+import time
+import requests
+import psycopg2
+import json
 from psycopg2 import pool
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id
 
 WORKER_ID = sys.argv[1] if len(sys.argv) > 1 else "tropicos-1"
 BATCH_SIZE = 6
@@ -17,11 +26,14 @@ TROPICOS_API_KEY = os.environ.get('TROPICOS_API_KEY', '')
 pool_obj = pool.SimpleConnectionPool(minconn=1, maxconn=5, dsn=os.environ.get('DATABASE_URL'))
 stats = {'added': 0, 'start': time.time(), 'errors': 0}
 
+
 def get_conn():
     return pool_obj.getconn()
 
+
 def put_conn(c):
     pool_obj.putconn(c)
+
 
 def lease(n=BATCH_SIZE):
     c = get_conn()
@@ -36,33 +48,29 @@ def lease(n=BATCH_SIZE):
     finally:
         put_conn(c)
 
+
 def simplify_name(full_name):
-    """Extract binomial name (Genus species) handling hybrids, subspecies, and authors"""
     parts = full_name.split()
     if len(parts) < 2:
         return full_name
     
     genus = parts[0]
     
-    # Handle hybrid marker
     if parts[1] == 'x' and len(parts) >= 3:
         return f"{genus} {parts[2]}"
     
-    # Handle subspecies/variety markers
     if len(parts) >= 3 and parts[2] in ('ssp.', 'subsp.', 'var.', 'f.', 'forma'):
         return f"{genus} {parts[1]}"
     
-    # Normal case - just genus and species
     return f"{genus} {parts[1]}"
 
+
 def fetch_tropicos(name):
-    """Fetch from Tropicos"""
     if not TROPICOS_API_KEY:
         return []
     
     time.sleep(REQUEST_DELAY)
     
-    # Strip author names - Tropicos prefers binomial (Genus species)
     simple_name = simplify_name(name)
     
     try:
@@ -91,7 +99,6 @@ def fetch_tropicos(name):
         
         if isinstance(images_data, list):
             for img in images_data:
-                # Use DetailJpgUrl for full resolution or ThumbnailUrl as fallback
                 url = img.get('DetailJpgUrl') or img.get('ThumbnailUrl', '')
                 if url:
                     imgs.append({
@@ -110,9 +117,10 @@ def fetch_tropicos(name):
                     })
         
         return imgs
-    except Exception as e:
+    except Exception:
         stats['errors'] += 1
         return []
+
 
 def save(img_data, tid):
     c = get_conn()
@@ -140,16 +148,29 @@ def save(img_data, tid):
         result = r.fetchone()
         c.commit()
         return result is not None
-    except Exception as e:
+    except Exception:
         c.rollback()
         stats['errors'] += 1
         return False
     finally:
         put_conn(c)
 
+
 def work(job):
     jid, tid, name = job
     try:
+        taxon = lookup_taxon_by_id(tid)
+        if not taxon.get('matched'):
+            print(f"[{WORKER_ID}] Invalid taxonomy_id {tid}, skipping")
+            c = get_conn()
+            try:
+                r = c.cursor()
+                r.execute("UPDATE harvest_jobs SET status='failed', last_error='Invalid taxonomy_id' WHERE id=%s", (jid,))
+                c.commit()
+            finally:
+                put_conn(c)
+            return 0
+        
         imgs = fetch_tropicos(name)
         
         saved = 0
@@ -184,11 +205,12 @@ def work(job):
         stats['errors'] += 1
         return 0
 
+
 if not TROPICOS_API_KEY:
-    print(f"⚠️ TROPICOS_API_KEY not set! Worker will not start.")
+    print(f"TROPICOS_API_KEY not set! Worker will not start.")
     sys.exit(1)
 
-print(f"🌿 TROPICOS WORKER: {WORKER_ID}")
+print(f"TROPICOS WORKER: {WORKER_ID} (O(1) taxonomy lookup)")
 
 while True:
     jobs = lease()

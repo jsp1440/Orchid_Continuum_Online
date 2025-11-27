@@ -3,10 +3,19 @@
 INATURALIST-ONLY WORKER - Community Observations
 =================================================
 Dedicated worker for iNaturalist API (NO API KEY NEEDED)
+Uses O(1) taxonomy lookup via taxonomy_mapper
 Run 3 workers: python workers/inaturalist_worker.py inat-1 ... inat-3
 """
-import os, sys, time, requests, psycopg2, json
+import os
+import sys
+import time
+import requests
+import psycopg2
+import json
 from psycopg2 import pool
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from taxonomy_mapper import lookup_taxon, lookup_taxon_by_id
 
 WORKER_ID = sys.argv[1] if len(sys.argv) > 1 else "inat-1"
 BATCH_SIZE = 8
@@ -16,11 +25,14 @@ REQUEST_DELAY = 0.3
 pool_obj = pool.SimpleConnectionPool(minconn=1, maxconn=5, dsn=os.environ.get('DATABASE_URL'))
 stats = {'added': 0, 'start': time.time(), 'errors': 0}
 
+
 def get_conn():
     return pool_obj.getconn()
 
+
 def put_conn(c):
     pool_obj.putconn(c)
+
 
 def lease(n=BATCH_SIZE):
     c = get_conn()
@@ -35,30 +47,26 @@ def lease(n=BATCH_SIZE):
     finally:
         put_conn(c)
 
+
 def simplify_name(full_name):
-    """Extract binomial name (Genus species) handling hybrids, subspecies, and authors"""
     parts = full_name.split()
     if len(parts) < 2:
         return full_name
     
     genus = parts[0]
     
-    # Handle hybrid marker
     if parts[1] == 'x' and len(parts) >= 3:
         return f"{genus} {parts[2]}"
     
-    # Handle subspecies/variety markers
     if len(parts) >= 3 and parts[2] in ('ssp.', 'subsp.', 'var.', 'f.', 'forma'):
         return f"{genus} {parts[1]}"
     
-    # Normal case - just genus and species
     return f"{genus} {parts[1]}"
 
+
 def fetch_inaturalist(name):
-    """Fetch from iNaturalist"""
     time.sleep(REQUEST_DELAY)
     
-    # Strip author names - iNaturalist only wants binomial (Genus species)
     simple_name = simplify_name(name)
     
     try:
@@ -89,13 +97,24 @@ def fetch_inaturalist(name):
                 img_url = img_url.replace('square', 'large')
             
             if img_url:
+                location = obs.get('location')
+                lat = None
+                lon = None
+                if location and ',' in location:
+                    parts = location.split(',')
+                    try:
+                        lat = float(parts[0])
+                        lon = float(parts[1])
+                    except (ValueError, IndexError):
+                        pass
+                
                 imgs.append({
                     'url': img_url,
                     'source': 'iNaturalist',
                     'type': 'observation',
                     'country': obs.get('place_guess', '').split(',')[-1].strip() if obs.get('place_guess') else None,
-                    'lat': obs.get('location') and float(obs['location'].split(',')[0]),
-                    'lon': obs.get('location') and float(obs['location'].split(',')[1]) if obs.get('location') and ',' in obs['location'] else None,
+                    'lat': lat,
+                    'lon': lon,
                     'date': obs.get('observed_on'),
                     'year': obs.get('observed_on_details', {}).get('year'),
                     'occurrence_metadata': {
@@ -107,9 +126,10 @@ def fetch_inaturalist(name):
                 })
         
         return imgs[:20]
-    except Exception as e:
+    except Exception:
         stats['errors'] += 1
         return []
+
 
 def save(img_data, tid):
     c = get_conn()
@@ -139,16 +159,29 @@ def save(img_data, tid):
         result = r.fetchone()
         c.commit()
         return result is not None
-    except Exception as e:
+    except Exception:
         c.rollback()
         stats['errors'] += 1
         return False
     finally:
         put_conn(c)
 
+
 def work(job):
     jid, tid, name = job
     try:
+        taxon = lookup_taxon_by_id(tid)
+        if not taxon.get('matched'):
+            print(f"[{WORKER_ID}] Invalid taxonomy_id {tid}, skipping")
+            c = get_conn()
+            try:
+                r = c.cursor()
+                r.execute("UPDATE harvest_jobs SET status='failed', last_error='Invalid taxonomy_id' WHERE id=%s", (jid,))
+                c.commit()
+            finally:
+                put_conn(c)
+            return 0
+        
         imgs = fetch_inaturalist(name)
         
         saved = 0
@@ -183,7 +216,8 @@ def work(job):
         stats['errors'] += 1
         return 0
 
-print(f"🦋 INATURALIST WORKER: {WORKER_ID}")
+
+print(f"INATURALIST WORKER: {WORKER_ID} (O(1) taxonomy lookup)")
 
 while True:
     jobs = lease()
