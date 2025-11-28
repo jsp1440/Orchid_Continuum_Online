@@ -38,11 +38,20 @@ else
     
     # Commit changes
     echo "Committing..."
-    git commit -m "Update harvesters: source-first workers, fix metadata storage
+    git commit -m "Add Fluid Multi-Source Harvester v1.0
 
-- Add source-first workers (GBIF, iNaturalist, iDigBio, ALA, EOL)
-- Fix metadata storage (country, coords, dates, JSONB)
-- All harvesters use centralized taxonomy_mapper"
+NEW: workers/fluid_harvester.py
+- Dynamic source switching (GBIF, iNaturalist, iDigBio, ALA)
+- In-memory taxonomy cache (no per-record DB calls)
+- Performance tracking with automatic source optimization
+- Target: 3,000+ images/hour across 4 workers
+
+UPDATED: render.yaml
+- Add 4 fluid harvester workers (fluid-1 through fluid-4)
+- Each dynamically balances across all data sources
+- Replaces 8 single-source GBIF workers
+
+FIXED: Metadata storage for all harvesters"
 fi
 
 echo ""

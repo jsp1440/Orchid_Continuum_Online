@@ -6,44 +6,96 @@ services:
     buildCommand: pip install -r requirements.txt
     preDeployCommand: bash render_init.sh && python create_database.py
     startCommand: gunicorn --bind 0.0.0.0:$PORT main:app
-    # Production Stability Settings
-    healthCheckPath: /healthz  # Static endpoint, never calls OpenAI
-    autoDeploy: false  # Manual deploys only to prevent surprise quota burns
+    healthCheckPath: /healthz
+    autoDeploy: false
     envVars:
       - key: OPENAI_API_KEY
-        sync: false  # Set manually in Render dashboard
+        sync: false
       - key: SESSION_SECRET
-        generateValue: true  # Auto-generate secure secret
+        generateValue: true
       - key: DATABASE_URL
-        sync: false  # Set manually or use Render's PostgreSQL add-on
+        sync: false
       - key: ORCHID_AI_ENABLED
-        value: "false"  # AI DISABLED by default - enable manually when quota available
+        value: "false"
   
-  # GBIF Image Collection Worker - Runs 24/7 collecting FREE images
+  # ============================================
+  # FLUID MULTI-SOURCE HARVESTERS (NEW - v2.0)
+  # Each harvester dynamically switches between:
+  # GBIF, iNaturalist, iDigBio, ALA
+  # Target: 500+ images/hour per worker
+  # ============================================
+  
   - type: worker
-    name: orchid-gbif-worker
+    name: fluid-harvester-1
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python -u validation/enrich_gbif_stable.py
-    autoDeploy: true  # Auto-deploy worker for continuous data collection
-    envVars:
-      - key: DATABASE_URL
-        sync: false  # Same database as web app
-  
-  # Multi-Source Image Harvester - 16 workers across 7 image sources
-  - type: worker
-    name: orchid-harvester-supervisor
-    env: python
-    plan: starter
-    buildCommand: pip install -r requirements.txt
-    startCommand: python3 -u RESERVED_VM_SUPERVISOR.py
+    startCommand: python -u workers/fluid_harvester.py
     autoDeploy: true
     envVars:
       - key: DATABASE_URL
         sync: false
-      - key: TROPICOS_API_KEY
+      - key: NEON_DATABASE_URL
         sync: false
-      - key: BHL_API_KEY
+      - key: WORKER_ID
+        value: "fluid-1"
+  
+  - type: worker
+    name: fluid-harvester-2
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -u workers/fluid_harvester.py
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: NEON_DATABASE_URL
+        sync: false
+      - key: WORKER_ID
+        value: "fluid-2"
+  
+  - type: worker
+    name: fluid-harvester-3
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -u workers/fluid_harvester.py
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: NEON_DATABASE_URL
+        sync: false
+      - key: WORKER_ID
+        value: "fluid-3"
+  
+  - type: worker
+    name: fluid-harvester-4
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -u workers/fluid_harvester.py
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: NEON_DATABASE_URL
+        sync: false
+      - key: WORKER_ID
+        value: "fluid-4"
+  
+  # ============================================
+  # LEGACY WORKERS (can be disabled after testing fluid harvesters)
+  # ============================================
+  
+  # Legacy GBIF Worker
+  - type: worker
+    name: orchid-gbif-worker
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -u workers/gbif_worker.py
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: NEON_DATABASE_URL
         sync: false
   
   # EOL DATA PROCESSING - Run manually after deployment
