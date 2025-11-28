@@ -24,7 +24,13 @@ BATCH_SIZE = 8
 THREAD_COUNT = 12
 RECLAIM_MINUTES = 7
 
-pool_obj = pool.SimpleConnectionPool(minconn=1, maxconn=15, dsn=os.environ.get('DATABASE_URL'))
+def get_database_url():
+    """Build database URL from environment variables"""
+    if os.environ.get('PGHOST'):
+        return f"postgresql://{os.environ.get('PGUSER')}:{os.environ.get('PGPASSWORD')}@{os.environ.get('PGHOST')}:{os.environ.get('PGPORT')}/{os.environ.get('PGDATABASE')}?sslmode=require"
+    return os.environ.get('DATABASE_URL', '')
+
+pool_obj = pool.SimpleConnectionPool(minconn=1, maxconn=15, dsn=get_database_url())
 stats = {'added': 0, 'start': time.time(), 'by_source': {}, 'errors': 0}
 
 GBIF_COUNTRIES = [
