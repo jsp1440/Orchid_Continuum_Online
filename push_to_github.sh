@@ -3,19 +3,33 @@ echo "🚀 Pushing Orchid Continuum to GitHub..."
 echo "=========================================="
 echo ""
 
-# Remove stale lock file if exists
-if [ -f ".git/index.lock" ]; then
-    echo "Removing stale git lock file..."
-    rm -f .git/index.lock
+# Remove stale lock files
+rm -f .git/index.lock .git/config.lock 2>/dev/null
+
+# Disable askpass to avoid the error
+unset GIT_ASKPASS
+unset SSH_ASKPASS
+
+# Use token from environment
+TOKEN="${GITHUB_PERSONAL_ACCESS_TOKEN}"
+if [ -z "$TOKEN" ]; then
+    echo "❌ ERROR: GITHUB_PERSONAL_ACCESS_TOKEN not found in secrets"
+    exit 1
 fi
+echo "✓ GitHub token found"
+
+# Update remote URL with token
+git remote set-url origin "https://${TOKEN}@github.com/jsp1440/Orchid_Continuum_Online.git"
+echo "✓ Remote URL configured"
 
 # Stage all changes
+echo ""
 echo "Staging all changes..."
 git add -A
 
 # Check if there are changes to commit
 if git diff --cached --quiet; then
-    echo "No changes to commit. Attempting push..."
+    echo "No new changes to commit."
 else
     echo ""
     echo "Changes to commit:"
@@ -23,33 +37,29 @@ else
     echo ""
     
     # Commit changes
-    echo "Committing changes..."
+    echo "Committing..."
     git commit -m "Update harvesters: source-first workers, fix metadata storage
 
 - Add source-first workers (GBIF, iNaturalist, iDigBio, ALA, EOL)
-- Add high-throughput workers for each data source
-- Update gbif_worker.py to use centralized taxonomy_mapper
-- Fix metadata storage (country, coords, dates, JSONB fields)
-- All harvesters now validate via taxonomy_mapper (no discovery)"
+- Fix metadata storage (country, coords, dates, JSONB)
+- All harvesters use centralized taxonomy_mapper"
 fi
 
 echo ""
 echo "Pushing to GitHub..."
-git push -v origin main 2>&1
+git push origin main 2>&1
 
-# Check if it worked
+# Check result
 if [ $? -eq 0 ]; then
     echo ""
-    echo "✅ SUCCESS! All files pushed to GitHub!"
+    echo "✅ SUCCESS! Pushed to GitHub!"
     echo ""
-    echo "Next step: Redeploy on Render.com"
+    echo "Next: Redeploy on Render.com to use the new code"
 else
     echo ""
-    echo "❌ PUSH FAILED - See error above"
+    echo "❌ PUSH FAILED"
     echo ""
-    echo "Common fixes:"
-    echo "  1. If timeout: Try 'git push --no-thin origin main'"
-    echo "  2. If 500 error: Try pushing in smaller commits"
-    echo "  3. If auth error: Token may need refresh"
-    echo "  4. If conflicts: Run 'git pull origin main' first"
+    echo "If token expired, generate a new one at:"
+    echo "https://github.com/settings/tokens"
+    echo "Then update GITHUB_PERSONAL_ACCESS_TOKEN in Replit Secrets"
 fi
