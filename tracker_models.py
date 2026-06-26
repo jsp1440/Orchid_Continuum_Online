@@ -23,7 +23,7 @@ class BrainProject(db.Model):
     notes = db.Column(db.Text, nullable=True)
     completion_percent = db.Column(db.Integer, nullable=False, default=0)
     source = db.Column(db.String(120), nullable=False, default="master_tracker_seed")
-    metadata = db.Column(db.JSON, nullable=True)
+    extra_metadata = db.Column("metadata", db.JSON, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     completed_at = db.Column(db.DateTime, nullable=True)
@@ -49,7 +49,7 @@ class BrainProject(db.Model):
             "notes": self.notes,
             "completion_percent": self.completion_percent,
             "source": self.source,
-            "metadata": self.metadata or {},
+            "metadata": self.extra_metadata or {},
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
             "completed_at": self.completed_at.isoformat() if self.completed_at else None,
@@ -79,7 +79,7 @@ class BrainProjectFeature(db.Model):
     cost = db.Column(db.String(80), nullable=True)
     notes = db.Column(db.Text, nullable=True)
     sort_order = db.Column(db.Integer, nullable=False, default=0)
-    metadata = db.Column(db.JSON, nullable=True)
+    extra_metadata = db.Column("metadata", db.JSON, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
@@ -91,7 +91,7 @@ class BrainProjectFeature(db.Model):
             "cost": self.cost,
             "notes": self.notes,
             "sort_order": self.sort_order,
-            "metadata": self.metadata or {},
+            "metadata": self.extra_metadata or {},
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
         }
@@ -108,7 +108,7 @@ class BrainDecisionLog(db.Model):
     decided_by = db.Column(db.String(160), nullable=True)
     previous_status = db.Column(db.String(40), nullable=True)
     new_status = db.Column(db.String(40), nullable=True)
-    metadata = db.Column(db.JSON, nullable=True)
+    extra_metadata = db.Column("metadata", db.JSON, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     def to_dict(self):
@@ -121,6 +121,6 @@ class BrainDecisionLog(db.Model):
             "decided_by": self.decided_by,
             "previous_status": self.previous_status,
             "new_status": self.new_status,
-            "metadata": self.metadata or {},
+            "metadata": self.extra_metadata or {},
             "created_at": self.created_at.isoformat() if self.created_at else None,
         }
