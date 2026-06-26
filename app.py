@@ -319,6 +319,20 @@ except Exception as e:
     print(f"System Monitor Dashboard initialization error: {e}")
 
 try:
+    from master_tracker import tracker_bp
+    app.register_blueprint(tracker_bp)
+    print("Master Project Tracker initialized at /tracker and /api/tracker/status")
+except Exception as e:
+    print(f"Master Project Tracker initialization error: {e}")
+
+try:
+    from brain_status_api import brain_status_bp
+    app.register_blueprint(brain_status_bp)
+    print("Brain Status API initialized at /api/brain/status")
+except Exception as e:
+    print(f"Brain Status API initialization error: {e}")
+
+try:
     from orchid_games import games_bp
     app.register_blueprint(games_bp)
     print("Orchid Games system initialized")
@@ -331,259 +345,11 @@ except Exception as e:
 #     app.register_blueprint(discovery_bp)
 #     print("Interactive Species Discovery game initialized")
 # except Exception as e:
-#     print(f"Species Discovery game initialization error: {e}")
+#     print(f"Species Discovery initialization error: {e}")
 
 try:
     from api_v2_routes import api_v2
     app.register_blueprint(api_v2)
     print("API v2 routes initialized - FastAPI-compatible endpoints available")
 except Exception as e:
-    print(f"API v2 routes initialization error: {e}")
-
-try:
-    from taxonomy_verification_routes import taxonomy_bp
-    app.register_blueprint(taxonomy_bp)
-    print("Taxonomy Verification system initialized")
-except Exception as e:
-    print(f"Taxonomy Verification initialization error: {e}")
-
-try:
-    from ai_collection_manager import collection_manager_bp
-    app.register_blueprint(collection_manager_bp)
-    print("AI Collection Manager system initialized")
-except Exception as e:
-    print(f"AI Collection Manager initialization error: {e}")
-
-try:
-    import breeder_pro_routes  # Import Breeder Pro+ admin routes
-    print("🌸 Breeder Pro+ Orchestrator web interface initialized")
-except Exception as e:
-    print(f"Breeder Pro+ Orchestrator initialization error: {e}")
-
-try:
-    from svo_analysis_routes import svo_bp
-    app.register_blueprint(svo_bp)
-    print("🔍 SVO Analysis web interface initialized")
-except Exception as e:
-    print(f"SVO Analysis initialization error: {e}")
-
-try:
-    from orchid_ai_research_hub import research_hub_bp
-    app.register_blueprint(research_hub_bp)
-    print("🤖 OrchidAI Research Hub initialized with unified AI capabilities")
-except Exception as e:
-    print(f"OrchidAI Research Hub initialization error: {e}")
-
-try:
-    import trefle_admin_routes  # Import Trefle admin routes (direct app routes)
-    print("🌿 Trefle Ecosystem Enrichment admin interface initialized")
-except Exception as e:
-    print(f"Trefle admin routes initialization error: {e}")
-
-try:
-    from julius_ai_api import julius_api
-    app.register_blueprint(julius_api)
-    print("🤖 Julius AI API initialized for data analysis integration")
-except Exception as e:
-    print(f"Julius AI API initialization error: {e}")
-
-try:
-    from julius_task_manager import julius_tasks_bp
-    app.register_blueprint(julius_tasks_bp)
-    print("📋 Julius Task Manager initialized at /api/julius/tasks")
-except Exception as e:
-    print(f"Julius Task Manager initialization error: {e}")
-
-try:
-    from julius_ai_enrichment_insights import julius_insights_bp
-    app.register_blueprint(julius_insights_bp)
-    print("📊 Julius AI Enrichment Insights dashboard registered successfully")
-except Exception as e:
-    print(f"Julius AI Insights initialization error: {e}")
-
-try:
-    from orchid_data_enrichment import orchid_enrichment
-    app.register_blueprint(orchid_enrichment)
-    print("🌺 Orchid Data Enrichment System registered successfully")
-except Exception as e:
-    print(f"Orchid Data Enrichment initialization error: {e}")
-
-try:
-    from field_completion_routes import field_completion_bp
-    app.register_blueprint(field_completion_bp)
-    print("📊 Field Completion Dashboard registered successfully")
-except Exception as e:
-    print(f"Field Completion Dashboard initialization error: {e}")
-
-try:
-    from routes_julius_monitor import julius_monitor_bp
-    app.register_blueprint(julius_monitor_bp)
-    print("🔄 Julius AI Monitor - Shared Communication System initialized")
-except Exception as e:
-    print(f"Julius monitor initialization error: {e}")
-
-# Register new Julius live monitor
-try:
-    from julius_monitor import monitor_bp
-    app.register_blueprint(monitor_bp)
-    print("🔍 Julius AI Live Monitor initialized")
-except Exception as e:
-    print(f"Julius live monitor initialization error: {e}")
-
-try:
-    from routes_botanist_monitor import bp as botanist_monitor_bp
-    app.register_blueprint(botanist_monitor_bp)
-    print("🔬 Digital Botanist Vision AI Monitor - Real-time dashboard initialized")
-except Exception as e:
-    print(f"Botanist Monitor initialization error: {e}")
-
-try:
-    from routes_autonomous_agent import autonomous_agent_bp
-    app.register_blueprint(autonomous_agent_bp)
-    print("🤖 Autonomous Enrichment Agent - API routes initialized")
-except Exception as e:
-    print(f"Autonomous Agent initialization error: {e}")
-
-try:
-    from routes_research_library import research_library_bp
-    app.register_blueprint(research_library_bp)
-    print("📚 Research Library routes initialized successfully")
-except Exception as e:
-    print(f"Research Library initialization error: {e}")
-
-from verify.routes import verify_bp
-try:
-    app.register_blueprint(verify_bp)
-except Exception:
-    pass
-
-# ============================================================================
-# PRODUCTION STABILITY: Static Health Check Endpoint
-# ============================================================================
-# This endpoint is used by Render's health checks and should NEVER call
-# external APIs (OpenAI, GBIF, etc.) to avoid burning quota on health checks
-
-@app.route('/healthz', methods=['GET'])
-@app.route('/health', methods=['GET'])
-def health_check():
-    """
-    Static health check endpoint for production monitoring.
-    
-    - Returns immediately without calling external APIs
-    - Used by Render's health check system
-    - Never calls OpenAI to avoid quota exhaustion
-    - Checks only critical internal systems (database connection)
-    """
-    from app_utils.ai_utils import get_ai_status
-    
-    # Production Stability: Don't even ping DB in health check
-    # This ensures fastest possible response and zero resource usage
-    # Render will mark unhealthy if app crashes anyway
-    db_status = "not_checked"
-    
-    # Get AI status (doesn't make API calls)
-    ai_status = get_ai_status()
-    
-    response_data = {
-        "status": "ok",
-        "service": "orchid-continuum",
-        "database": db_status,
-        "ai_enabled": ai_status["enabled"],
-        "ai_status": ai_status["status"]
-    }
-    
-    # Return 200 even if AI is disabled (that's intentional, not a failure)
-    return response_data, 200
-
-# ============================================================================
-# AI COMMUNICATION MONITOR
-# ============================================================================
-try:
-    from routes_ai_monitor import monitor_bp as ai_comm_monitor_bp
-    app.register_blueprint(ai_comm_monitor_bp)
-    
-    # Orchid Continuum University routes
-    from routes_university import university_bp
-    app.register_blueprint(university_bp)
-    print("✅ AI Communication Monitor loaded at /ai-monitor/")
-except ImportError as e:
-    logging.warning(f"AI Communication Monitor routes not available: {e}")
-
-try:
-    import routes_image_downloader
-    print("📥 Image Downloader System initialized at /admin/image-downloader")
-except ImportError as e:
-    logging.warning(f"Image Downloader routes not available: {e}")
-
-
-try:
-    import routes_vision_ai
-    print("🤖 Vision AI Analyzer initialized at /admin/vision-ai")
-except ImportError as e:
-    logging.warning(f"Vision AI routes not available: {e}")
-
-# ============================================================================
-# NEW MULTI-AI INTEGRATION WIDGETS
-# ============================================================================
-try:
-    from live_ai_generation_widget import live_widget_bp
-    app.register_blueprint(live_widget_bp)
-    print("✨ Live AI Generation Widget initialized at /widgets/live-ai-generation")
-except Exception as e:
-    print(f"Live AI Widget initialization error: {e}")
-
-try:
-    from simple_monitoring import monitor_bp as simple_monitor_bp
-    app.register_blueprint(simple_monitor_bp)
-    print("📊 Simple Monitoring Dashboard initialized at /monitor")
-except Exception as e:
-    print(f"Simple Monitor initialization error: {e}")
-
-try:
-    from master_tracker import tracker_bp
-    app.register_blueprint(tracker_bp)
-    print("📋 Master Project Tracker initialized at /tracker")
-except Exception as e:
-    print(f"Master Tracker initialization error: {e}")
-
-try:
-    from routes_bloombuilder import bloombuilder_bp
-    app.register_blueprint(bloombuilder_bp)
-    print("🌺 BloomBuilder: Orchid Morphology Lab initialized at /bloombuilder")
-except Exception as e:
-    print(f"BloomBuilder initialization error: {e}")
-
-# DISABLED: Famous AI floral shop widget (completely wrong - was about roses/bouquets instead of orchid research)
-# Use the proper BloomBuilder backend at /bloombuilder instead
-
-try:
-    from routes_download_dashboard import dashboard_bp
-    app.register_blueprint(dashboard_bp)
-    print("📥 Real-Time Download Dashboard initialized at /download-dashboard")
-except Exception as e:
-    print(f"Download Dashboard initialization error: {e}")
-
-try:
-    from routes_upload_monitor import upload_monitor_bp
-    app.register_blueprint(upload_monitor_bp)
-    print("📊 Upload Monitor Dashboard initialized at /upload-monitor")
-except Exception as e:
-    print(f"Upload Monitor initialization error: {e}")
-
-
-# ============================================================================
-# CULTURE SHEET WIDGET WITH NEON ONE INTEGRATION & CREDIT SYSTEM
-# ============================================================================
-try:
-    from widget_api_routes import widget_api
-    app.register_blueprint(widget_api)
-    print("🌺 Culture Sheet Widget API initialized (Neon One + Credits)")
-except Exception as e:
-    print(f"Widget API initialization error: {e}")
-
-try:
-    from admin_widget_routes import admin_widget_bp
-    app.register_blueprint(admin_widget_bp)
-    print("⚙️  Widget Admin Dashboard initialized")
-except Exception as e:
-    print(f"Admin Widget routes initialization error: {e}")
+    print(f"API v2 initialization error: {e}")
